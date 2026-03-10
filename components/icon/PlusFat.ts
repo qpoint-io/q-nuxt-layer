@@ -1,0 +1,13 @@
+import  { createElementVNode, openBlock, createElementBlock } from 'vue'
+
+
+export default function render() {
+  return (openBlock(), createElementBlock("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 15 15",
+    fill: "currentColor",
+    "aria-hidden": "true"
+  }, [
+    createElementVNode("path", { d: "M13.18,5.84h-4.34V1.5c0-.83-.67-1.5-1.5-1.5s-1.5,.67-1.5,1.5V5.84H1.5c-.83,0-1.5,.67-1.5,1.5s.67,1.5,1.5,1.5H5.84v4.34c0,.83,.67,1.5,1.5,1.5s1.5-.67,1.5-1.5v-4.34h4.34c.83,0,1.5-.67,1.5-1.5s-.67-1.5-1.5-1.5Z" }),
+  ]))
+}

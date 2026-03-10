@@ -1,0 +1,44 @@
+{
+  "name": "@qpoint-io/q-nuxt-layer",
+  "version": "0.4.0",
+  "type": "module",
+  "description": "Qpoint design system — shared components, tokens, and CSS via Nuxt Layer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qpoint-io/q-nuxt-layer.git"
+  },
+  "main": "./nuxt.config.ts",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "files": [
+    "components/",
+    "composables/",
+    "utils/",
+    "assets/css/shared.css",
+    "tailwind.config.js",
+    "nuxt.config.ts"
+  ],
+  "dependencies": {
+    "@nuxtjs/tailwindcss": "^6.14.0",
+    "@tailwindcss/forms": "^0.5.7",
+    "tailwindcss-animation-delay": "^2.0.2"
+  },
+  "peerDependencies": {
+    "@headlessui/vue": "^1.7.23",
+    "chart.js": "^4.0.0",
+    "nuxt": "^4.0.0",
+    "vue-chartjs": "^5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@headlessui/vue": {
+      "optional": true
+    },
+    "chart.js": {
+      "optional": true
+    },
+    "vue-chartjs": {
+      "optional": true
+    }
+  }
+}

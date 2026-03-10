@@ -1,0 +1,137 @@
+/* Qpoint shared styles — inherited by all projects using this Nuxt layer.
+   Contains Tailwind directives, shared base styles, utility classes, and transitions.
+   Project-specific styles go in each project's own CSS file. */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BASE — Universal element defaults
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer base {
+  * {
+    scroll-behavior: smooth;
+  }
+
+  /* Form elements */
+  input[type="text"],
+  input[type="number"],
+  input[type="email"] {
+    @apply border-1 border-gray-300 placeholder-gray-400;
+  }
+
+  input[type="text"]:disabled {
+    @apply border-0;
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  input[type="radio"],
+  input[type="checkbox"] {
+    @apply text-grape focus:outline-none ring-opacity-5;
+  }
+
+  input[type="radio"]:focus,
+  input[type="checkbox"]:focus {
+    @apply text-grape focus:ring-0;
+  }
+
+  select {
+    @apply border-1 border-gray-300 rounded-md;
+  }
+
+  label {
+    @apply select-none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   UTILITIES — Shared class-based styles (opt-in by usage)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer utilities {
+  /* ── Button variants ──────────────────────────────────────────────── */
+
+  .btn-cancel {
+    @apply border-gray-300 border-2 text-grey-600 bg-transparent;
+  }
+  .btn-cancel:hover {
+    @apply hover:bg-transparent hover:border-grape-400;
+  }
+
+  .btn-danger-outline {
+    @apply border-1 border-warn text-warn bg-transparent;
+  }
+  .btn-danger-outline:hover {
+    @apply hover:bg-transparent hover:border-black;
+  }
+
+  .btn-danger {
+    @apply bg-warn;
+  }
+  .btn-danger:hover {
+    @apply hover:bg-black;
+  }
+
+  .btn-outline {
+    @apply border-2 border-grape text-black bg-transparent;
+  }
+  .btn-outline:hover {
+    @apply hover:bg-transparent hover:border-black;
+  }
+
+  .btn-outline-black {
+    @apply border-2 border-black text-grape bg-transparent;
+  }
+
+  /* ── Layout helpers ───────────────────────────────────────────────── */
+
+  .abs-center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .abs-x {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .abs-y {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* ── Borders and dividers ─────────────────────────────────────────── */
+
+  .hairline {
+    @apply border-b-1 border-b-grey-300;
+  }
+
+  ._underline {
+    @apply border-b-3 border-b-grey-300 pb-1 mb-4;
+  }
+
+  /* ── Surface ──────────────────────────────────────────────────────── */
+
+  ._shadow-box {
+    @apply bg-white shadow-lg rounded-12;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TRANSITIONS — Shared Vue transition classes
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s ease;
+  opacity: 1;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  transition: all 0.5s ease;
+  opacity: 0;
+}

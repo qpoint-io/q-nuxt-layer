@@ -1,0 +1,14 @@
+<template>
+  <div>
+    <div class="text-grey-500 text-13 font-semi select-none">{{ label }}</div>
+    <div class="text-18 font-bold">
+      <slot/>
+    </div>
+  </div>
+</template>
+
+<script setup>
+const props = defineProps({
+  label: {type:String},
+})
+</script>

@@ -1,0 +1,140 @@
+# @qpoint-io/q-nuxt-layer — Nuxt Layer
+
+Shared components, design tokens, and CSS for Qpoint projects. Distributed as a Nuxt Layer via npm.
+
+## Package
+
+- Published to **GitHub Packages** as `@qpoint-io/q-nuxt-layer`
+- `"main": "./nuxt.config.ts"` — required for Nuxt to resolve the layer from node_modules
+- `"files"` whitelist: `components/`, `composables/`, `assets/css/shared.css`, `tailwind.config.js`, `nuxt.config.ts`
+
+## Shared Components
+
+### UX Components (`components/ux/`)
+
+Auto-imported with the `Ux` prefix:
+
+| Component | Description |
+|-----------|-------------|
+| `UxButton` | Filled/stroke variants, loading spinner |
+| `UxInput` | Form wrapper with label, hint, error, help modal |
+| `UxModal` | Headless UI dialog with transitions (peer dep: `@headlessui/vue`) |
+| `UxToggle` | CSS toggle switch, 5 size variants |
+| `UxTag` | Removable chip, grape/warn variants |
+| `UxCopyBtn` | Copy-to-clipboard with visual feedback |
+| `UxClose` | Small X button (used by Modal, Message) |
+| `UxCheckbox` | Label wrapper for native checkbox |
+| `UxMessage` | Toast notification with close button |
+| `UxIcon` | Dynamic SVG loader (project provides icons) |
+| `UxLabelText` | Two-line display: small grey label + bold value |
+| `UxSimpleSelect` | Minimal borderless native `<select>` with v-model |
+
+### Icons (`components/icon/`)
+
+Auto-imported with the `Icon` prefix. `.ts` files use Vue render functions; `.vue` files use templates. Consumer projects can override any icon by defining a local component with the same name.
+
+| Component | Style | Description |
+|-----------|-------|-------------|
+| `IconArrowHead` | fill | Small chevron arrow |
+| `IconArrowRight` | fill | Right-pointing arrow |
+| `IconArrowUp` | stroke | Up arrow with stem |
+| `IconArrowUpRound` | fill | Rounded up arrow / caret |
+| `IconCheck` | stroke | Checkmark |
+| `IconCheckFat` | fill | Bold checkmark |
+| `IconCopy` | stroke | Copy / clipboard |
+| `IconDash` | fill | Horizontal dash |
+| `IconDns` | stroke | DNS indicator lines |
+| `IconDownArrow` | fill | Down-pointing dropdown arrow |
+| `IconEdit` | fill | Pencil / edit |
+| `IconExclaim` | stroke | Exclamation mark |
+| `IconExternalLink` | stroke | External link arrow |
+| `IconJoin` | fill | Join / connect |
+| `IconLogo` | fill | Qpoint logo |
+| `IconNo` | stroke | Prohibition circle |
+| `IconPlus` | fill | Plus sign |
+| `IconPlusFat` | fill | Bold plus sign |
+| `IconSearch` | stroke | Magnifying glass |
+| `IconSpinner` | stroke | Loading spinner (animate with `animate-spin`) |
+| `IconTrafficSource` | fill | Traffic source globe |
+| `IconTriangle` | fill | Warning triangle |
+| `IconView` | fill | Eye / visibility |
+| `IconX` | stroke | Close X |
+| `IconXBig` | stroke | Large close X |
+
+### Dev Components (`components/dev/`)
+
+Documentation and dev tools, auto-imported with the `Dev` prefix:
+
+| Component | Description |
+|-----------|-------------|
+| `DevCanvas` | Interactive documentation wrapper with adminProps support |
+| `DevFrame` | Labeled container for component examples |
+| `DevH` | Section heading with hairline border (font-dev) |
+| `DevLabel` | Annotation text (grey-400, text-14) |
+| `DevComment` | Code comment text (blue, font-dev) |
+| `DevMetaPropsMachine` | Auto-generates UI controls from adminProps object |
+
+## Design Tokens
+
+Canonical source: `tailwind.config.js`. fontSize replaces Tailwind defaults (at theme root, not extend).
+
+- **Grape** (#895AE8) — 12-step scale, primary/interactive
+- **Leaf** (#58E392) — 4-step scale, success/positive
+- **Grey** (#949494) — 13-step scale, neutral
+- **Semantic** — error, warning, success, info, warn
+- **Typography** — Inter (sans), Geist Mono (mono), rigid-square (dev)
+- **Spacing** — px8 through px64
+- **Border radius** — 1px through 32px
+
+## Layer Architecture
+
+- `nuxt.config.ts` uses `join(currentDir, 'path')` with absolute paths — works from both sibling directories and node_modules
+- `tailwindcss.cssPath: false` — @tailwind directives are in `shared.css`
+- `components/` and `composables/` are explicitly registered via `components.dirs` and `imports.dirs`
+- Tailwind plugins (`@tailwindcss/forms`, `tailwindcss-animation-delay`) are dependencies (not devDeps) so they resolve from the package directory
+
+## Consumer Integration
+
+```ts
+// nuxt.config.ts
+export default defineNuxtConfig({
+  extends: ['@qpoint-io/q-nuxt-layer'],
+})
+```
+
+- Consumer's tailwind.config can extend/override tokens (deep merge)
+- Local components with same name override layer components (Nuxt auto-import priority)
+- Consumer's own CSS needs its own `@tailwind` directives if using `@layer` blocks
+- To detach: copy needed files locally and remove the `extends` line
+
+## Publishing
+
+```bash
+npm pack                    # Create tarball
+npm publish                 # Publish to GitHub Packages
+```
+
+Requires `.npmrc` with `@qpoint-io:registry=https://npm.pkg.github.com`
+
+## AI Agents
+
+The `.claude/` directory contains specialized agents and skills for working with this layer:
+
+### Agents
+- **layer-expert** — Recommends components, explains APIs, suggests compositions, guides token usage
+- **extraction-expert** — Extracts components from sister projects following "replicate first, optimize later"
+
+### Skills (knowledge files loaded by agents)
+- **layer-catalog** — Full inventory of all shared components with props, slots, emits, and usage guidance
+- **layer-standards** — File structure, naming, auto-import rules, publishing workflow, consumer integration
+- **design-tokens** — Color scales, typography, spacing, border-radius, breakpoints from tailwind.config.js
+
+Note: `.claude/` does not ship in the npm package (not in `"files"` whitelist). It is used when working directly in this repository.
+
+## Conventions
+
+- Color is functional, not decorative
+- Composition over configuration — use slots, not deep prop trees
+- Tailwind-native — scoped CSS only for things Tailwind can't express
+- Props use camelCase, events use kebab-case
+- See design's `brand/component_philosophy.md` for full component design principles
