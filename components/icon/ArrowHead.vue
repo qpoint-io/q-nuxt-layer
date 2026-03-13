@@ -1,0 +1,5 @@
+<template>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" fill="currentColor" aria-hidden="true">
+    <polygon points="0 8.08 4.04 4.04 0 0 3.43 0 7.47 4.04 3.43 8.08 0 8.08" />
+  </svg>
+</template>

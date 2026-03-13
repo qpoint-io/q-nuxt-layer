@@ -12,14 +12,14 @@
 
 
       <!-- Title -->
-      <DevH class="flex justify-between items-baseline" v-if="title">
+      <!-- <DevH class="flex justify-between items-baseline" v-if="title">
         <div>
           {{ title }}
         </div>
         <div class="not-italic text-12" v-if="route">
           <span class="text-grey-300">App route:</span> {{ route }}
         </div>
-      </DevH>
+      </DevH> -->
 
       <!-- Backdrop -->
       <div class="backdrop w-full p-10" :class="(bg)?  bg : 'bg-grey-100'">

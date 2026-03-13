@@ -12,8 +12,8 @@
       <!-- <UxTableListLoader :isLoading="isLoadingBottom" /> -->
     </table>
 
-    <div class="pt-4 pb-8 text-15 grey-500 flex flex-col gap-2 items-center justify-center h-full w-full delay-100" v-if="slotIsEmpty">
-      <div>No Records</div>
+    <div class="pt-4 pb-8 text-15 text-grey-500 flex items-center justify-center h-full w-full delay-100" v-if="slotIsEmpty">
+      <slot name="empty">No Records</slot>
     </div>
   </div>
 </template>

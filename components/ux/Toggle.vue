@@ -15,10 +15,10 @@
           @apply peer-checked:after:translate-x-full peer-checked:after:border-white;"
         />
       </div>
-      <div class="w-full">
+      <div class="w-full pl-2">
         <slot name="label" />
       </div>
-      <span v-if="label" class="_label">{{ label }}</span>
+      <span v-if="label" class="_label ">{{ label }}</span>
     </label>
 </template>
 

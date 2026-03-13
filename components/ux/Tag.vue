@@ -3,8 +3,8 @@
     <div class="overflow-hidden overflow-ellipsis whitespace-nowrap ">
       <slot />
     </div>
-    <div class="group p-1 rounded-4 -mr-1  cursor-pointer">
-      <IconX v-if="!noX" class="w-[10px] text-white group-hover:text-grape-600" :class="{'group-hover:text-warn': warn}" @click="$emit('remove')"/>
+    <div v-if="!noX" class="group p-1 rounded-4 -mr-1  cursor-pointer">
+      <UxIcon id="x" class="w-[10px] text-white group-hover:text-grape-600" :class="{'group-hover:text-warn': warn}" @click="$emit('remove')"/>
     </div>
   </div>
 </template>

@@ -4,9 +4,10 @@
   :class="{ 'sticky border-grape-100 border-2 rounded-12 p-4 bg-grey-150/90': floating}"
 >
   <div  class="flex justify-between gap-px16">
-      <!-- Cancel -->
+      <!-- Cancel: type=button so Enter in form submits to Save, not Cancel -->
       <UxButton
         v-if      = "hasCancelListener && cancel"
+        type      = "button"
         kind      = "cancel"
         @click    = "$emit('cancel')"
         :disabled = "cancelDisabled"
@@ -14,9 +15,10 @@
           {{ cancelText }}
       </UxButton>
 
-      <!-- Save -->
+      <!-- Save: type=submit so Enter in form triggers save -->
       <UxButton
         v-if      = "attrs.onSave != null"
+        type      = "submit"
         @click    = "$emit('save')"
         :disabled = "disabled"
         :spin     = "saving"

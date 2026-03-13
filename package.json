@@ -21,6 +21,7 @@
   ],
   "dependencies": {
     "@nuxtjs/tailwindcss": "^6.14.0",
+    "@qpoint-io/q-nuxt-layer": "file:qpoint-io-q-nuxt-layer-0.4.0.tgz",
     "@tailwindcss/forms": "^0.5.7",
     "tailwindcss-animation-delay": "^2.0.2"
   },

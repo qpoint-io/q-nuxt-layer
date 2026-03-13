@@ -1,12 +1,9 @@
 <template>
-  <div>
-
-    <span
-      class="nuxt-icon"
-      :class="[filled ? 'nuxt-icon--fill' : '' , (hasStroke && !filled)? 'nuxt-icon--stroke' : '']"
-      v-html="processedIcon"
-    />
-  </div>
+  <span
+    class="nuxt-icon"
+    :class="[filled ? 'nuxt-icon--fill' : '' , (hasStroke && !filled)? 'nuxt-icon--stroke' : '']"
+    v-html="processedIcon"
+  />
 </template>
 
 <script setup>
@@ -47,19 +44,42 @@ function processSvgStyles(svgContent) {
 
 async function getIcon () {
   try {
-    const iconsImport = import.meta.glob('~/assets/svg-icons/**/*.svg', {
+    // Layer icons (shared/common)
+    const layerIcons = import.meta.glob('../../assets/icons/**/*.svg', {
       eager: false,
       query: '?raw',
       import: 'default'
     })
 
-    const rawIcon = await iconsImport[`/assets/svg-icons/${props.id}.svg`]()
+    // App icons (app-specific, e.g. nav icons)
+    const appIcons = import.meta.glob('~/assets/svg-icons/**/*.svg', {
+      eager: false,
+      query: '?raw',
+      import: 'default'
+    })
+
+    // Try layer first, then fall back to app icons
+    const layerPath = `../../assets/icons/${props.id}.svg`
+
+    let loader = layerIcons[layerPath]
+    if (!loader) {
+      // Find matching app icon by suffix
+      const appKey = Object.keys(appIcons).find(k => k.endsWith(`/${props.id}.svg`))
+      if (appKey) loader = appIcons[appKey]
+    }
+
+    if (!loader) {
+      console.error(`[nuxt-icons] Icon '${props.id}' not found in layer or app assets`)
+      return
+    }
+
+    const rawIcon = await loader()
     if (rawIcon.includes('stroke')) { hasStroke = true }
     icon.value = rawIcon
     processedIcon.value = processSvgStyles(rawIcon)
   } catch (error) {
     console.error(
-      `[nuxt-icons] Icon '${props.id}' doesn't exist in 'assets/svg-icons'`,
+      `[nuxt-icons] Icon '${props.id}' doesn't exist in 'assets/icons'`,
       error
     )
   }
@@ -71,9 +91,12 @@ watchEffect(getIcon)
 </script>
 
 <style>
+.nuxt-icon {
+  display: inline-flex;
+}
 .nuxt-icon svg {
-  vertical-align: middle;
   width: 100%;
+  height: 100%;
 }
 .nuxt-icon.nuxt-icon--fill,
 .nuxt-icon.nuxt-icon--fill * {

@@ -29,7 +29,8 @@
             leave-to="opacity-0 scale-95"
           >
             <DialogPanel
-              class="w-full transform rounded-lg p-6 text-left shadow-xl transition-all relative"
+              tabindex="0"
+              class="w-full transform rounded-lg p-6 text-left shadow-xl transition-all relative outline-none focus:outline-none"
               :class="[
                 fullScreen || 'max-w-[740px]',
                 bg
@@ -59,13 +60,11 @@
     atTop      : { type: Boolean, default: false },
     atBottom   : { type: Boolean, default: false },
     closeBtn   : { type:Boolean, default: true },
-    bg         : { type:String, default: 'bg-white'}
+    bg         : { type:String, default: 'bg-white'},
   })
 
   const emit = defineEmits(['update:open'])
-  const closeModal = function() {
-    emit('update:open', false)
-  }
+  const closeModal = () => emit('update:open', false)
 
   const getAlign = ()=> {
     if(props.atTop)

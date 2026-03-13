@@ -4,7 +4,7 @@
       <DataMachinePercentBar v-if="percent" :percent="percent" class="absolute z-0 max-h-4 " :healthMode="healthMode"/>
       <div class="flex gap-2">
         <DataMachineValue :val="val" :unit="unit" :size="14" class="z-1 relative" :healthMode="healthMode"/>
-        <div class="text-13 text-gray-500">{{ label }}</div>
+        <div class="text-13 text-gray-500 z-1 relative">{{ label }}</div>
       </div>
       <DataMachineTrend v-if="trend" :change="trend" :unit="unit" class="z-1 relative" :healthMode="healthMode" />
     </div>

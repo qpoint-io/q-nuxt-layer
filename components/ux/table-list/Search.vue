@@ -3,7 +3,7 @@
     <div>
       <div class="_search flex justify-between capitalize" :class="(isSorting)?'text-grape':''">
         <slot />
-        <IconSearch class="w-4 text-grey-400" />
+        <UxIcon id="search" class="w-4 text-grey-400" />
       </div>
     </div>
   </th>
@@ -25,7 +25,8 @@
 // props
 const props = defineProps({
   width: { type: String }, // optional
-  name:  { type:String}
+  name: { type: String },
+  isSorting: { type: Boolean, default: false },
 })
 
 const search = ref('')

@@ -3,7 +3,7 @@
        class="w-0 min-w-full"
        width="100%"
        height="100%"
-       style="transform:scaleY(-1);"
+       style="transform:scaleY(-1); overflow:visible;"
        preserveAspectRatio="none"
        :viewBox="graph.viewBox">
 
@@ -11,6 +11,7 @@
       v-if="fillColor != 'none'"
         vector-effect="non-scaling-stroke"
         stroke-linejoin="round"
+        :style="{ fill: fillColor, stroke: strokeColor, strokeWidth }"
         :points="graph.points"
     />
     <polyline
@@ -18,6 +19,7 @@
         vector-effect="non-scaling-stroke"
         stroke-linejoin="round"
         stroke-linecap="round"
+        :style="{ fill: 'none', stroke: strokeColor, strokeWidth }"
         :points="graph.points">
     </polyline>
   </svg>
@@ -41,11 +43,3 @@ const graph = computed( ()=>{
 
 </script>
 
-<style>
-polygon, polyline{
-  fill        : v-bind( fillColor );
-  stroke      : v-bind( strokeColor );
-  stroke-width: v-bind( strokeWidth );
-}
-svg{}
-</style>

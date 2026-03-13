@@ -134,20 +134,19 @@ Add the extracted components to the consumer's layer test page (at `app/pages/de
   ```
 - **Composables:** Add a section demonstrating the composable in action
 
-### Step 8: Release Layer
+### Step 8: Verify in Consumer
 
-The consumer references the layer via a local `.tgz` file, so a new pack is required after every extraction:
+Locally, consumers use `NUXT_LOCAL_LAYER=1` which extends the sibling `../q-nuxt-layer` folder directly. Changes are picked up via Vite HMR — no publishing needed for local development.
 
-1. **Bump version** in the layer's `package.json` — patch for fixes, minor for new components. **You must bump the version every time** — npm caches tarballs by version number, so repacking at the same version will silently install stale contents even after `rm -rf node_modules` and `npm install`.
-2. **Delete the old `.tgz`** in the layer directory (e.g. `rm qpoint-io-q-nuxt-layer-0.3.0.tgz`)
-3. **Run `npm pack`** in the layer directory to create the new `.tgz`
-4. **Update the consumer's `package.json`** dependency to point to the new `.tgz` filename:
-   ```
-   "@qpoint-io/q-nuxt-layer": "file:../q-nuxt-layer/qpoint-io-q-nuxt-layer-X.Y.Z.tgz"
-   ```
-5. **Run `rm -rf node_modules/@qpoint-io/q-nuxt-layer && npm install`** in the consumer project — a plain `npm install` may not replace the cached package
-6. **Verify the install** by checking the contents: `ls node_modules/@qpoint-io/q-nuxt-layer/components/` — confirm the new directories exist
-7. **Restart the dev server** — the old server will have stale module references in Vite's cache
+1. **Restart the consumer dev server** if it was running — Nuxt needs to rescan for new components
+2. **Verify** the new components appear in the consumer's `.nuxt/components.d.ts`
+
+To publish for production/CI, bump the version and push a tag:
+
+```bash
+npm version patch           # Bump version in package.json
+git push --tags             # Triggers GitHub Actions publish workflow
+```
 
 ### Step 9: Verify on Test Page
 
@@ -178,6 +177,6 @@ Run the full sister project (not just the test page) to verify:
 - **Always verify auto-import naming** — the prefix must match existing usage
 - **Always update the catalog and CLAUDE.md** after extraction
 - **Always add to the test page** before considering extraction complete
-- **Always release a new layer version** — the consumer uses `.tgz` files, not live symlinks
+- **Restart the consumer dev server** after extraction so Nuxt rescans for new components
 - **Flag components with project-specific dependencies** — they may not belong in the shared layer
 - **Test in at least one consumer** before considering extraction complete

@@ -1,8 +1,8 @@
 <template>
-  <div :class="temperature">
+  <div :class="`${temperature} ${viewClass}` ">
     <div v-if="_change.value > 0" class="flex text-13 gap-[2px] items-baseline _text">
       <div>{{ changeIndicator }}{{ _change.value }}{{ _change.unit }}</div>
-      <IconTriangle class="w-3 triangle" />
+      <UxIcon id="triangle" class="w-3 triangle" />
     </div>
   </div>
 </template>
@@ -43,6 +43,7 @@ const props = defineProps({
   change    : {type:Number, default:0},
   healthMode: { type:Function, default:healthModes.NEVER_HOT },
   unit      : { type:String, default: '' },
+  viewClass : { type:String, default: '' },
 })
 
 const temperature = computed(()=>{
@@ -108,6 +109,7 @@ const triangleFlip = computed(()=>{
 
 <style>
   .triangle{
+    /* transform: v-bind( fillColor ); */
     transform: v-bind( triangleFlip );
   }
   svg{}

@@ -1,8 +1,9 @@
 <template>
-    <div class=" bg-grape-50 bg-opacity-70 px-6 py-6 rounded-[10px] border-dashed border-1 border-grape border-opacity-25">
-    <div class="text-grape text-14 font-bold opacity-40 border-b-1 border-b-grape w-full mb-7">META:</div>
-    <div class="flex gap-6 items-centerd _props-machine flex-wrap font-mono font-bold text-grape gap-y-10">
-      <div v-for="(val, key) of localProps" :key="key" class="">
+  <div class="dark bg-black bg-opacity-30 px-6 py-6 rounded-[10px] border-dashed border-1 border-grape border-opacity-25 mb-6">
+    <!-- <div class="text-grape-100 text-14 font-bold opacity-40 border-b-1 border-b-white/30 w-full mb-7">META:</div> -->
+    <div class="flex gap-6 items-end _props-machine flex-wrap font-mono font-bold text-grape dark:text-grape-200 gap-y-10 pt-4">
+      <div v-for="(val, key) of localProps" :key="key" >
+        
         <!-- Boolean -->
         <div v-if="typeof val == 'boolean'" class="flex items-center justify-center h-full">
           <UxToggle :label="key" size="small">
@@ -13,7 +14,7 @@
         <!-- String -->
         <div v-else-if="typeof val == 'string'" class="_input-holder">
           <UxInput :label  = "key" >
-            <input v-model="localProps[key]" type="text"  />
+            <input v-model="localProps[key]" type="text" />
           </UxInput>
         </div>
 
@@ -47,7 +48,7 @@
 
           <!-- Options -->
           <div v-else-if="val.kind == 'options'" >
-            <UxLabelText :label="key" size="small" class="opacity-70 mb-2" />
+            <UxLabelText :label="key" size="small" class="opacity-70" />
 
             <UxSimpleSelect v-model="localProps[key].val" class="px-2">
               <option v-for="(option, index) in val.props.options" :key="index" :value="option">{{ option }}</option>
@@ -63,22 +64,22 @@
         </div>
 
         <!-- Number -->
-        <div v-if="typeof val == 'number'" class="flex gap-2 items-center _input-holder">
+        <div v-if="typeof val == 'number'" class="flex gap-1 items-end _input-holder">
           <UxInput :label= "key" >
             <input v-model="localProps[key]" type="text"   />
           </UxInput>
-          <div class="flex flex-col -mb-8 -ml-10">
+          <div class="flex flex-col -mb-1">
             <div
               @click="amount = (isShiftDown)? 10 : 1; localProps[key]+= amount"
               class="p-1 opacity-25 cursor-pointer hover:opacity-100"
             >
-              <IconTriangle class="w-4 text-white" />
+              <IconTriangle class="w-2 text-white" />
             </div>
             <div
               @click="amount = (isShiftDown)? 10 : 1; localProps[key] -= amount"
               class="p-1 opacity-25 scale-y-[-1] cursor-pointer hover:opacity-100"
             >
-              <IconTriangle class="w-4 text-white" />
+              <IconTriangle class="w-2 text-white" />
             </div>
           </div>
 
@@ -90,9 +91,31 @@
 </template>
 
 <style>
-._props-machine input, ._props-machine input:disabled{
-  @apply h-6 border-none outline-none bg-opacity-0 focus:ring-0 focus:bg-opacity-60;
+.dark ._props-machine input, 
+.dark ._props-machine input:disabled{
+  @apply text-12 h-6 border-none outline-none bg-black text-grape-200;
+  @apply focus:ring-0 focus:bg-opacity-60
 }
+
+.dark ._props-machine label{
+  @apply text-11 text-grey-400;
+}
+
+.dark ._props-machine select{
+  @apply bg-black text-grape-200 border-none;
+}
+
+.dark ._props-machine input[type="range"]{
+  @apply appearance-none bg-grape-200/20 h-1 rounded-full;
+}
+
+.dark ._props-machine input[type="range"]::-webkit-slider-thumb{
+  @apply appearance-none w-3 h-3 rounded-full bg-grape-200 cursor-pointer;
+}
+
+.dark ._props-machine input[type="range"]::-moz-range-thumb{
+  @apply appearance-none w-3 h-3 rounded-full bg-grape-200 cursor-pointer border-none;
+} 
 
 ._props-machine input:disabled{
   @apply opacity-40 pointer-events-none;

@@ -54,6 +54,9 @@ const onWatchPropChange = ()=>{
   if(content.value == null)
     return 0
 
+  // Remove height override so transition can animate from current value
+  stretcher.value?.classList.remove('_height-override')
+
   // Let the dom update, then find the width of the content
   setTimeout(( ()=>{
     let parentHeight   = 0;

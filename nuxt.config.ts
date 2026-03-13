@@ -28,7 +28,12 @@ export default defineNuxtConfig({
   imports: {
     dirs: [
       join(currentDir, 'composables'),
+      join(currentDir, 'composables/slot'),
     ]
+  },
+
+  alias: {
+    '$layer': currentDir,
   },
 
   compatibilityDate: '2025-07-15',

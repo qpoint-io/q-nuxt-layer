@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-grey-500 text-13 font-semi select-none">{{ label }}</div>
+    <label class="text-grey-500 text-13 font-semi select-none">{{ label }}</label>
     <div class="text-18 font-bold">
       <slot/>
     </div>

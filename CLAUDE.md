@@ -109,12 +109,29 @@ export default defineNuxtConfig({
 
 ## Publishing
 
+Publishing happens automatically via GitHub Actions when you push a version tag:
+
 ```bash
-npm pack                    # Create tarball
-npm publish                 # Publish to GitHub Packages
+npm version patch           # Bump version (or minor/major)
+git push --tags             # Triggers .github/workflows/publish.yml
 ```
 
-Requires `.npmrc` with `@qpoint-io:registry=https://npm.pkg.github.com`
+The workflow runs `npm publish` to GitHub Packages using the built-in `GITHUB_TOKEN`.
+
+## Authentication
+
+Consumers need a `GITHUB_TOKEN` with `read:packages` scope. Each consumer project has an `.npmrc`:
+
+```
+@qpoint-io:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+```
+
+Locally, set `export GITHUB_TOKEN=ghp_YOUR_TOKEN` in `~/.zshrc`. In CI, use `actions/setup-node` with `registry-url: https://npm.pkg.github.com`.
+
+## Local Development
+
+All consumer projects use `NUXT_LOCAL_LAYER=1` in `.env` to extend `../q-nuxt-layer` (the sibling folder) instead of the npm package. This gives live HMR — edits to layer components appear instantly in the running consumer dev server. No publishing or version bumps needed for local iteration.
 
 ## AI Agents
 
@@ -138,3 +155,13 @@ Note: `.claude/` does not ship in the npm package (not in `"files"` whitelist). 
 - Tailwind-native — scoped CSS only for things Tailwind can't express
 - Props use camelCase, events use kebab-case
 - See design's `brand/component_philosophy.md` for full component design principles
+
+## Sister Projects
+
+### design — Brand soul, methodology & vision
+- **When to use:** Need brand context when designing tokens, understanding color rationale, or checking voice in component copy
+- **Key data:** `../design/brand/qpoint_brand_essential_guide_v1.5.md`, `../design/brand/design_tokens.md`, `../design/brand/component_philosophy.md`
+
+### wire-bob — Interface design & prototyping
+- **When to use:** Wire-bob is the primary testing ground for new components; check its wireframes/mockups to understand real usage patterns before extracting
+- **Key data:** `../wire-bob/app/data/wireframe-registry.ts`, `../wire-bob/app/pages/c0/wireframes/` and `../wire-bob/app/pages/c0/mockups/`

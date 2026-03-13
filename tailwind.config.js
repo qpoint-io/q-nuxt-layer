@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
+
   content: [
     './components/**/*.{js,vue,ts}',
     './composables/**/*.{js,ts}',
@@ -136,6 +138,7 @@ export default {
         orchid: '#AE73C2',
         blue:   '#2FAEFD',
         soot:   '#494b4d',
+        red:    '#FF0033'
       },
 
       borderRadius: {
@@ -188,6 +191,14 @@ export default {
       },
     },
   },
+
+  safelist: [
+    'shadow-lg',
+    'shadow-md',
+    'shadow-sm',
+    'shadow',
+    'shadow-xl',
+  ],
 
   plugins: [
     require('tailwindcss-animation-delay'),

@@ -1,5 +1,5 @@
 <template>
-  <div class="group cursor-pointer p-2">
-    <IconX  class="w-[14px] text-grey-400 group-hover:text-black"/>
-  </div>
+  <button type="button" class="group cursor-pointer p-2 border-0 bg-transparent">
+    <UxIcon id="x" class="w-[14px] text-grey-400 group-hover:text-black" />
+  </button>
 </template>
