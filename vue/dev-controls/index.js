@@ -1,0 +1,5 @@
+export { default as ControlSlider } from '../../components/dev/ControlSlider.vue'
+export { default as ControlColor } from '../../components/dev/ControlColor.vue'
+export { default as ControlSelect } from '../../components/dev/ControlSelect.vue'
+export { default as ControlSection } from '../../components/dev/ControlSection.vue'
+export { default as DevControls } from '../../components/dev/Controls.vue'

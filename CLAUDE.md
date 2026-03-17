@@ -6,7 +6,8 @@ Shared components, design tokens, and CSS for Qpoint projects. Distributed as a 
 
 - Published to **GitHub Packages** as `@qpoint-io/q-nuxt-layer`
 - `"main": "./nuxt.config.ts"` — required for Nuxt to resolve the layer from node_modules
-- `"files"` whitelist: `components/`, `composables/`, `assets/css/shared.css`, `tailwind.config.js`, `nuxt.config.ts`
+- `"exports"` — sub-path exports for non-Nuxt consumers (see [Vue Export](#vue-export-for-non-nuxt-projects) below)
+- `"files"` whitelist: `components/`, `composables/`, `assets/css/shared.css`, `tailwind.config.js`, `nuxt.config.ts`, `vue/`
 
 ## Shared Components
 
@@ -73,6 +74,11 @@ Documentation and dev tools, auto-imported with the `Dev` prefix:
 | `DevLabel` | Annotation text (grey-400, text-14) |
 | `DevComment` | Code comment text (blue, font-dev) |
 | `DevMetaPropsMachine` | Auto-generates UI controls from adminProps object |
+| `DevControlSlider` | Range input with label and optional suffix display |
+| `DevControlColor` | Hex color text input (6-char format) |
+| `DevControlSelect` | Dropdown select with normalized options |
+| `DevControlSection` | Collapsible section container with title |
+| `DevControls` | Top-level control panel with show/hide toggle |
 
 ## Design Tokens
 
@@ -92,6 +98,26 @@ Canonical source: `tailwind.config.js`. fontSize replaces Tailwind defaults (at 
 - `tailwindcss.cssPath: false` — @tailwind directives are in `shared.css`
 - `components/` and `composables/` are explicitly registered via `components.dirs` and `imports.dirs`
 - Tailwind plugins (`@tailwindcss/forms`, `tailwindcss-animation-delay`) are dependencies (not devDeps) so they resolve from the package directory
+
+## Vue Export for Non-Nuxt Projects
+
+Components in `vue/` are barrel exports that re-export from `components/` — allowing plain Vue 3 + Vite projects (like qflow and qmap) to import without Nuxt:
+
+```js
+import { ControlSlider, DevControls } from '@qpoint-io/q-nuxt-layer/vue'
+import { ControlSection } from '@qpoint-io/q-nuxt-layer/vue/dev-controls'
+```
+
+- Components are raw `.vue` SFCs — consumers compile them via `@vitejs/plugin-vue`
+- No build step in this package; zero-build philosophy preserved
+- Components in `vue/` must use explicit `import { ref } from 'vue'` (no Nuxt auto-imports)
+- Scoped CSS only (no Tailwind dependency required for consumers, though Tailwind is OK to use)
+- Sub-path exports defined in `package.json` `"exports"` field
+
+**Adding new exportable components:**
+1. Create the component in `components/` (follows Nuxt auto-import naming)
+2. Re-export from the appropriate `vue/` barrel file
+3. Update `vue/index.js` if adding a new group
 
 ## Consumer Integration
 
@@ -154,6 +180,7 @@ Note: `.claude/` does not ship in the npm package (not in `"files"` whitelist). 
 - Composition over configuration — use slots, not deep prop trees
 - Tailwind-native — scoped CSS only for things Tailwind can't express
 - Props use camelCase, events use kebab-case
+- **Unified pantry:** This layer is the single shared pantry for all Qpoint visual components — generic primitives and domain-specific presentational components alike. Nuxt tree-shakes unused components, so breadth costs nothing. The boundary: visual/presentational → layer; wired to app state/APIs → stays local in the consumer.
 - See design's `brand/component_philosophy.md` for full component design principles
 
 ## Sister Projects
@@ -162,6 +189,6 @@ Note: `.claude/` does not ship in the npm package (not in `"files"` whitelist). 
 - **When to use:** Need brand context when designing tokens, understanding color rationale, or checking voice in component copy
 - **Key data:** `../design/brand/qpoint_brand_essential_guide_v1.5.md`, `../design/brand/design_tokens.md`, `../design/brand/component_philosophy.md`
 
-### wire-bob — Interface design & prototyping
-- **When to use:** Wire-bob is the primary testing ground for new components; check its wireframes/mockups to understand real usage patterns before extracting
-- **Key data:** `../wire-bob/app/data/wireframe-registry.ts`, `../wire-bob/app/pages/c0/wireframes/` and `../wire-bob/app/pages/c0/mockups/`
+### bob-wire — Interface design & prototyping
+- **When to use:** Bob-wire is the primary testing ground for new components; check its wireframes/mockups to understand real usage patterns before extracting
+- **Key data:** `../bob-wire/app/data/wireframe-registry.ts`, `../bob-wire/app/pages/c0/wireframes/` and `../bob-wire/app/pages/c0/mockups/`
