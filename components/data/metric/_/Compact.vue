@@ -1,9 +1,9 @@
 <template>
   <div class="inline-block">
-    <DataMachineLabel :label="label" />
+    <DataMetricLabel :label="label" />
     <div class="_val flex justify-between items-baseline">
-      <DataMachineValue :val="val" :unit="unit" :size="size"  :healthMode="healthMode"/>
-      <DataMachineTrend v-if="trend" :change="trend" :unit="unit" :healthMode="healthMode"/>
+      <DataMetricValue :val="val" :unit="unit" :size="size"  :healthMode="healthMode"/>
+      <DataMetricTrend v-if="trend" :change="trend" :unit="unit" :healthMode="healthMode"/>
     </div>
     <DataSparkChart v-if="spark"
       class="h-[30px] "

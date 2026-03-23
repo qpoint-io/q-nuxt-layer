@@ -29,8 +29,8 @@
             <slot name="details" />
           </div>
         </div>
-        <IconX
-          class="absolute right-16 top-12 w-5 text-grey-300 hover:text-black hover:duration-0 duration-300 cursor-pointer"
+        <UxIcon id="x"
+          class="absolute right-14 top-9 w-8 text-grey-300 hover:text-black hover:duration-0 duration-300 cursor-pointer"
           @click="onClick"
         />
       </UxStretchBox>
@@ -55,7 +55,7 @@
 ._stretchy td{
   @apply ease-in-out-quint;
   transition-duration: 100ms;
-  line-height: 19px !impoartant
+  line-height: normal;
 }
 
 ._open-row td{

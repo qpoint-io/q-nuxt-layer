@@ -26,11 +26,11 @@ thead tr{
   @apply bg-grey-100 border-b-0;
 }
 td{
-  @apply border-tableBorder border-l-1 border-r-1 p-1
+  @apply border-tableBorder border-l-1 border-r-1 px-3 py-1
   /* first-of-type:border-l-0 first-of-type:pl-0 align-middle; */
 }
 th{
-  @apply p-0 border-0 ;
+  @apply px-2 text-13 font-bold border-l-1 border-r-1 border-tableBorder ;
 }
 </style>
 

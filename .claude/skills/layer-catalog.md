@@ -415,12 +415,12 @@ Data visualization primitives for stats, charts, sparklines, trends, and percent
 
 ---
 
-## Data Machine Components (`components/data/machine/`)
+## Data Machine Components (`components/data/metric/`)
 
-Composable primitives for building stat displays. Auto-imported with `DataMachine` prefix.
+Composable primitives for building stat displays. Auto-imported with `DataMetric` prefix.
 
-### DataMachineValue
-**Source:** `components/data/machine/Value.vue`
+### DataMetricValue
+**Source:** `components/data/metric/Value.vue`
 **Description:** Formatted number display with dynamic font size/weight, unit suffix, bytes/duration auto-formatting, health temperature coloring, and loading spinner.
 **Use when:** The core value renderer for the machine stat system.
 **Props:** `val (required)`, `size (Number, 40)`, `weight (String)`, `unit (String)`, `unitSize (String)`, `showFullNumber (Boolean)`, `healthMode (Function, healthModes.NEVER_HOT)`
@@ -430,8 +430,8 @@ Composable primitives for building stat displays. Auto-imported with `DataMachin
 
 ---
 
-### DataMachineLabel
-**Source:** `components/data/machine/Label.vue`
+### DataMetricLabel
+**Source:** `components/data/metric/Label.vue`
 **Description:** Stat label with hairline border and size-responsive text.
 **Props:** `label (String, required)`, `size (String, StatSizes.SMALL)`
 **Emits:** (none)
@@ -439,8 +439,8 @@ Composable primitives for building stat displays. Auto-imported with `DataMachin
 
 ---
 
-### DataMachineTrend
-**Source:** `components/data/machine/Trend.vue`
+### DataMetricTrend
+**Source:** `components/data/metric/Trend.vue`
 **Description:** Trend change indicator with +/- prefix, formatted value (bytes/duration/abbreviated), triangle arrow, and health temperature coloring.
 **Props:** `change (Number, 0)`, `healthMode (Function, healthModes.NEVER_HOT)`, `unit (String, '')`
 **Emits:** (none)
@@ -449,8 +449,8 @@ Composable primitives for building stat displays. Auto-imported with `DataMachin
 
 ---
 
-### DataMachinePercentBar
-**Source:** `components/data/machine/PercentBar.vue`
+### DataMetricPercentBar
+**Source:** `components/data/metric/PercentBar.vue`
 **Description:** Simple grape-colored horizontal bar sized by percent.
 **Props:** `percent (Number)`
 **Emits:** (none)
@@ -458,8 +458,8 @@ Composable primitives for building stat displays. Auto-imported with `DataMachin
 
 ---
 
-### DataMachineSpark
-**Source:** `components/data/machine/Spark.vue`
+### DataMetricSpark
+**Source:** `components/data/metric/Spark.vue`
 **Description:** SVG-based sparkline (same as DataSparkChartOld). Uses `svgMachine` utility.
 **Props:** `data (Array, required)`, `ceiling (Number)`, `fillColor (default: 'black')`, `strokeColor (default: 'black')`, `strokeWidth (default: 0)`, `padding (default: 0)`
 **Emits:** (none)
@@ -467,8 +467,8 @@ Composable primitives for building stat displays. Auto-imported with `DataMachin
 
 ---
 
-### DataMachineBackground
-**Source:** `components/data/machine/Background.vue`
+### DataMetricBackground
+**Source:** `components/data/metric/Background.vue`
 **Description:** Slot wrapper that applies a red/warn background when the health evaluator returns hot.
 **Props:** `val (Number)`, `healthMode (Function, healthModes.NEVER_HOT)`
 **Emits:** (none)
@@ -476,8 +476,8 @@ Composable primitives for building stat displays. Auto-imported with `DataMachin
 
 ---
 
-### DataMachineDate
-**Source:** `components/data/machine/Date.vue`
+### DataMetricDate
+**Source:** `components/data/metric/Date.vue`
 **Description:** Simple date string display.
 **Props:** `date (String, required)`
 **Emits:** (none)
@@ -485,12 +485,12 @@ Composable primitives for building stat displays. Auto-imported with `DataMachin
 
 ---
 
-## Data Machine Layouts (`components/data/machine/_/`)
+## Data Machine Layouts (`components/data/metric/_/`)
 
-Pre-composed stat layouts combining machine primitives. Auto-imported with `DataMachine_` prefix.
+Pre-composed stat layouts combining machine primitives. Auto-imported with `DataMetric_` prefix.
 
-### DataMachine_Base
-**Source:** `components/data/machine/_/Base.vue`
+### DataMetric_Base
+**Source:** `components/data/metric/_/Base.vue`
 **Description:** Full stat block: optional label, value+trend row, optional sparkline, optional router link.
 **Use when:** Standard stat display with all features.
 **Props:** `label (String)`, `val (Number)`, `unit (String)`, `spark (Array)`, `trend (Number)`, `healthMode (Function)`, `size (Number)`, `weight (String)`, `showFullNumber (Boolean)`, `spaceAfterLabel (String)`, `sparkMaxWidth (Number)`, `to (String, '_none_')`
@@ -498,29 +498,29 @@ Pre-composed stat layouts combining machine primitives. Auto-imported with `Data
 
 ---
 
-### DataMachine_Compact
-**Source:** `components/data/machine/_/Compact.vue`
+### DataMetric_Compact
+**Source:** `components/data/metric/_/Compact.vue`
 **Description:** Simpler stat block: label + value + trend + optional spark. No link support.
 **Props:** `label (String)`, `val (String)`, `unit (String)`, `spark (Array)`, `trend (Number)`, `healthMode (Function)`, `size (Number)`
 
 ---
 
-### DataMachine_InlineTrend
-**Source:** `components/data/machine/_/InlineTrend.vue`
+### DataMetric_InlineTrend
+**Source:** `components/data/metric/_/InlineTrend.vue`
 **Description:** Value + trend side by side, no label, no spark. Hard-coded size 25.
 **Props:** `val (Number)`, `unit (String)`, `trend (Number)`, `healthMode (Function)`
 
 ---
 
-### DataMachine_Simple
-**Source:** `components/data/machine/_/Simple.vue`
+### DataMetric_Simple
+**Source:** `components/data/metric/_/Simple.vue`
 **Description:** Label (v-html) + value only. No trend, no spark.
 **Props:** `label (String)`, `val (String)`, `unit (String)`, `size (Number)`
 
 ---
 
-### DataMachine_TinyInline
-**Source:** `components/data/machine/_/TinyInline.vue`
+### DataMetric_TinyInline
+**Source:** `components/data/metric/_/TinyInline.vue`
 **Description:** Dense single-line layout: percent bar background + value + label + trend + optional spark, all in `max-h-4`.
 **Props:** `percent (Number)`, `val (Number)`, `unit (String)`, `spark (Array)`, `trend (Number)`, `healthMode (Function)`, `label (String, '')`
 
@@ -548,6 +548,65 @@ Pre-composed stat layouts combining machine primitives. Auto-imported with `Data
 
 ### sleep.ts
 **Exports:** `sleep`
+
+---
+
+## Health Components (`components/health/`)
+
+Presentational components for health/status visualization. Auto-imported with the `Health` prefix.
+
+### HealthDial
+**Source:** `components/health/Dial.vue`
+**Description:** SVG gauge dial with gradient color stops (cool→warn→warm→hot) and animated pointer needle. Status drives both color and needle position.
+**Use when:** Displaying an overall health score or category health as a visual gauge.
+**Props:** `status (String, required)` — `cool`, `warn`, `warm`, `hot`, `lineLength (Number, 600)`
+**Emits:** (none)
+**Slots:** (none)
+**Related:** `HealthDialSummary`
+
+---
+
+### HealthDialSummary
+**Source:** `components/health/DialSummary.vue`
+**Description:** Wraps HealthDial in a circular white card with a status message below the gauge. Auto-derives message from status if not provided.
+**Use when:** Displaying a health gauge with a contextual label (e.g., "Good", "Critical").
+**Props:** `status (String, required)` — `cool`, `warn`, `warm`, `hot`, `statusMessage (String, null)` — override; auto-derived as Good/Warning/Concerning/Critical
+**Emits:** (none)
+**Slots:** (none)
+**Related:** `HealthDial`
+
+---
+
+### HealthSummaryItem
+**Source:** `components/health/SummaryItem.vue`
+**Description:** Category row showing a status indicator circle, message, label, and colored severity dot.
+**Use when:** Listing health categories in a summary (e.g., "TLS: A+", "Headers: F").
+**Props:** `status (String, required)` — `cool`, `warn`, `warm`, `hot`, `label (String, '')`, `message (String, '')`
+**Emits:** (none)
+**Slots:** (none)
+
+---
+
+### HealthScanning
+**Source:** `components/health/Scanning.vue`
+**Description:** Rounded pill container with default slot for metrics, icon slot, and a manage button.
+**Use when:** Displaying scanner/traffic summary with an action to manage scanners.
+**Props:** `manageTxt (String, 'Manage')`
+**Emits:** `manage`
+**Slots:** `default` (metrics content), `icon` (image/icon area, defaults to grey placeholder)
+**Related:** `UxButton`
+
+---
+
+## Security Components (`components/security/`)
+
+### SecuritySeverity
+**Source:** `components/security/Severity.vue`
+**Description:** Displays a severity level as a colored circle + text label (crit!, high, medium, low).
+**Use when:** Showing issue/vulnerability severity in tables or lists.
+**Props:** `severity (String, required)` — `critical`, `high`, `medium`, `low`
+**Emits:** (none)
+**Slots:** (none)
 
 ---
 

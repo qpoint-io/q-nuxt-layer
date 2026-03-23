@@ -1,12 +1,12 @@
 <template>
   <div class="flex max-h-4 gap-4 b ">
     <div class="flex justify-between items-baseline relative max-h-4 flex-1 gap-3">
-      <DataMachinePercentBar v-if="percent" :percent="percent" class="absolute z-0 max-h-4 " :healthMode="healthMode"/>
+      <DataMetricPercentBar v-if="percent" :percent="percent" class="absolute z-0 max-h-4 " :healthMode="healthMode"/>
       <div class="flex gap-2">
-        <DataMachineValue :val="val" :unit="unit" :size="14" class="z-1 relative" :healthMode="healthMode"/>
+        <DataMetricValue :val="val" :unit="unit" :size="14" class="z-1 relative" :healthMode="healthMode"/>
         <div class="text-13 text-gray-500 z-1 relative">{{ label }}</div>
       </div>
-      <DataMachineTrend v-if="trend" :change="trend" :unit="unit" class="z-1 relative" :healthMode="healthMode" />
+      <DataMetricTrend v-if="trend" :change="trend" :unit="unit" class="z-1 relative" :healthMode="healthMode" />
     </div>
     <div class="w-[20%]" v-if="spark">
       <DataSparkChart

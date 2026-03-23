@@ -52,9 +52,9 @@
           :class="statColGap"
         >
           <p class="font-bold text-black whitespace-nowrap" :class="labelSize">Flows Governed</p>
-          <DataMachineValue :val="flowsGoverned" :size="valueSize" weight="800" :healthMode="() => false" />
+          <DataMetricValue :val="flowsGoverned" :size="valueSize" weight="800" :healthMode="() => false" />
           <div class="h-[14px] w-full shrink-0">
-            <DataMachineSpark
+            <DataMetricSpark
               :data="flowsData"
               fillColor="none"
               strokeColor="#BBA5FF"
@@ -69,9 +69,9 @@
           :class="statColGap"
         >
           <p class="font-bold text-black whitespace-nowrap" :class="labelSize">Compliance</p>
-          <DataMachineValue :val="compliance" unit="%" :size="valueSize" weight="800" :healthMode="complianceHealth" />
+          <DataMetricValue :val="compliance" unit="%" :size="valueSize" weight="800" :healthMode="complianceHealth" />
           <div class="h-[14px] w-full shrink-0">
-            <DataMachineSpark :data="complianceData" fillColor="none" strokeColor="rgba(0,0,0,0.4)" :strokeWidth="1.5" />
+            <DataMetricSpark :data="complianceData" fillColor="none" strokeColor="rgba(0,0,0,0.4)" :strokeWidth="1.5" />
           </div>
         </div>
 
@@ -81,9 +81,9 @@
           :class="statColGap"
         >
           <p class="font-bold text-black whitespace-nowrap" :class="labelSize">Violations</p>
-          <DataMachineValue :val="violations" :size="valueSize" weight="800" :healthMode="healthModes.ZERO_TOLERANCE" />
+          <DataMetricValue :val="violations" :size="valueSize" weight="800" :healthMode="healthModes.ZERO_TOLERANCE" />
           <div class="h-[14px] w-full shrink-0">
-            <DataMachineSpark :data="violationsData" fillColor="none" strokeColor="rgba(0,0,0,0.4)" :strokeWidth="1.5" />
+            <DataMetricSpark :data="violationsData" fillColor="none" strokeColor="rgba(0,0,0,0.4)" :strokeWidth="1.5" />
           </div>
         </div>
 

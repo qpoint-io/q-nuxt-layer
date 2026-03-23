@@ -1,13 +1,13 @@
 <template>
   <div class="inline-block" @click="onClick" :class="(to !== '_none_')? 'cursor-pointer hover:text-grape' : ''">
-    <DataMachineLabel :label="label" v-if="label"/>
+    <DataMetricLabel :label="label" v-if="label"/>
     <div class="_val flex justify-between items-baseline gap-2" :style="`margin-top: ${spaceAfterLabel}px`">
-      <DataMachineValue :val="val" :unit="unit" :size="size" class="" :weight="weight" :healthMode="healthMode" :showFullNumber="showFullNumber" />
-      <DataMachineTrend v-if="trend" :change="trend" :unit="unit" :healthMode="healthMode"/>
+      <DataMetricValue :val="val" :unit="unit" :size="size" class="" :weight="weight" :healthMode="healthMode" :showFullNumber="showFullNumber" />
+      <DataMetricTrend v-if="trend" :change="trend" :unit="unit" :healthMode="healthMode"/>
     </div>
     <DataSparkChart v-if="spark"
       class="h-[30px]"
-      :class="sparkMaxWidth ? `max-w-[${sparkMaxWidth}px]` : ''"
+      :style="sparkMaxWidth ? `max-width: ${sparkMaxWidth}px` : ''"
       :data="spark"
       fillColor="none"
       strokeColor="#BBA5FF"

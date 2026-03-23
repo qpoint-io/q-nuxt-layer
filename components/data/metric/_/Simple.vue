@@ -3,7 +3,7 @@
     <div class="text-12 font-semi leading-3 text-grey-500 -mb-2">
       <div v-html="label" />
     </div>
-    <DataMachineValue :val="val" :unit="unit" :size="size" class="-mb-4"/>
+    <DataMetricValue :val="val" :unit="unit" :size="size" class="-mb-4"/>
   </div>
 </template>
 

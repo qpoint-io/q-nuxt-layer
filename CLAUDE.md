@@ -62,6 +62,30 @@ Auto-imported with the `Icon` prefix. `.ts` files use Vue render functions; `.vu
 | `IconX` | stroke | Close X |
 | `IconXBig` | stroke | Large close X |
 
+### Health Components (`components/health/`)
+
+Auto-imported with the `Health` prefix:
+
+| Component | Description |
+|-----------|-------------|
+| `HealthDial` | SVG gauge dial with gradient stops and animated pointer |
+| `HealthDialSummary` | Wraps HealthDial in circular card with status message |
+| `HealthSummaryItem` | Category row with severity dot and message |
+| `HealthScanning` | Rounded pill with slots for metrics and icon |
+
+### Security Components (`components/security/`)
+
+Auto-imported with the `Security` prefix:
+
+| Component | Description |
+|-----------|-------------|
+| `SecurityDataFlow` | Data flow visualization |
+| `SecurityPolicyCard` | Policy card display |
+| `SecurityPolicyRibbon` | Policy ribbon header |
+| `SecurityPolicySkin` | Policy skin wrapper |
+| `SecurityViolationsTable` | Violations table |
+| `SecuritySeverity` | Severity badge (circle + label) |
+
 ### Dev Components (`components/dev/`)
 
 Documentation and dev tools, auto-imported with the `Dev` prefix:

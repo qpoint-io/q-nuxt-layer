@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="flex justify-between items-baseline gap-4">
-      <DataMachineValue :val="val" :unit="unit" :size="25" :healthMode="healthMode"/>
-      <DataMachineTrend v-if="trend" :change="trend" :unit="unit" :healthMode="healthMode"/>
+      <DataMetricValue :val="val" :unit="unit" :size="25" :healthMode="healthMode"/>
+      <DataMetricTrend v-if="trend" :change="trend" :unit="unit" :healthMode="healthMode"/>
     </div>
   </div>
 </template>
