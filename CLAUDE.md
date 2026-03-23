@@ -157,16 +157,41 @@ export default defineNuxtConfig({
 - Consumer's own CSS needs its own `@tailwind` directives if using `@layer` blocks
 - To detach: copy needed files locally and remove the `extends` line
 
-## Publishing
+## Releasing
 
-Publishing happens automatically via GitHub Actions when you push a version tag:
+A release has two outputs: a **GitHub Packages publish** (for CI/production builds) and a **local tarball** (for `file:` consumers during dev). Both happen in one flow.
+
+### Full release steps
 
 ```bash
-npm version patch           # Bump version (or minor/major)
-git push --tags             # Triggers .github/workflows/publish.yml
+# 1. Bump version
+npm version patch           # or minor/major — updates package.json + package-lock.json
+
+# 2. Build local tarball (for file: consumers)
+npm pack                    # produces qpoint-io-q-nuxt-layer-<version>.tgz
+
+# 3. Commit, tag, push
+git add package.json package-lock.json
+git commit -m "v<version>: <summary>"
+git tag v<version>
+git push && git push --tags # Tag push triggers .github/workflows/publish.yml
+
+# 4. Update consumers (design, bob-wire, and any others using file: tarball)
+cd ../design
+npm install @qpoint-io/q-nuxt-layer@file:../q-nuxt-layer/qpoint-io-q-nuxt-layer-<version>.tgz
+# repeat for each consumer
 ```
 
-The workflow runs `npm publish` to GitHub Packages using the built-in `GITHUB_TOKEN`.
+### Why both tarball and GitHub Packages?
+
+- **GitHub Packages** (`npm publish` via GitHub Actions) — used by Cloudflare Pages CI builds, which pull from the registry
+- **Local tarball** (`file:` in `package.json`) — used for TypeScript type resolution and production builds without `NUXT_LOCAL_LAYER`. npm caches `file:` tarballs by version, not content hash, so you must run the explicit `npm install @qpoint-io/q-nuxt-layer@file:...` command to force the lock file integrity hash to update
+
+### Important
+
+- `npm version` with `--no-git-tag-version` if you want to control the commit/tag yourself
+- The tarball is **not needed for local dev** when using `NUXT_LOCAL_LAYER` — layer changes are live via HMR
+- Old tarballs can be deleted after consumers are updated
 
 ## Authentication
 
