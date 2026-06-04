@@ -8,6 +8,9 @@
     "url": "https://github.com/qpoint-io/q-nuxt-layer.git"
   },
   "main": "./nuxt.config.ts",
+  "scripts": {
+    "tokens": "node tokens/build.mjs"
+  },
   "exports": {
     ".": "./nuxt.config.ts",
     "./vue": "./vue/index.js",
