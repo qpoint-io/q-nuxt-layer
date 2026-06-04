@@ -34,7 +34,13 @@ A single canonical Figma file (**"Qpoint Design System"**) restructured into Fou
   - `data/stat` (41:26) — Size(Small/Med) × Health(None/Healthy/Unhealthy)
   - `data/sparkline` (41:32) — Fill(Area/Line)
   - `health/dial` (41:53) — Status(cool/warn/warm/hot), **approximate** (180° gauge vs the source's 270° gradient SVG)
-  - Method validated end-to-end: read `defineProps` → build variant set bound to Primitives variables → screenshot → record node ID in manifest. Ready to scale to the rest of the library.
+  - Method validated end-to-end: read `defineProps` → build variant set bound to Primitives variables → screenshot → record node ID in manifest.
+- **Scale-out (done — 32 more components, 39 total):** Created four category pages (`UX`, `Data`, `Health`, `Security`) and built the presentational library onto them, all token-bound and screenshot-verified per page:
+  - **UX (15):** BoxTag, Avatar, Link, IconBtn, AddBtn, Close, LabelText, Checkbox, SimpleSelect, Input, CopyBtn, Message, ListItem, ToggleCard, HelpText
+  - **Data (10):** PercentBar, KeyVal, TrendDirection, Val, Timeline, MetricValue, MetricTrend, MetricSimple, MetricBase, MetricTinyInline
+  - **Health (3):** DialSummary, Scanning, SummaryItem
+  - **Security (4):** PolicySkin, PolicyRibbon, DataFlow, PolicyCard
+  - Manifest records all 39 with node IDs. Approximations flagged (`synced-approx`): DialSummary/PolicyRibbon/PolicyCard. Deliberately skipped as behavioral/composite: HoverBox, StretchBox, TagInput, DangerDelete, table-list/* internals, ChartUI, YAxis, several atomic metric/* parts. Icons + dev tooling excluded per scope.
 
 ## Outcome
 

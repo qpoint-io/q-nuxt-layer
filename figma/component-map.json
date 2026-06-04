@@ -103,6 +103,42 @@
       "props": {
         "status": { "figmaProp": "Status", "type": "variant", "map": { "cool": "cool", "warn": "warn", "warm": "warm", "hot": "hot" }, "required": true }
       }
-    }
+    },
+
+    { "code": "components/ux/BoxTag.vue", "name": "UxBoxTag", "figmaName": "ux/box-tag", "figmaNodeId": "43:10", "page": "UX", "status": "synced", "variants": "Mode: Solid/Border", "_batch": "scale-out" },
+    { "code": "components/ux/Avatar.vue", "name": "UxAvatar", "figmaName": "ux/avatar", "figmaNodeId": "43:20", "page": "UX", "status": "synced", "variants": "Size(Regular/Small) × State(Default/Pending)", "_batch": "scale-out" },
+    { "code": "components/ux/Link.vue", "name": "UxLink", "figmaName": "ux/link", "figmaNodeId": "43:27", "page": "UX", "status": "synced", "variants": "Arrow: True/False", "_batch": "scale-out" },
+    { "code": "components/ux/IconBtn.vue", "name": "UxIconBtn", "figmaName": "ux/icon-btn", "figmaNodeId": "43:33", "page": "UX", "status": "synced", "variants": "IconType: Plus/Right", "_batch": "scale-out" },
+    { "code": "components/ux/AddBtn.vue", "name": "UxAddBtn", "figmaName": "ux/add-btn", "figmaNodeId": "43:41", "page": "UX", "status": "synced", "variants": "IconType: Plus/Right", "_batch": "scale-out" },
+    { "code": "components/ux/Close.vue", "name": "UxClose", "figmaName": "ux/close", "figmaNodeId": "43:43", "page": "UX", "status": "synced", "variants": "single", "_batch": "scale-out" },
+    { "code": "components/ux/LabelText.vue", "name": "UxLabelText", "figmaName": "ux/label-text", "figmaNodeId": "43:46", "page": "UX", "status": "synced", "variants": "single", "_batch": "scale-out" },
+    { "code": "components/ux/Checkbox.vue", "name": "UxCheckbox", "figmaName": "ux/checkbox", "figmaNodeId": "43:53", "page": "UX", "status": "synced", "variants": "Checked: True/False", "note": "native-style checkbox (code wraps native input)", "_batch": "scale-out" },
+    { "code": "components/ux/SimpleSelect.vue", "name": "UxSimpleSelect", "figmaName": "ux/simple-select", "figmaNodeId": "43:55", "page": "UX", "status": "synced", "variants": "single", "_batch": "scale-out" },
+    { "code": "components/ux/Input.vue", "name": "UxInput", "figmaName": "ux/input", "figmaNodeId": "45:15", "page": "UX", "status": "synced", "variants": "State: Default/Focused/Error", "_batch": "scale-out" },
+    { "code": "components/ux/CopyBtn.vue", "name": "UxCopyBtn", "figmaName": "ux/copy-btn", "figmaNodeId": "45:23", "page": "UX", "status": "synced", "variants": "State: Default/Copied", "note": "WithText mode only; IconOnly mode omitted", "_batch": "scale-out" },
+    { "code": "components/ux/Message.vue", "name": "UxMessage", "figmaName": "ux/message", "figmaNodeId": "45:25", "page": "UX", "status": "synced", "variants": "single (toast)", "_batch": "scale-out" },
+    { "code": "components/ux/ListItem.vue", "name": "UxListItem", "figmaName": "ux/list-item", "figmaNodeId": "45:38", "page": "UX", "status": "synced", "variants": "Size: Regular/Short", "_batch": "scale-out" },
+    { "code": "components/ux/ToggleCard.vue", "name": "UxToggleCard", "figmaName": "ux/toggle-card", "figmaNodeId": "45:46", "page": "UX", "status": "synced", "variants": "State: Default/Checked", "_batch": "scale-out" },
+    { "code": "components/ux/HelpText.vue", "name": "UxHelpText", "figmaName": "ux/help-text", "figmaNodeId": "45:48", "page": "UX", "status": "synced", "variants": "single (collapsed)", "_batch": "scale-out" },
+
+    { "code": "components/data/PercentBar.vue", "name": "DataPercentBar", "figmaName": "data/percent-bar", "figmaNodeId": "46:10", "page": "Data", "status": "synced", "variants": "Percent: 25/50/75/100", "note": "track grey/200, fill grape/500", "_batch": "scale-out" },
+    { "code": "components/data/KeyVal.vue", "name": "DataKeyVal", "figmaName": "data/key-val", "figmaNodeId": "46:12", "page": "Data", "status": "synced", "variants": "single", "_batch": "scale-out" },
+    { "code": "components/data/TrendDirection.vue", "name": "DataTrendDirection", "figmaName": "data/trend-direction", "figmaNodeId": "46:24", "page": "Data", "status": "synced", "variants": "Direction: up/down/static", "_batch": "scale-out" },
+    { "code": "components/data/Val.vue", "name": "DataVal", "figmaName": "data/val", "figmaNodeId": "46:38", "page": "Data", "status": "synced", "variants": "State: Default/Unhealthy/Checked", "note": "one size shown; code has full size scale + isChecked radio mode", "_batch": "scale-out" },
+    { "code": "components/data/Timeline.vue", "name": "DataTimeline", "figmaName": "data/timeline", "figmaNodeId": "46:40", "page": "Data", "status": "synced", "variants": "single (week)", "_batch": "scale-out" },
+    { "code": "components/data/metric/Value.vue", "name": "DataMetricValue", "figmaName": "data/metric-value", "figmaNodeId": "47:14", "page": "Data", "status": "synced", "variants": "Size: 40/25/14", "_batch": "scale-out" },
+    { "code": "components/data/metric/Trend.vue", "name": "DataMetricTrend", "figmaName": "data/metric-trend", "figmaNodeId": "47:22", "page": "Data", "status": "synced", "variants": "Trend: positive/negative", "_batch": "scale-out" },
+    { "code": "components/data/metric/_/Simple.vue", "name": "DataMetricSimple", "figmaName": "data/metric-simple", "figmaNodeId": "47:24", "page": "Data", "status": "synced", "variants": "single", "_batch": "scale-out" },
+    { "code": "components/data/metric/_/Base.vue", "name": "DataMetricBase", "figmaName": "data/metric-base", "figmaNodeId": "47:30", "page": "Data", "status": "synced", "variants": "single composition (label + value/trend + spark)", "_batch": "scale-out" },
+    { "code": "components/data/metric/_/TinyInline.vue", "name": "DataMetricTinyInline", "figmaName": "data/metric-tiny-inline", "figmaNodeId": "47:43", "page": "Data", "status": "synced", "variants": "single (percent-bar bg + value + label)", "_batch": "scale-out" },
+
+    { "code": "components/health/DialSummary.vue", "name": "HealthDialSummary", "figmaName": "health/dial-summary", "figmaNodeId": "48:30", "page": "Health", "status": "synced-approx", "variants": "Status: cool/warn/warm/hot", "note": "circular card + approximate mini-gauge (see HealthDial caveat)", "_batch": "scale-out" },
+    { "code": "components/health/Scanning.vue", "name": "HealthScanning", "figmaName": "health/scanning", "figmaNodeId": "48:32", "page": "Health", "status": "synced", "variants": "single (pill)", "_batch": "scale-out" },
+    { "code": "components/health/SummaryItem.vue", "name": "HealthSummaryItem", "figmaName": "health/summary-item", "figmaNodeId": "48:68", "page": "Health", "status": "synced", "variants": "Status: cool/warn/warm/hot", "_batch": "scale-out" },
+
+    { "code": "components/security/PolicySkin.vue", "name": "SecurityPolicySkin", "figmaName": "security/policy-skin", "figmaNodeId": "49:27", "page": "Security", "status": "synced", "variants": "State: cool/hot/warm/default/white-list", "note": "colored left border per state", "_batch": "scale-out" },
+    { "code": "components/security/PolicyRibbon.vue", "name": "SecurityPolicyRibbon", "figmaName": "security/policy-ribbon", "figmaNodeId": "49:49", "page": "Security", "status": "synced-approx", "variants": "State: hot/warm/cool/white-list", "note": "badge approximation (circle + tail), not the exact SVG ribbon", "_batch": "scale-out" },
+    { "code": "components/security/DataFlow.vue", "name": "SecurityDataFlow", "figmaName": "security/data-flow", "figmaNodeId": "49:72", "page": "Security", "status": "synced", "variants": "Color: red/grape/black", "_batch": "scale-out" },
+    { "code": "components/security/PolicyCard.vue", "name": "SecurityPolicyCard", "figmaName": "security/policy-card", "figmaNodeId": "49:74", "page": "Security", "status": "synced-approx", "variants": "single composite", "note": "representative big/cool card with 3-stat row; full size/state matrix + violations table not built", "_batch": "scale-out" }
   ]
 }
