@@ -26,7 +26,15 @@ A single canonical Figma file (**"Qpoint Design System"**) restructured into Fou
 - **Phase 2 (done):** Token bridge — `tokens/build.mjs` generates `tokens/tokens.json` (DTCG) from `tailwind.config.js`; `npm run tokens` script; `tokens/README.md` documents the Tokens Studio Figma side. Values verified against config and live Figma variables (no drift in sample).
 - **Phase 4 (done, scaffold):** `figma/component-map.json` bridge manifest for the 7-component vertical slice (prop↔variant maps from `defineProps`, legacy node IDs to port from; Figma node IDs pending build). `figma/README.md` documents schema + workflow.
 - **Phase 5 (done):** `.claude/skills/figma-sync/SKILL.md` — drift-tolerant sync ritual for both tracks.
-- **Phase 3 (pending — interactive):** Restructure canonical Figma file to Foundations + category pages and build the Button slice as variant sets. Needs live desktop Figma selections.
+- **Phase 3 (done — full vertical slice):** Discovered `use_figma` runs headless via fileKey (no desktop selection needed) — agent builds directly. **All 7 slice components built** as token-bound variant sets, each screenshot-verified, manifest updated with real node IDs:
+  - `ux/button` (38:116) — Kind(Filled/Stroke) × State(Default/Hover/Disabled) + 2 Loading
+  - `ux/toggle` (39:14) — On × Size(Small/Medium/Large)
+  - `ux/tag` (39:25) — Flavor(Grape/Warn) × Close
+  - `security/severity` (39:38) — Severity(critical/high/medium/low)
+  - `data/stat` (41:26) — Size(Small/Med) × Health(None/Healthy/Unhealthy)
+  - `data/sparkline` (41:32) — Fill(Area/Line)
+  - `health/dial` (41:53) — Status(cool/warn/warm/hot), **approximate** (180° gauge vs the source's 270° gradient SVG)
+  - Method validated end-to-end: read `defineProps` → build variant set bound to Primitives variables → screenshot → record node ID in manifest. Ready to scale to the rest of the library.
 
 ## Outcome
 

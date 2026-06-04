@@ -15,27 +15,28 @@
       "code": "components/ux/Button.vue",
       "name": "UxButton",
       "figmaName": "ux/button",
-      "figmaNodeId": null,
-      "status": "pending-build",
+      "figmaNodeId": "38:116",
+      "status": "synced",
       "legacyNodeId": "5:3467",
+      "note": "Built to match code (Filled/Stroke), NOT legacy Flavor=Primary/Secondary/Danger. Danger lives in UxDangerDelete. Fills/strokes/text bound to Primitives variables (grape/400 3:8, grape/500 3:9, base/white 3:31, base/black 3:32).",
       "props": {
-        "kind": { "figmaProp": "Flavor", "type": "variant", "map": { "": "Primary", "stroke": "Secondary" } },
-        "disabled": { "figmaProp": "State", "type": "variant", "map": { "true": "Disabled", "false": "Default" } },
-        "spin": { "figmaProp": "Loading", "type": "variant", "map": { "true": "Loading" }, "note": "no legacy equivalent — new variant" }
+        "kind": { "figmaProp": "Kind", "type": "variant", "map": { "": "Filled", "stroke": "Stroke" } },
+        "disabled": { "figmaProp": "State", "type": "variant", "map": { "true": "Disabled", "false": "Default" }, "note": "State also has Hover (interaction state, no code prop)" },
+        "spin": { "figmaProp": "Loading", "type": "variant", "map": { "true": "True", "false": "False" } }
       }
     },
     {
       "code": "components/ux/Toggle.vue",
       "name": "UxToggle",
       "figmaName": "ux/toggle",
-      "figmaNodeId": null,
-      "status": "pending-build",
+      "figmaNodeId": "39:14",
+      "status": "synced",
       "legacyNodeId": "5:3853",
+      "note": "Built On(On/Off) × Size(Small/Medium/Large); track grey/200 (off) / grape/500 (on), white knob with grey/300 border. Code has 5 sizes (micro/tiny/small/medium/large) — 3 representative built.",
       "props": {
-        "size": { "figmaProp": "Size", "type": "variant", "map": { "medium": "42", "small": "30" }, "note": "code has 5 size variants; confirm full map" },
-        "disabled": { "figmaProp": "Disabled", "type": "variant", "map": { "true": "true", "false": "false" } },
-        "permaChecked": { "figmaProp": "On", "type": "variant", "map": { "true": "true" } },
-        "reverse": { "figmaProp": "Reverse", "type": "variant" },
+        "permaChecked": { "figmaProp": "On", "type": "variant", "map": { "true": "On", "false": "Off" }, "note": "On = checked state (driven at runtime by the slotted input)" },
+        "size": { "figmaProp": "Size", "type": "variant", "map": { "small": "Small", "medium": "Medium", "large": "Large" } },
+        "disabled": { "figmaProp": null, "type": "n/a", "note": "opacity / pointer-events only — not a variant" },
         "label": { "figmaProp": "Label", "type": "text" }
       }
     },
@@ -43,21 +44,23 @@
       "code": "components/ux/Tag.vue",
       "name": "UxTag",
       "figmaName": "ux/tag",
-      "figmaNodeId": null,
-      "status": "pending-build",
+      "figmaNodeId": "39:25",
+      "status": "synced",
       "legacyNodeId": "389:5026",
+      "note": "grape/200 pill (warn → util/warn). × glyph white. Code text color inherits; used grape/700 as default.",
       "props": {
-        "noX": { "figmaProp": "Close", "type": "variant", "map": { "true": "false", "false": "true" }, "note": "noX inverts the legacy 'close' boolean" },
-        "warn": { "figmaProp": "Flavor", "type": "variant", "map": { "true": "warn", "false": "grape" } }
+        "noX": { "figmaProp": "Close", "type": "variant", "map": { "true": "False", "false": "True" }, "note": "noX hides the × ⇒ Close=False" },
+        "warn": { "figmaProp": "Flavor", "type": "variant", "map": { "true": "Warn", "false": "Grape" } }
       }
     },
     {
       "code": "components/security/Severity.vue",
       "name": "SecuritySeverity",
       "figmaName": "security/severity",
-      "figmaNodeId": null,
-      "status": "pending-build",
+      "figmaNodeId": "39:38",
+      "status": "synced",
       "legacyNodeId": null,
+      "note": "Dot + label per severity. Uses Tailwind default red/orange/yellow/grey, NOT brand tokens — bound critical→status/error, medium→status/warning, low→grey/400; high uses raw orange (no variable). Labels: crit!/high/medium/low.",
       "props": {
         "severity": { "figmaProp": "Severity", "type": "variant", "map": { "critical": "critical", "high": "high", "medium": "medium", "low": "low" }, "required": true }
       }
@@ -66,14 +69,13 @@
       "code": "components/data/Stat.vue",
       "name": "DataStat",
       "figmaName": "data/stat",
-      "figmaNodeId": null,
-      "status": "pending-build",
+      "figmaNodeId": "41:26",
+      "status": "synced",
       "legacyNodeId": "474:4117",
+      "note": "showHealth + isHealthy collapsed into a single Health variant (None/Healthy/Unhealthy). Label grey/400 with 4px bottom rule; value Inter Black. kind (percentage etc.) affects the value string at runtime, not a variant.",
       "props": {
-        "kind": { "figmaProp": "Type", "type": "variant", "note": "PERCENTAGE etc. from StatTypes" },
-        "size": { "figmaProp": "Size", "type": "variant", "note": "StatSizes" },
-        "showHealth": { "figmaProp": "Health", "type": "variant", "map": { "true": "true", "false": "false" } },
-        "isHealthy": { "figmaProp": "Healthy", "type": "variant", "map": { "true": "true", "false": "false" } },
+        "size": { "figmaProp": "Size", "type": "variant", "map": { "SMALL": "Small", "MED": "Med" } },
+        "showHealth+isHealthy": { "figmaProp": "Health", "type": "variant", "map": { "false/*": "None", "true/true": "Healthy", "true/false": "Unhealthy" } },
         "label": { "figmaProp": "Label", "type": "text" },
         "val": { "figmaProp": "Value", "type": "text" }
       }
@@ -82,20 +84,24 @@
       "code": "components/data/SparkChart.vue",
       "name": "DataSparkChart",
       "figmaName": "data/sparkline",
-      "figmaNodeId": null,
-      "status": "pending-build",
+      "figmaNodeId": "41:32",
+      "status": "synced",
       "legacyNodeId": "474:6158",
-      "props": {}
+      "note": "Static vector approximation of the chart.js line. Grape/500 stroke; Area fills grape/100. Real component is data-driven.",
+      "props": {
+        "fillColor": { "figmaProp": "Fill", "type": "variant", "map": { "none": "Line", "*": "Area" } }
+      }
     },
     {
       "code": "components/health/Dial.vue",
       "name": "HealthDial",
       "figmaName": "health/dial",
-      "figmaNodeId": null,
-      "status": "pending-build",
+      "figmaNodeId": "41:53",
+      "status": "synced-approx",
       "legacyNodeId": null,
+      "note": "APPROXIMATION — 180° single-color gauge + needle per status. Source is a 270° multi-stop gradient SVG (cool/warn/warm/hot bands). For an exact match, import the SVG from components/health/Dial.vue instead of generating.",
       "props": {
-        "status": { "figmaProp": "Status", "type": "variant", "required": true, "note": "represent discrete states; numeric lineLength not variant-mappable" }
+        "status": { "figmaProp": "Status", "type": "variant", "map": { "cool": "cool", "warn": "warn", "warm": "warm", "hot": "hot" }, "required": true }
       }
     }
   ]
