@@ -104,6 +104,16 @@ Documentation and dev tools, auto-imported with the `Dev` prefix:
 | `DevControlSection` | Collapsible section container with title |
 | `DevControls` | Top-level control panel with show/hide toggle |
 
+### Nav Components
+
+Auto-imported (path-based prefix):
+
+| Component | Dir | Description |
+|-----------|-----|-------------|
+| `IconNavItem` | `components/icon-nav/` | Icon-led left-nav link: icon slot + collapsible label, route-aware active state (`basePath` match) and grape underline. Nuxt-only (uses `<nuxt-link>`/`useRoute`) |
+| `NavVertical` | `components/nav/` | Vertical nav section: optional hairline title above a slot of `NavVerticalItem` links |
+| `NavVerticalItem` | `components/nav/` | Vertical-nav link — `<nuxt-link>` (`to`), external `<a>` (`href`), or plain slot; prop-driven `active` and small/medium `size`. Nuxt-only |
+
 ## Design Tokens
 
 Canonical source: `tailwind.config.js`. fontSize replaces Tailwind defaults (at theme root, not extend).

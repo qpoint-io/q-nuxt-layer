@@ -12,11 +12,11 @@
 <script setup>
 import { ref } from 'vue'
 
-defineProps({
+const props = defineProps({
   initialVisible: { type: Boolean, default: true },
 })
 
-const visible = ref(true)
+const visible = ref(props.initialVisible)
 </script>
 
 <style scoped>
@@ -29,9 +29,6 @@ const visible = ref(true)
   position: absolute;
   top: -1.5rem;
   right: 0.75rem;
-  background: #16162a;
-  border: 1px solid #2a2a4e;
-  border-bottom: none;
   color: #555;
   font-size: 0.6rem;
   padding: 0.15rem 0.5rem;

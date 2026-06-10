@@ -69,7 +69,7 @@ const unitFontSize = computed(function(){
   if(props.unitSize)
     return `${props.unitSize}px`
 
-  return `${ Math.round(props.size * 0.75) }px`
+  return `${ Math.round(props.size * 0.9) }px`
 })
 
 // derive the font weight from the font size

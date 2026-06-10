@@ -1,12 +1,14 @@
 <template>
   <label class="control-slider">
-    <span class="control-slider-label">{{ label }} <span v-if="suffix !== undefined" class="control-slider-value">{{ modelValue }}{{ suffix }}</span></span>
+    <span class="control-slider-label">{{ label }} <span class="control-slider-value">{{ displayValue }}{{ suffix || '' }}</span></span>
     <input type="range" class="control-slider-input" :min="min" :max="max" :step="step" :value="modelValue" @input="$emit('update:modelValue', Number($event.target.value))" />
   </label>
 </template>
 
 <script setup>
-defineProps({
+import { computed } from 'vue'
+
+const props = defineProps({
   label: { type: String, required: true },
   modelValue: { type: Number, required: true },
   min: { type: Number, default: 0 },
@@ -16,6 +18,11 @@ defineProps({
 })
 
 defineEmits(['update:modelValue'])
+
+const displayValue = computed(() => {
+  const decimals = props.step < 1 ? String(props.step).split('.')[1]?.length || 1 : 0
+  return props.modelValue.toFixed(decimals)
+})
 </script>
 
 <style scoped>

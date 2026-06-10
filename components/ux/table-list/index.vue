@@ -20,7 +20,7 @@
 
 <style >
 tr{
-  @apply border-b-1 border-b-tableBorder
+  @apply border-b-1 border-b-tableBorder bg-white/50
 }
 thead tr{
   @apply bg-grey-100 border-b-0;
@@ -30,7 +30,7 @@ td{
   /* first-of-type:border-l-0 first-of-type:pl-0 align-middle; */
 }
 th{
-  @apply px-2 text-13 font-bold border-l-1 border-r-1 border-tableBorder ;
+  @apply px-2 text-13 font-bold border-l-1 border-r-1 border-tableBorder first-of-type:border-l-0 ;
 }
 </style>
 
