@@ -32,6 +32,12 @@ export default defineNuxtConfig({
     ]
   },
 
+  // Explicit registration so the plugin fires for both NUXT_LOCAL_LAYER and
+  // published-package consumers (don't rely on implicit layer plugin scan).
+  plugins: [
+    join(currentDir, 'plugins/theme.client.ts'),
+  ],
+
   alias: {
     '$layer': currentDir,
   },

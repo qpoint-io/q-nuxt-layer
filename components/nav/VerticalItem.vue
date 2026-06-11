@@ -23,10 +23,10 @@
 
 <style scoped>
   .vertical-link{
-    @apply block py-1 pl-2 -ml-2 -mb-[2px] text-black group-hover:text-grape-700;
+    @apply block py-1 pl-2 -ml-2 -mb-[2px] text-content group-hover:text-primary;
   }
   .vertical-link.active{
-    @apply text-grape-500 group-hover:text-grape-500
+    @apply text-primary group-hover:text-primary
   }
 
 </style>

@@ -12,7 +12,7 @@
       <!-- <UxTableListLoader :isLoading="isLoadingBottom" /> -->
     </table>
 
-    <div class="pt-4 pb-8 text-15 text-grey-500 flex items-center justify-center h-full w-full delay-100" v-if="slotIsEmpty">
+    <div class="pt-4 pb-8 text-15 text-content-subtle flex items-center justify-center h-full w-full delay-100" v-if="slotIsEmpty">
       <slot name="empty">No Records</slot>
     </div>
   </div>
@@ -20,17 +20,17 @@
 
 <style >
 tr{
-  @apply border-b-1 border-b-tableBorder bg-white/50
+  @apply border-b-1 border-b-stroke bg-surface/50
 }
 thead tr{
-  @apply bg-grey-100 border-b-0;
+  @apply bg-surface-sunken border-b-0;
 }
 td{
-  @apply border-tableBorder border-l-1 border-r-1 px-3 py-1
+  @apply border-stroke border-l-1 border-r-1 px-3 py-1
   /* first-of-type:border-l-0 first-of-type:pl-0 align-middle; */
 }
 th{
-  @apply px-2 text-13 font-bold border-l-1 border-r-1 border-tableBorder first-of-type:border-l-0 ;
+  @apply px-2 text-13 font-bold border-l-1 border-r-1 border-stroke first-of-type:border-l-0 ;
 }
 </style>
 

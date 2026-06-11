@@ -30,7 +30,7 @@
           >
             <DialogPanel
               tabindex="0"
-              class="w-full transform rounded-lg p-6 text-left shadow-xl transition-all relative outline-none focus:outline-none"
+              class="w-full transform rounded-lg p-6 text-left shadow-xl transition-all relative outline-none focus:outline-none border-1 border-stroke"
               :class="[
                 fullScreen || 'max-w-[740px]',
                 bg
@@ -60,7 +60,7 @@
     atTop      : { type: Boolean, default: false },
     atBottom   : { type: Boolean, default: false },
     closeBtn   : { type:Boolean, default: true },
-    bg         : { type:String, default: 'bg-white'},
+    bg         : { type:String, default: 'bg-surface'},
   })
 
   const emit = defineEmits(['update:open'])

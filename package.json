@@ -22,8 +22,10 @@
   "files": [
     "components/",
     "composables/",
+    "plugins/",
     "utils/",
     "assets/css/shared.css",
+    "assets/css/tokens.css",
     "tailwind.config.js",
     "nuxt.config.ts",
     "vue/"

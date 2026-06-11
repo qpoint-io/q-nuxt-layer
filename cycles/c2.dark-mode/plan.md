@@ -19,14 +19,12 @@
 
 ## Phase 1 — Semantic token source
 
-**Create `tokens/semantic.mjs`** — single source of `{ role: { light, dark } }` hex, all drawn from the existing palette (15 roles, surface-complete):
+**Create `tokens/semantic.mjs`** — single source of `{ role: { light, dark } }` hex, all drawn from the existing palette (13 roles):
 
 | CSS var (`--qp-…`) | Tailwind key | Light | Dark |
 |---|---|---|---|
 | surface | `surface` | `#FFFFFF` | `#111111` (grey-900) |
-| surface-raised | `surface-raised` | `#FFFFFF` | `#2B2A2A` (grey-800) |
 | surface-sunken | `surface-sunken` | `#F5F5F5` (grey-100) | `#1A1919` |
-| surface-overlay | `surface-overlay` | `#FAFAFA` (grey-50) | `#393939` (grey-700) |
 | content | `content` | `#2B2A2A` (grey-800) | `#F5F5F5` (grey-100) |
 | content-muted | `content-muted` | `#565454` (grey-600) | `#AAAAAA` (grey-350) |
 | content-subtle | `content-subtle` | `#7A7B7C` (grey-500) | `#7A7B7C` |
@@ -40,6 +38,8 @@
 | info | `signal-info` | `#7742E2` (grape-600) | `#BBA5FF` (grape-300) |
 
 Naming note: use `stroke`/`stroke-strong` (not `border`) to avoid colliding with Tailwind's `border` width utility; signal roles are namespaced `signal-*` so the existing flat `error/warning/success/info` keys are untouched.
+
+Surface note: only two surface tiers — `surface` and `surface-sunken` (the latter is real today: `bg-grey-100` table headers/insets). No `surface-raised`/`surface-overlay`: the design language is flat and hairline-driven, not elevation-tiered; raised panels (Modal, Message) differentiate in dark via `border-stroke` instead of a lighter background. Adding a raised tier later is non-breaking if dark modals prove too flat in practice.
 
 ---
 
@@ -63,9 +63,7 @@ Naming note: use `stroke`/`stroke-strong` (not `border`) to avoid colliding with
 ```js
 // Semantic theme tokens — backed by CSS vars (assets/css/tokens.css), flip under `.dark`.
 surface:           'rgb(var(--qp-surface) / <alpha-value>)',
-'surface-raised':  'rgb(var(--qp-surface-raised) / <alpha-value>)',
 'surface-sunken':  'rgb(var(--qp-surface-sunken) / <alpha-value>)',
-'surface-overlay': 'rgb(var(--qp-surface-overlay) / <alpha-value>)',
 content:           'rgb(var(--qp-content) / <alpha-value>)',
 'content-muted':   'rgb(var(--qp-content-muted) / <alpha-value>)',
 'content-subtle':  'rgb(var(--qp-content-subtle) / <alpha-value>)',
@@ -113,13 +111,13 @@ plugins: [ join(currentDir, 'plugins/theme.client.ts') ],
 
 ## Phase 6 — Foundation conversion (scoped reference set only)
 
-Mechanical pattern (define once): `bg-white`/`bg-grey-50/100` → `bg-surface` (`-raised` for elevated cards, `-sunken` for inset/table-header) · `text-black`/`text-grey-800/900` → `text-content`, `text-grey-600/500` → `text-content-muted`/`-subtle` · `border-grey-200/300`/`border-tableBorder` → `border-stroke`(`-strong`) · accent `text-grape` that should shift in dark → `text-primary` (leave true brand chrome/logos as raw `grape-*`) · signal colors → `signal-*`.
+Mechanical pattern (define once): `bg-white`/`bg-grey-50` → `bg-surface`, `bg-grey-100` inset/table-header → `bg-surface-sunken` · `text-black`/`text-grey-800/900` → `text-content`, `text-grey-600/500` → `text-content-muted`/`-subtle` · `border-grey-200/300`/`border-tableBorder` → `border-stroke`(`-strong`) · accent `text-grape` that should shift in dark → `text-primary` (leave true brand chrome/logos as raw `grape-*`) · signal colors → `signal-*` · elevated panels (modals, toasts) get `border-stroke` so they read against a dark page where shadows don't.
 
 Apply to the minimal exemplar set that proves the system end-to-end:
 
 - **`assets/css/shared.css`** — body/page bg+text; fold the existing hardcoded `.dark input/select` block (~lines 48–61) into token-driven rules; convert `._shadow-box`, `.hairline`, and `.btn-*`.
-- **`components/ux/Modal.vue`** — panel default `bg-white` → `bg-surface-raised`.
-- **`components/ux/Message.vue`** — `bg-white` → `bg-surface-raised`, border → `border-stroke`.
+- **`components/ux/Modal.vue`** — panel default `bg-white` → `bg-surface` (the `bg` prop); add `border border-stroke` to the panel — it has no border today and `shadow-xl` alone won't separate it from a dark page.
+- **`components/ux/Message.vue`** — `bg-white` → `bg-surface`, existing `border-grape-300` → `border-stroke`.
 - **`components/ux/table-list/index.vue`** — row/header/border colors → `surface`/`surface-sunken`/`stroke`.
 - **`components/nav/Vertical.vue` + `components/nav/VerticalItem.vue`** — text/hover/active/border → `content`/`primary`/`stroke`.
 - **`components/ux/Button.vue`** — the `stroke` kind → `bg-surface`/`text-content`/`border-primary`; filled kind stays brand grape (intentional).
@@ -132,7 +130,7 @@ Apply to the minimal exemplar set that proves the system end-to-end:
 
 The layer isn't independently runnable, so verify through `qdash-ui` with the local layer:
 
-1. **Token build:** from `q-nuxt-layer`, `npm run tokens` → `git diff` shows **only** `assets/css/tokens.css` new/changed (and `tokens/semantic.mjs`); `tokens.json` is byte-identical; `tokens.css` has 15 `:root` + 15 `.dark` channel vars.
+1. **Token build:** from `q-nuxt-layer`, `npm run tokens` → `git diff` shows **only** `assets/css/tokens.css` new/changed (and `tokens/semantic.mjs`); `tokens.json` is byte-identical; `tokens.css` has 13 `:root` + 13 `.dark` channel vars.
 2. **Temporary harness in qdash-ui:** in `crates/qdash/ui/app/layouts/default.vue`, change line 2 to `bg-surface text-content …` and drop `<UxThemeToggle />` into the shell beside `<AppSidebar />`.
 3. **Run:** `NUXT_LOCAL_LAYER=1 nuxt dev` (port 3030). Confirm: default load is **light**; clicking the toggle adds `<html class="dark">` and flips page bg/text + the six converted exemplars (Modal, Message, table-list, nav, Button-stroke); **reload persists** the choice (`localStorage qp-theme`); OS-dark with no stored value loads dark, while stored `light` overrides OS.
 4. **Non-breaking check:** an untouched `ux/*` component renders identically in light mode.
@@ -164,3 +162,4 @@ The layer isn't independently runnable, so verify through `qdash-ui` with the lo
 - **Non-breaking** — no color key removed; signal roles namespaced `signal-*`; default `:root` is light.
 - **SSR** — all DOM/storage access guarded; plugin is `.client`.
 - **FOUC** — under `ssr:false` a dark-preferring user sees a brief light flash; documented follow-up (inline pre-hydration head script) if it's ever a complaint.
+- **Dark elevation** — deliberately no raised/overlay surface tiers; panels separate via `border-stroke`. If dark modals read too flat in real use, add `surface-raised` then (additive, non-breaking).

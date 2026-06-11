@@ -121,6 +121,23 @@ export default {
           900: '#111111',
         },
 
+        // Semantic theme tokens — backed by CSS vars (assets/css/tokens.css,
+        // generated from tokens/semantic.mjs), flip under `.dark`. Channel
+        // form keeps opacity utilities working (bg-surface/50).
+        surface:           'rgb(var(--qp-surface) / <alpha-value>)',
+        'surface-sunken':  'rgb(var(--qp-surface-sunken) / <alpha-value>)',
+        content:           'rgb(var(--qp-content) / <alpha-value>)',
+        'content-muted':   'rgb(var(--qp-content-muted) / <alpha-value>)',
+        'content-subtle':  'rgb(var(--qp-content-subtle) / <alpha-value>)',
+        stroke:            'rgb(var(--qp-stroke) / <alpha-value>)',
+        'stroke-strong':   'rgb(var(--qp-stroke-strong) / <alpha-value>)',
+        primary:           'rgb(var(--qp-primary) / <alpha-value>)',
+        'on-primary':      'rgb(var(--qp-on-primary) / <alpha-value>)',
+        'signal-success':  'rgb(var(--qp-success) / <alpha-value>)',
+        'signal-error':    'rgb(var(--qp-error) / <alpha-value>)',
+        'signal-warning':  'rgb(var(--qp-warning) / <alpha-value>)',
+        'signal-info':     'rgb(var(--qp-info) / <alpha-value>)',
+
         // Semantic
         error:   '#EF4444',
         warning: '#F59E0B',

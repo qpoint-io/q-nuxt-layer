@@ -22,7 +22,7 @@
       </DevH> -->
 
       <!-- Backdrop -->
-      <div class="backdrop w-full p-10" :class="(bg)?  bg : 'bg-grey-100'">
+      <div class="backdrop w-full p-10" :class="(bg)?  bg : 'bg-surface-sunken'">
         <slot />
       </div>
 
@@ -100,7 +100,7 @@
 
 <style>
   .backdrop{
-    @apply border-1 border-grey-200;
+    @apply border-1 border-stroke;
     box-shadow: 0 4px 12px 2px rgba(0, 0, 0, 0.02);
     border-radius: 6px;
   }

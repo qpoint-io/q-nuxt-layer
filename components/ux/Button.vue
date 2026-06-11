@@ -1,6 +1,6 @@
 <template>
   <button :class="['h-12 rounded-lg px-px24 marker:flex items-center gap-px8 group  flex whitespace-nowrap',
-                   kind == 'stroke' ? 'bg-white border-grape-400 border-2 hover:border-black  hover:text-black' : 'bg-grape-400 text-white hover:bg-grape-500',
+                   kind == 'stroke' ? 'bg-surface text-content border-primary border-2 hover:border-content' : 'bg-grape-400 text-white hover:bg-grape-500',
                    disabled? 'opacity-50 pointer-events-none' : '',
                    spin?     'pointer-events-none' : '',
                   ]">
