@@ -1,5 +1,5 @@
 <template>
-  <div class="text-14 text-grey-400">
+  <div class="text-14 text-content-muted">
     <slot/>
   </div>
 </template>

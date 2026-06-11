@@ -20,6 +20,9 @@ const visible = ref(props.initialVisible)
 </script>
 
 <style scoped>
+/* Token-backed with raw-channel fallbacks: vue/-barrel consumers
+   (qflow/qmap) don't load tokens.css and keep the original dark-navy
+   look; token consumers follow the theme. No Tailwind/@apply here. */
 .dev-controls {
   flex-shrink: 0;
   position: relative;
@@ -29,7 +32,7 @@ const visible = ref(props.initialVisible)
   position: absolute;
   top: -1.5rem;
   right: 0.75rem;
-  color: #555;
+  color: rgb(var(--qp-content-subtle, 85 85 85));
   font-size: 0.6rem;
   padding: 0.15rem 0.5rem;
   cursor: pointer;
@@ -40,12 +43,12 @@ const visible = ref(props.initialVisible)
 }
 
 .dev-controls-toggle:hover {
-  color: #999;
+  color: rgb(var(--qp-content-muted, 153 153 153));
 }
 
 .dev-controls-panel {
-  background: #16162a;
-  border-top: 1px solid #2a2a4e;
+  background: rgb(var(--qp-surface-sunken, 22 22 42));
+  border-top: 1px solid rgb(var(--qp-stroke, 42 42 78));
   padding: 0.75rem 1.25rem;
   display: flex;
   align-items: flex-start;

@@ -49,7 +49,7 @@ function onPickerInput(e) {
 
 .control-color-label {
   font-size: 0.75rem;
-  color: #aaa;
+  color: rgb(var(--qp-content-muted, 170 170 170));
   white-space: nowrap;
   min-width: 7rem;
   text-align: right;
@@ -59,9 +59,9 @@ function onPickerInput(e) {
   display: flex;
   align-items: center;
   gap: 0;
-  border: 1px solid #2a2a4e;
+  border: 1px solid rgb(var(--qp-stroke, 42 42 78));
   border-radius: 4px;
-  background: #1a1a2e;
+  background: rgb(var(--qp-surface, 26 26 46));
   overflow: hidden;
 }
 
@@ -71,7 +71,7 @@ function onPickerInput(e) {
   flex-shrink: 0;
   cursor: pointer;
   position: relative;
-  border-right: 1px solid #2a2a4e;
+  border-right: 1px solid rgb(var(--qp-stroke, 42 42 78));
 }
 
 .control-color-native {
@@ -86,7 +86,7 @@ function onPickerInput(e) {
 }
 
 .control-color-hash {
-  color: #666;
+  color: rgb(var(--qp-content-subtle, 102 102 102));
   font-family: monospace;
   font-size: 0.8rem;
   padding-left: 0.4rem;
@@ -98,7 +98,7 @@ function onPickerInput(e) {
   padding: 0.3rem 0.4rem 0.3rem 0.15rem;
   border: none;
   background: transparent;
-  color: #ccc;
+  color: rgb(var(--qp-content, 204 204 204));
   font-family: monospace;
   font-size: 0.8rem;
   outline: none;

@@ -24,6 +24,7 @@ const normalizedOptions = computed(() =>
 </script>
 
 <style scoped>
+/* Token-backed with raw-channel fallbacks — see DevControls. */
 .control-select {
   display: flex;
   align-items: center;
@@ -33,7 +34,7 @@ const normalizedOptions = computed(() =>
 
 .control-select-label {
   font-size: 0.75rem;
-  color: #aaa;
+  color: rgb(var(--qp-content-muted, 170 170 170));
   white-space: nowrap;
   min-width: 7rem;
   text-align: right;
@@ -41,10 +42,10 @@ const normalizedOptions = computed(() =>
 
 .control-select-input {
   padding: 0.35rem 0.5rem;
-  border: 1px solid #2a2a4e;
+  border: 1px solid rgb(var(--qp-stroke, 42 42 78));
   border-radius: 4px;
-  background: #1a1a2e;
-  color: #ccc;
+  background: rgb(var(--qp-surface, 26 26 46));
+  color: rgb(var(--qp-content, 204 204 204));
   font-size: 0.8rem;
 }
 </style>

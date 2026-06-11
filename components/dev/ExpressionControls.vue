@@ -148,27 +148,27 @@ async function pasteJson() {
 .preset-select {
   flex: 1;
   padding: 0.35rem 0.5rem;
-  border: 1px solid #2a2a4e;
+  border: 1px solid rgb(var(--qp-stroke, 42 42 78));
   border-radius: 4px;
-  background: #1a1a2e;
-  color: #ccc;
+  background: rgb(var(--qp-surface, 26 26 46));
+  color: rgb(var(--qp-content, 204 204 204));
   font-size: 0.8rem;
 }
 
 .toolbar-btn {
   padding: 0.35rem 0.75rem;
-  border: 1px solid #2a2a4e;
+  border: 1px solid rgb(var(--qp-stroke, 42 42 78));
   border-radius: 4px;
-  background: #1a1a2e;
-  color: #888;
+  background: rgb(var(--qp-surface, 26 26 46));
+  color: rgb(var(--qp-content-subtle, 136 136 136));
   font-size: 0.7rem;
   cursor: pointer;
   white-space: nowrap;
 }
 
 .toolbar-btn:hover {
-  color: #ccc;
-  border-color: #3a3a5e;
+  color: rgb(var(--qp-content, 204 204 204));
+  border-color: rgb(var(--qp-stroke-strong, 58 58 94));
 }
 
 .expression-toggle {
@@ -180,7 +180,7 @@ async function pasteJson() {
 
 .expression-toggle-label {
   font-size: 0.75rem;
-  color: #aaa;
+  color: rgb(var(--qp-content-muted, 170 170 170));
   white-space: nowrap;
   min-width: 7rem;
   text-align: right;

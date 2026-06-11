@@ -40,8 +40,8 @@ function copy() {
 
 <style scoped>
 .dev-control-export {
-  background: #0d0d1a;
-  border-top: 1px solid #2a2a4e;
+  background: rgb(var(--qp-surface-sunken, 13 13 26));
+  border-top: 1px solid rgb(var(--qp-stroke, 42 42 78));
   padding: 0.5rem 0.75rem;
 }
 
@@ -64,7 +64,7 @@ function copy() {
 
 .dev-control-export-arrow {
   font-size: 0.5rem;
-  color: #555;
+  color: rgb(var(--qp-content-subtle, 85 85 85));
   transition: transform 0.15s;
 }
 
@@ -76,14 +76,14 @@ function copy() {
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #555;
+  color: rgb(var(--qp-content-subtle, 85 85 85));
 }
 
 .dev-control-export-copy {
-  background: #3949ab;
-  border: 1px solid #5c6bc0;
+  background: rgb(var(--qp-primary, 57 73 171));
+  border: 1px solid rgb(var(--qp-primary, 92 107 192));
   border-radius: 4px;
-  color: #ccc;
+  color: rgb(var(--qp-content, 204 204 204));
   font-size: 0.65rem;
   padding: 0.15rem 0.5rem;
   cursor: pointer;
@@ -91,12 +91,13 @@ function copy() {
 }
 
 .dev-control-export-copy:hover {
-  background: #5c6bc0;
+  /* brightness instead of a second primary shade — survives tokenization */
+  filter: brightness(1.2);
 }
 
 .dev-control-export-copy--copied {
-  background: #2e7d32;
-  border-color: #4caf50;
+  background: rgb(var(--qp-success, 46 125 50));
+  border-color: rgb(var(--qp-success, 76 175 80));
 }
 
 .dev-control-export-code {
@@ -104,7 +105,7 @@ function copy() {
   font-family: 'SF Mono', 'Fira Code', monospace;
   font-size: 0.7rem;
   line-height: 1.4;
-  color: #8be9fd;
+  color: rgb(var(--qp-info, 139 233 253));
   white-space: pre;
 }
 </style>

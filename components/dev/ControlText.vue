@@ -16,6 +16,7 @@ defineEmits(['update:modelValue'])
 </script>
 
 <style scoped>
+/* Token-backed with raw-channel fallbacks — see DevControls. */
 .control-text {
   display: flex;
   align-items: center;
@@ -25,7 +26,7 @@ defineEmits(['update:modelValue'])
 
 .control-text-label {
   font-size: 0.75rem;
-  color: #aaa;
+  color: rgb(var(--qp-content-muted, 170 170 170));
   white-space: nowrap;
   min-width: 7rem;
   text-align: right;
@@ -33,10 +34,10 @@ defineEmits(['update:modelValue'])
 
 .control-text-input {
   padding: 0.35rem 0.5rem;
-  border: 1px solid #2a2a4e;
+  border: 1px solid rgb(var(--qp-stroke, 42 42 78));
   border-radius: 4px;
-  background: #1a1a2e;
-  color: #ccc;
+  background: rgb(var(--qp-surface, 26 26 46));
+  color: rgb(var(--qp-content, 204 204 204));
   font-size: 0.8rem;
   font-family: monospace;
   outline: none;
@@ -44,6 +45,6 @@ defineEmits(['update:modelValue'])
 }
 
 .control-text-input:focus {
-  border-color: #3949ab;
+  border-color: rgb(var(--qp-primary, 57 73 171));
 }
 </style>

@@ -18,6 +18,7 @@ defineEmits(['update:modelValue'])
 </script>
 
 <style scoped>
+/* Token-backed with raw-channel fallbacks — see DevControls. */
 .control-toggle {
   display: flex;
   align-items: center;
@@ -27,7 +28,7 @@ defineEmits(['update:modelValue'])
 
 .control-toggle-label {
   font-size: 0.75rem;
-  color: #aaa;
+  color: rgb(var(--qp-content-muted, 170 170 170));
   white-space: nowrap;
   min-width: 7rem;
   text-align: right;
@@ -44,14 +45,14 @@ defineEmits(['update:modelValue'])
   position: relative;
   width: 2rem;
   height: 1.1rem;
-  background: #2a2a4e;
+  background: rgb(var(--qp-stroke, 42 42 78));
   border-radius: 0.55rem;
   transition: background 0.15s ease;
   flex-shrink: 0;
 }
 
 .control-toggle-track--on {
-  background: #3949ab;
+  background: rgb(var(--qp-primary, 57 73 171));
 }
 
 .control-toggle-thumb {
@@ -60,13 +61,13 @@ defineEmits(['update:modelValue'])
   left: 2px;
   width: calc(1.1rem - 4px);
   height: calc(1.1rem - 4px);
-  background: #888;
+  background: rgb(var(--qp-content-subtle, 136 136 136));
   border-radius: 50%;
   transition: transform 0.15s ease, background 0.15s ease;
 }
 
 .control-toggle-track--on .control-toggle-thumb {
   transform: translateX(calc(2rem - 1.1rem));
-  background: #60a5fa;
+  background: rgb(var(--qp-on-primary, 96 165 250));
 }
 </style>

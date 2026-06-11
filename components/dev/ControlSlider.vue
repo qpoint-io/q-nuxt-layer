@@ -35,14 +35,14 @@ const displayValue = computed(() => {
 
 .control-slider-label {
   font-size: 0.75rem;
-  color: #aaa;
+  color: rgb(var(--qp-content-muted, 170 170 170));
   white-space: nowrap;
   min-width: 7rem;
   text-align: right;
 }
 
 .control-slider-value {
-  color: #60a5fa;
+  color: rgb(var(--qp-primary, 96 165 250));
   font-family: monospace;
   font-weight: 400;
   text-transform: none;
@@ -55,7 +55,7 @@ const displayValue = computed(() => {
   appearance: none;
   width: 100%;
   height: 4px;
-  background: #2a2a4e;
+  background: rgb(var(--qp-stroke, 42 42 78));
   border-radius: 2px;
   outline: none;
   min-width: 80px;
@@ -68,17 +68,17 @@ const displayValue = computed(() => {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #3949ab;
+  background: rgb(var(--qp-primary, 57 73 171));
   cursor: pointer;
-  border: 2px solid #60a5fa;
+  border: 2px solid rgb(var(--qp-surface, 96 165 250));
 }
 
 .control-slider-input::-moz-range-thumb {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #3949ab;
+  background: rgb(var(--qp-primary, 57 73 171));
   cursor: pointer;
-  border: 2px solid #60a5fa;
+  border: 2px solid rgb(var(--qp-surface, 96 165 250));
 }
 </style>

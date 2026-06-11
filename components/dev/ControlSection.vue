@@ -40,19 +40,19 @@ const open = ref(!props.collapsed)
 .section-title {
   font-size: 0.7rem;
   font-weight: 600;
-  color: #888;
+  color: rgb(var(--qp-content-subtle, 136 136 136));
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .section-toggle {
   font-size: 0.6rem;
-  color: #555;
+  color: rgb(var(--qp-content-subtle, 85 85 85));
   text-transform: lowercase;
 }
 
 .section-toggle:hover {
-  color: #999;
+  color: rgb(var(--qp-content-muted, 153 153 153));
 }
 
 .section-body {
