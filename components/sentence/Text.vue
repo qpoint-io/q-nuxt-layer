@@ -20,5 +20,5 @@ function onInput(e) {
   emit('update:modelValue', e.target.value)
 }
 
-const pillClass = 'border-1 border-black rounded-full px-3 h-7 text-13 font-semi bg-white cursor-pointer appearance-none'
+const pillClass = 'border-1 border-content rounded-full px-3 h-7 text-13 font-semi bg-surface cursor-pointer appearance-none'
 </script>

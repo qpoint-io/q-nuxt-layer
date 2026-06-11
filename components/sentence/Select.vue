@@ -3,7 +3,7 @@
     <select
       :value="modelValue"
       @change="onChange"
-      class="border-1 border-black rounded-full py-0 pr-12 pl-3 text-13 font-semi bg-white cursor-pointer appearance-none"
+      class="border-1 border-content rounded-full py-0 pr-12 pl-3 text-13 font-semi bg-surface cursor-pointer appearance-none"
     >
       <slot />
     </select>

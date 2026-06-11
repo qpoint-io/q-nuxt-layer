@@ -1,7 +1,7 @@
 <template>
   <div
-    class="border-2 rounded-lg bg-white relative"
-    :class="active ? 'border-grape-400' : 'border-grape-300 opacity-80'"
+    class="border-2 rounded-lg bg-surface relative"
+    :class="active ? 'border-primary/60' : 'border-primary/40 opacity-80'"
   >
     <!-- Header -->
     <div class="flex items-center justify-between mb-5 py-2 px-4 pt-3 hairline">
@@ -13,7 +13,7 @@
       </UxToggle>
       
       <!-- delete button -->
-      <button class="text-black hover:text-black cursor-pointer" @click="$emit('delete')">
+      <button class="text-content hover:text-content cursor-pointer" @click="$emit('delete')">
         <UxIcon id="x" class="w-6" />
       </button>
     </div>
@@ -91,7 +91,7 @@
 
     <!-- Mute button -->
     <div class="flex justify-end py-4 px-4 ">
-      <button class="px-4 py-2 text-14 font-med text-grape border-1 border-grape-300 rounded-lg hover:border-grape-500 cursor-pointer bg-transparent">
+      <button class="px-4 py-2 text-14 font-med text-primary border-1 border-primary/40 rounded-lg hover:border-primary cursor-pointer bg-transparent">
         Mute for X time
       </button>
     </div>

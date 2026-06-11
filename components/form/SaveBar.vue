@@ -1,7 +1,7 @@
 <template>
 <div v-if="dirty"
   class="-bottom-12 bg-opacity-[95%] z-[9] pt-4"
-  :class="{ 'sticky border-grape-100 border-2 rounded-12 p-4 bg-grey-150/90': floating}"
+  :class="{ 'sticky border-primary/20 border-2 rounded-12 p-4 bg-surface/90': floating}"
 >
   <div  class="flex justify-between gap-px16">
       <!-- Cancel: type=button so Enter in form submits to Save, not Cancel -->

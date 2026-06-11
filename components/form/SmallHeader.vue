@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-8 pb-2 font-semi text-20 border-b-3 border-b-black flex items-end">
+  <div class="mt-8 pb-2 font-semi text-20 border-b-3 border-b-content flex items-end">
     <div>
       <slot />
     </div>
@@ -11,6 +11,6 @@
 
 <style>
 ._danger{
-  @apply  border-b-warn;
+  @apply  border-b-signal-error;
 }
 </style>
