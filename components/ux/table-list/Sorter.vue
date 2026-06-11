@@ -6,7 +6,7 @@
     @click="onClick"
   >
     <div>
-      <div class="flex justify-between  gap-1" :class="(isSorting)?'text-grape':''">
+      <div class="flex justify-between  gap-1" :class="(isSorting)?'text-primary':''">
         {{ sortMetric }}
         <IconArrowUp
           v-if="!disabled"

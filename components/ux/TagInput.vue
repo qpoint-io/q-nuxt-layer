@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex flex-wrap gap-2 border-1 border-grey-300 px-2 pt-2 pr-0 pb-2 bg-white">
+    <div class="flex flex-wrap gap-2 border-1 border-stroke-strong px-2 pt-2 pr-0 pb-2 bg-surface">
       <UxTag
         v-for="(tag, index) in tags" :key="index"
         @remove  = "removeTag(index)">

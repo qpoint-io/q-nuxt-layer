@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex items-center text-grape text-16 font-reg cursor-pointer hover:text-black"
+    class="flex items-center text-primary text-16 font-reg cursor-pointer hover:text-content"
     :class="iconType == 'plus' ? 'gap-x-4' : 'gap-x-2'"
     @click="$emit('add')"
   >

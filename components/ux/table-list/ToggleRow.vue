@@ -5,7 +5,7 @@ This component is a wrapper for expanding entire rows to show details
 <template>
   <tr
     class   = "hover:duration-0 duration-300"
-    :class  = "(isOpen)? 'hover:bg-none' : 'hover:bg-grape-300/10 cursor-pointer'"
+    :class  = "(isOpen)? 'hover:bg-none' : 'hover:bg-primary/10 cursor-pointer'"
     v-on    = "(!isOpen)? { click: open } : {}"
   >
 

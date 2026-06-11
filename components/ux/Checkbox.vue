@@ -1,5 +1,5 @@
 <template>
-  <label class="flex items-center gap-2 text-14 text-grey-400 font-med" :for="checkboxId" v-if="label">
+  <label class="flex items-center gap-2 text-14 text-content-muted font-med" :for="checkboxId" v-if="label">
     <slot />
     {{ label }}
   </label>

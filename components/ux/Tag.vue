@@ -1,10 +1,10 @@
 <template>
-  <div class=" bg-grape-200 px-4 rounded-full inline-flex gap-2 max-h-[24px] items-center max-w-[300px]" :class="{'bg-warn': warn}">
+  <div class=" bg-primary/25 px-4 rounded-full inline-flex gap-2 max-h-[24px] items-center max-w-[300px]" :class="{'bg-signal-error': warn}">
     <div class="overflow-hidden overflow-ellipsis whitespace-nowrap ">
       <slot />
     </div>
     <div v-if="!noX" class="group p-1 rounded-4 -mr-1  cursor-pointer">
-      <UxIcon id="x" class="w-[10px] text-white group-hover:text-grape-600" :class="{'group-hover:text-warn': warn}" @click="$emit('remove')"/>
+      <UxIcon id="x" class="w-[10px] text-content group-hover:text-primary" :class="{'group-hover:text-signal-error': warn}" @click="$emit('remove')"/>
     </div>
   </div>
 </template>

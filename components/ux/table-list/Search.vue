@@ -1,9 +1,9 @@
 <template>
   <th class="text-13 px-2 select-none  border-l-1 border-r-1 first-of-type:border-l-0" :style="(!width) ? '' : `width:${width}`">
     <div>
-      <div class="_search flex justify-between capitalize" :class="(isSorting)?'text-grape':''">
+      <div class="_search flex justify-between capitalize" :class="(isSorting)?'text-primary':''">
         <slot />
-        <UxIcon id="search" class="w-4 text-grey-400" />
+        <UxIcon id="search" class="w-4 text-content-muted" />
       </div>
     </div>
   </th>
@@ -13,7 +13,7 @@
 ._search{
   @apply w-full;
   input{
-    @apply p-0 text-13 w-full border-none focus:outline-none bg-grey-100;
+    @apply p-0 text-13 w-full border-none focus:outline-none bg-surface-sunken;
   }
   input:focus{
     box-shadow: none;

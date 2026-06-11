@@ -1,5 +1,5 @@
 <template>
-  <div class="text-14 text-grey-600 leading-6">
+  <div class="text-14 text-content-muted leading-6">
     <!-- summary -->
     <div v-if="summary != '' && !isOpen">
       {{ summary }} <span class="_help-text-link" @click="isOpen = true"> More..</span>
@@ -15,7 +15,7 @@
 
 <style scoped>
 ._help-text-link{
-  @apply ml-2 text-grape font-med cursor-pointer;
+  @apply ml-2 text-primary font-med cursor-pointer;
 }
 </style>
 

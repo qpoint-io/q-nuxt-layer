@@ -5,17 +5,17 @@
     v-if="copy"
     @click="handleCopy"
   >
-    <IconCheck class="_check absolute w-4 opacity-0 text-black top-2 left-1 duration-200" />
+    <IconCheck class="_check absolute w-4 opacity-0 text-content top-2 left-1 duration-200" />
 
     <!-- Icon-only mode -->
     <IconCopy
       v-if="noText"
-      class="text-grape max-w-[20px] w-8 _copy"
+      class="text-primary max-w-[20px] w-8 _copy"
     />
 
     <!-- Icon + text mode -->
     <button v-if="!noText" :class="['inline-flex items-center gap-1 text-11', inline ? '' : 'px-2 py-1']">
-      <IconCopy class="text-grape max-w-[20px] _copy" />
+      <IconCopy class="text-primary max-w-[20px] _copy" />
       <span>{{ copied ? copiedText : copyText }}</span>
     </button>
   </div>
@@ -23,10 +23,10 @@
 
 <style scoped>
 .copied ._copy {
-  @apply text-grape-400 opacity-20;
+  @apply text-primary opacity-20;
 }
 .copied ._check {
-  @apply text-grape-400 opacity-100;
+  @apply text-primary opacity-100;
 }
 </style>
 

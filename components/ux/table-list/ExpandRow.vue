@@ -1,13 +1,13 @@
 <template>
   <!-- purple Line above -->
   <tr v-if="isOpen" >
-    <td colspan="100%" class="h-1 p-0 bg-grape" />
+    <td colspan="100%" class="h-1 p-0 bg-primary" />
   </tr>
 
   <!-- Table Row View -->
   <tr
     class  = "font-bold text-13 cursor-pointer _stretchy z-10"
-    :class = "(isOpen)? '_open-row duration-1000 bg-grape-50 hover:bg-grape-50' : 'hover:border-y-grape-600 hover:bg-white bg-white/50'"
+    :class = "(isOpen)? '_open-row duration-1000 bg-primary/10 hover:bg-primary/10' : 'hover:border-y-primary hover:bg-surface bg-surface/50'"
     @click = "onClick"
     ref    = "mainRow"
   >
@@ -15,8 +15,8 @@
   </tr>
 
   <!-- Expanded view -->
-  <tr v-if="isOpen" class="bg-[#f2f3d5] " :class="isOpen ? 'bg-grape-50' : 'bg-white'">
-    <td colspan="100%" v-if="isOpen" class="p-0 pb-6 border-1 border-grape-300">
+  <tr v-if="isOpen" class="bg-[#f2f3d5] dark:bg-primary/15" :class="isOpen ? 'bg-primary/10' : 'bg-surface'">
+    <td colspan="100%" v-if="isOpen" class="p-0 pb-6 border-1 border-primary/40">
       <UxStretchBox
         :stretchWidth="false"
         :watch="contentChanged"
@@ -30,7 +30,7 @@
           </div>
         </div>
         <UxIcon id="x"
-          class="absolute right-14 top-9 w-8 text-grey-300 hover:text-black hover:duration-0 duration-300 cursor-pointer"
+          class="absolute right-14 top-9 w-8 text-content-subtle hover:text-content hover:duration-0 duration-300 cursor-pointer"
           @click="onClick"
         />
       </UxStretchBox>
@@ -39,7 +39,7 @@
 
   <!-- purple Line below -->
   <tr v-if="isOpen" >
-    <td colspan="100%" class="h-1 p-0 bg-grape" />
+    <td colspan="100%" class="h-1 p-0 bg-primary" />
   </tr>
 </template>
 <style>
@@ -59,7 +59,7 @@
 }
 
 ._open-row td{
- @apply pl-[10px] pt-3 pb-2 border-1 border-grape-300;
+ @apply pl-[10px] pt-3 pb-2 border-1 border-primary/40;
  transition-duration: 1000ms ;
 }
 ._open-row td:first-of-type{
@@ -70,7 +70,8 @@
 }
 
 ._just-born{
-  @apply bg-[#fffef1] delay-300;
+  /* dark: tint exception — light keeps the cream flash byte-identical */
+  @apply bg-[#fffef1] dark:bg-primary/5 delay-300;
 }
 
 </style>

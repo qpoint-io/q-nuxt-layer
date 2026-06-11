@@ -1,7 +1,7 @@
 <template>
   <div
     class="box-tag font-med text-14 px-2 rounded-4 inline-block"
-    :class="(mode == 'border')? 'border-2 border-black' : 'bg-black text-white'"
+    :class="(mode == 'border')? 'border-2 border-content' : 'bg-content text-surface'"
   >
     <slot/>
   </div>

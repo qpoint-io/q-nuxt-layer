@@ -9,7 +9,7 @@
         <!-- Slot for the checkbox/radio input -->
         <slot />
         <div
-          :class="!disabled && 'peer-checked:bg-grape'"
+          :class="!disabled && 'peer-checked:bg-primary'"
           class="_toggle translate-x-0
           @apply peer-focus:outline-none rounded-full peer;
           @apply peer-checked:after:translate-x-full peer-checked:after:border-white;"
@@ -27,7 +27,7 @@
 ._toggle{
   width:  v-bind(dimmensions.bgWidth);
   height: v-bind(dimmensions.bgHeight);
-  @apply bg-gray-200;
+  @apply bg-stroke;
 }
 
 ._toggle:after{
@@ -36,13 +36,13 @@
   left: v-bind(dimmensions.padding);
   width: v-bind(dimmensions.circleSize);
   height: v-bind(dimmensions.circleSize);
-  @apply absolute bg-white border-grey-300 border rounded-full transition-all;
+  @apply absolute bg-surface border-stroke-strong border rounded-full transition-all;
 }
 
 ._perma-checked{
   @apply pointer-events-none;
   ._toggle:after{
-    @apply bg-white/50 border-none ;
+    @apply bg-surface/50 border-none ;
   }
 }
 

@@ -9,7 +9,7 @@
     <div
       v-if="($slots.icon || spin)"
       :class="[ '',
-                kind == 'stroke' ? 'text-grape group-hover:text-grape-600' : 'text-white group-hover:text-white' ]">
+                kind == 'stroke' ? 'text-primary group-hover:text-content' : 'text-white group-hover:text-white' ]">
         <IconSpinner v-if="spin" class="w-[20px] animate-spin -ml-2" style="transform-origin: 45% 50%;"></IconSpinner>
         <slot v-else name="icon" />
     </div>
