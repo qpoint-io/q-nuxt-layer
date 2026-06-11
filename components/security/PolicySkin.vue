@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative py-4 px-6 bg-white border flex flex-col gap-[7px] rounded-12 shadow-lg shrink-0"
+    class="relative py-4 px-6 bg-surface border flex flex-col gap-[7px] rounded-12 shadow-lg shrink-0"
     :style="{ borderColor, maxWidth }"
   >
     <slot />
@@ -19,11 +19,13 @@ const props = defineProps({
   ribbon:   { type: Boolean, default: true },
 })
 
+// State borders ride the signal tokens (inline style — DOM resolves var()).
+// white-list blue has no token equivalent; stays raw.
 const palette = {
-  hot:            '#ff0200',
-  warm:           '#FFB020',
-  cool:           '#49cf81',
-  default:        '#BBA5FF',
+  hot:            qp('error'),
+  warm:           qp('warning'),
+  cool:           qp('success'),
+  default:        qp('primary'),
   'white-list':   '#84CAFF',
 }
 

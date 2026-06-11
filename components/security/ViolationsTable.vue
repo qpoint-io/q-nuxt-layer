@@ -8,13 +8,13 @@
         <UxTableListSorter sortMetric="Violation" width="180px" :isSorting="sortBy === 'violation'" @sortUp="sortBy = 'violation'" @sortDown="sortBy = 'violation'" />
         <UxTableListSorter sortMetric="Time" width="180px" :isSorting="sortBy === 'time'" @sortUp="sortBy = 'time'" @sortDown="sortBy = 'time'" />
       </tr>
-      <tr><th class="h-[5px] p-0 bg-black" colspan="100%"></th></tr>
+      <tr><th class="h-[5px] p-0 bg-content" colspan="100%"></th></tr>
     </template>
 
     <tr v-for="v in violations" :key="v.id">
       <td class="px-3 py-2 text-13">
         <div class="flex items-center gap-2">
-          <div class="w-4 h-4 rounded-full bg-black" />
+          <div class="w-4 h-4 rounded-full bg-content" />
           {{ v.source }}
         </div>
       </td>
@@ -23,17 +23,17 @@
       </td>
       <td class="px-3 py-2 text-13">
         <div class="flex items-center gap-2">
-          <div class="w-4 h-4 rounded bg-green-100 flex items-center justify-center text-10 text-green-700 font-bold">S</div>
+          <div class="w-4 h-4 rounded bg-signal-success/15 flex items-center justify-center text-10 text-signal-success font-bold">S</div>
           {{ v.destination }}
         </div>
       </td>
       <td class="px-3 py-2 text-13">
         <div class="flex items-center gap-1.5">
-          <UxIcon id="no" class="w-4 h-4 text-red-500" />
+          <UxIcon id="no" class="w-4 h-4 text-signal-error" />
           {{ v.violation }}
         </div>
       </td>
-      <td class="px-3 py-2 text-13 text-grey-500">{{ v.time }}</td>
+      <td class="px-3 py-2 text-13 text-content-muted">{{ v.time }}</td>
     </tr>
   </UxTableList>
 </template>

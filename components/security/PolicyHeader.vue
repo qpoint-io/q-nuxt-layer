@@ -4,20 +4,20 @@
     <SecurityPolicySkin :state="state" maxWidth="none" class="flex-1">
       <!-- Header: name + version -->
       <div class="flex items-start justify-between leading-normal shrink-0">
-        <p class="text-20 font-bold text-black whitespace-nowrap">{{ name }}</p>
+        <p class="text-20 font-bold text-content whitespace-nowrap">{{ name }}</p>
         <div class="flex gap-[2px] items-center shrink-0">
-          <span class="text-[14px] font-bold text-grey-400 leading-none">v</span>
-          <span class="text-[16px] font-black text-black leading-none">{{ version }}</span>
+          <span class="text-[14px] font-bold text-content-muted leading-none">v</span>
+          <span class="text-[16px] font-black text-content leading-none">{{ version }}</span>
         </div>
       </div>
 
       <!-- Divider -->
-      <div class="w-full border-t border-grey-200 shrink-0" />
+      <div class="w-full border-t border-stroke shrink-0" />
 
       <!-- Description -->
       <p
         v-if="description"
-        class="text-14 text-black leading-normal shrink-0 w-full border-b border-grey-300 py-3"
+        class="text-14 text-content leading-normal shrink-0 w-full border-b border-stroke-strong py-3"
       >{{ description }}</p>
 
       <!-- Metadata row -->
@@ -36,7 +36,7 @@
     </SecurityPolicySkin>
 
     <!-- Stats row -->
-    <div class="inline-flex gap-[12px] bg-white shadow-md pt-[18px] rounded-12 px-4 self-start pb-8">
+    <div class="inline-flex gap-[12px] bg-surface shadow-md border border-stroke pt-[18px] rounded-12 px-4 self-start pb-8">
       <DataMetric_Base label="Flows Governed" :val="flowsGoverned" :spark="flowsData" :size="26" weight="800" :healthMode="() => false" :sparkMaxWidth="80" />
       <DataMetric_Base label="Compliance" :val="compliance" unit="%" :spark="complianceData" :size="26" weight="800" :healthMode="complianceHealth" :sparkMaxWidth="80" />
       <DataMetric_Base label="Violations" :val="violations" :spark="violationsData" :size="26" weight="800" :healthMode="healthModes.ZERO_TOLERANCE" :sparkMaxWidth="80" />

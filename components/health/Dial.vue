@@ -73,10 +73,14 @@
 <style scoped>
   .cls-needle {
     fill: none;
-    stroke: #000;
+    stroke: rgb(var(--qp-content));
     stroke-linecap: round;
     stroke-miterlimit: 10;
     stroke-width: 9px;
+  }
+  /* needle hub: the circle has no fill attribute and would default to black */
+  #pointer circle {
+    fill: rgb(var(--qp-content));
   }
   svg path {
     @apply duration-500 ease-in-out-quint;
@@ -90,7 +94,7 @@
   }
   ._health-dial .arc-bg {
     stroke-width: 24px;
-    @apply stroke-grey-200;
+    @apply stroke-stroke;
   }
 
   /* Hot */
@@ -98,10 +102,10 @@
     stroke: url(#health-dial-hot);
   }
   ._health-dial .hot .arc-track {
-    @apply stroke-[#ff0000];
+    @apply stroke-signal-error;
   }
   ._health-dial .hot .arc-bg {
-    @apply stroke-[#ffc2c2];
+    @apply stroke-signal-error/30;
   }
 
   /* Cool */
@@ -109,7 +113,7 @@
     stroke: url(#health-dial-cool);
   }
   ._health-dial .cool .arc-track {
-    @apply stroke-[#5bd15e];
+    @apply stroke-signal-success;
   }
 
   /* Gradient fill for background stops */
@@ -137,7 +141,7 @@
     stroke: url(#health-dial-warm);
   }
   ._health-dial .warm .arc-track {
-    @apply stroke-[#ffc368];
+    @apply stroke-signal-warning;
   }
 </style>
 

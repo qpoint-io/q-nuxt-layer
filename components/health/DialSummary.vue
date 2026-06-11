@@ -1,5 +1,5 @@
 <template>
-  <div class="inline-flex flex-col items-center w-[220px] h-[220px] bg-white rounded-full shadow-lg ml-2">
+  <div class="inline-flex flex-col items-center w-[220px] h-[220px] bg-surface border border-stroke rounded-full shadow-lg ml-2">
     <div class="w-[200px] mt-2">
       <HealthDial
         :status="status"

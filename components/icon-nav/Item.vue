@@ -1,7 +1,7 @@
 <template>
   <nuxt-link
     :to="to"
-    class="_left-nav-link flex items-center gap-4 px-2 min-h-8 group cursor-pointer hover:text-grape-700 text-black"
+    class="_left-nav-link flex items-center gap-4 px-2 min-h-8 group cursor-pointer hover:text-primary text-content"
     :class="urlMatches([basePath]) ? 'link-active' : ''"
   >
     <div class="w-10 flex items-center justify-center">
@@ -21,7 +21,7 @@
 
 <style>
 ._left-nav-link.link-active{
-  @apply text-grape-500 relative;
+  @apply text-primary relative;
 }
 ._left-nav-link.link-active ._text{
   @apply relative;
@@ -34,7 +34,7 @@
 
 ._left-nav-link.link-active ._text:after{
   content: "";
-  @apply border-b-grape-200 border-b-2 absolute block bottom-0 w-full duration-700;
+  @apply border-b-primary/40 border-b-2 absolute block bottom-0 w-full duration-700;
 }
 </style>
 

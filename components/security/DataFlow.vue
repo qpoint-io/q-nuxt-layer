@@ -38,10 +38,12 @@ const props = defineProps({
 })
 
 const palette = computed(() => {
+  // Token-backed (inline styles — DOM resolves var()); pastel tag fills
+  // become low-alpha signal tints so they read on a dark surface too.
   const palettes = {
-    red:   { dot: '#1a1a1a', line: '#dc2626', tagText: '#dc2626', tagBg: '#fef2f2' },
-    grape: { dot: '#1a1a1a', line: '#8b5cf6', tagText: '#8b5cf6', tagBg: '#f5f3ff' },
-    black: { dot: '#1a1a1a', line: '#1a1a1a', tagText: '#1a1a1a', tagBg: '#f5f5f5' },
+    red:   { dot: qp('content'), line: qp('error'),   tagText: qp('error'),   tagBg: qp('error', 0.08) },
+    grape: { dot: qp('content'), line: qp('primary'), tagText: qp('primary'), tagBg: qp('primary', 0.08) },
+    black: { dot: qp('content'), line: qp('content'), tagText: qp('content'), tagBg: qp('surface-sunken') },
   }
   return palettes[props.color] || palettes.red
 })

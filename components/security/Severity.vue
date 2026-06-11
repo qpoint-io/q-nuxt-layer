@@ -23,11 +23,13 @@ const props = defineProps({
 })
 
 const severityClasses = computed(() => {
+  // Full literal class strings (Tailwind content scanning); the /60 tier
+  // keeps the 4-step severity ladder within the signal-token vocabulary.
   const classes = {
-    critical: { circle: 'bg-red-500', text: 'text-red-700' },
-    high:     { circle: 'bg-orange-500', text: 'text-orange-700' },
-    medium:   { circle: 'bg-yellow-500', text: 'text-yellow-700' },
-    low:      { circle: 'bg-gray-400', text: 'text-gray-600' },
+    critical: { circle: 'bg-signal-error', text: 'text-signal-error' },
+    high:     { circle: 'bg-signal-warning', text: 'text-signal-warning' },
+    medium:   { circle: 'bg-signal-warning/60', text: 'text-signal-warning/80' },
+    low:      { circle: 'bg-stroke-strong', text: 'text-content-muted' },
   }
   return classes[props.severity] || classes.low
 })
