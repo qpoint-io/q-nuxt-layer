@@ -2,12 +2,12 @@
   <div :class="`border-t-6 border-t-grape py-6 lg:py-8`">
     <div class="text-32">
       <!-- Title -->
-      <h4 class="text-24 md:text-28 lg:text-32 font-bold text-grey-900 mb-4 -mt-4 ">
+      <h4 class="text-24 md:text-28 lg:text-32 font-bold text-content mb-4 -mt-4 ">
         {{ title }}
       </h4>
 
       <!-- Subtitle -->
-      <p v-if="sub" class="text-14 sm:text-16 lg:text-20 text-grey-600 leading-relaxed">
+      <p v-if="sub" class="text-14 sm:text-16 lg:text-20 text-content-muted leading-relaxed">
         {{ sub }}
       </p>
 

@@ -5,7 +5,7 @@
       <div class="hero-content">
         <h1 class="text-56 font-bold md:mb-6" v-html="title"></h1>
         <h2 class="text-18 leading-5 sm:text-20 md:text-26" v-if="subTitle" v-html="subTitle"></h2>
-        <p class="text-14 sm:text-18 md:text-20   text-grey-600 font-med leading-5 mb-4 sm:mb-8" v-html="description"></p>
+        <p class="text-14 sm:text-18 md:text-20   text-content-muted font-med leading-5 mb-4 sm:mb-8" v-html="description"></p>
         <div class="flex gap-2">
           <slot mdc-unwrap="p" />
         </div>

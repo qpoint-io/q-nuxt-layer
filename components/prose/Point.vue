@@ -23,10 +23,10 @@
           layout === '[.][+++]' || layout === '[+++][.]' ? 'w-full lg:w-1/4 lg:max-w-sm' : ''
         ]"
       >
-        <h3 class="text-24 lg:text-28 font-bold text-grey-900 mb-4">
+        <h3 class="text-24 lg:text-28 font-bold text-content mb-4">
           {{ title }}
         </h3>
-        <p class="text-16 lg:text-18 text-grey-600 leading-relaxed mb-6">
+        <p class="text-16 lg:text-18 text-content-muted leading-relaxed mb-6">
           {{ description }}
         </p>
         <a

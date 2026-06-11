@@ -7,11 +7,11 @@
       <div class="text-68 font-bold">
         {{ number }}.
       </div>
-      <h3 class="text-21 font-semi text-grey-900 mb-2" v-html="title"></h3>
+      <h3 class="text-21 font-semi text-content mb-2" v-html="title"></h3>
 
       <!-- Content -->
       <div/>
-      <p v-if="description" class="text-16 text-grey-600 leading-relaxed" v-html="description"></p>
+      <p v-if="description" class="text-16 text-content-muted leading-relaxed" v-html="description"></p>
       <slot />
     </div>
   </div>

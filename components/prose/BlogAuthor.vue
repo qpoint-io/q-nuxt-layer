@@ -8,7 +8,7 @@
       :alt="authorName"
     />
     <div class="font-semi text-15">{{ authorName }}</div>
-    <div class="italic ml-2 text-grey-400">{{ publishDate }}</div>
+    <div class="italic ml-2 text-content-subtle">{{ publishDate }}</div>
   </div>
 </template>
 

@@ -8,14 +8,14 @@
 
     <!-- Title -->
     <h2
-      class="text-30 lg:text-40 font-bold text-grey-900 leading-tight"
-      :class="border ? 'border-b-grey-300 border-b-2 pb-4' : ''"
+      class="text-30 lg:text-40 font-bold text-content leading-tight"
+      :class="border ? 'border-b-stroke-strong border-b-2 pb-4' : ''"
     >
       {{ title }}
     </h2>
 
     <!-- Description -->
-    <p v-if="description" class="text-24 font-semi text-grey-600 leading-relaxed">
+    <p v-if="description" class="text-24 font-semi text-content-muted leading-relaxed">
       {{ description }}
     </p>
 

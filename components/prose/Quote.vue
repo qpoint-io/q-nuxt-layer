@@ -22,8 +22,8 @@
 
       <!-- Text Info -->
       <div class="flex flex-col">
-        <div class="text-16 font-semi text-grey-900">{{ name }}</div>
-        <div class="text-14 text-grey-600">{{ title }} / {{ company }}</div>
+        <div class="text-16 font-semi text-content">{{ name }}</div>
+        <div class="text-14 text-content-muted">{{ title }} / {{ company }}</div>
       </div>
     </div>
   </div>
