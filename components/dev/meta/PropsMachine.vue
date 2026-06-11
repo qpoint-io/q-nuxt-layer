@@ -1,7 +1,6 @@
 <template>
-  <div class="dark bg-black bg-opacity-30 px-6 py-6 rounded-[10px] border-dashed border-1 border-grape border-opacity-25 mb-6">
-    <!-- <div class="text-grape-100 text-14 font-bold opacity-40 border-b-1 border-b-white/30 w-full mb-7">META:</div> -->
-    <div class="flex gap-6 items-end _props-machine flex-wrap font-mono font-bold text-grape dark:text-grape-200 gap-y-10 pt-4">
+  <div class="bg-surface-sunken px-6 py-6 rounded-[10px] border-dashed border-1 border-primary/25 mb-6">
+    <div class="flex gap-6 items-end _props-machine flex-wrap font-mono font-bold text-primary gap-y-10 pt-4">
       <div v-for="(val, key) of localProps" :key="key" >
         
         <!-- Boolean -->
@@ -42,7 +41,7 @@
             <div class="flex gap-2 items-center mt-2">
               <input type="range" :min="val.props.min" :max="val.props.max" v-model="localProps[key].val" />
               <!-- <div class="min-w-10">{{ localProps[key].val }}</div> -->
-              <input type="text" v-model="localProps[key].val" class="bg-white" />
+              <input type="text" v-model="localProps[key].val" class="bg-surface" />
             </div>
           </div>
 
@@ -73,13 +72,13 @@
               @click="amount = (isShiftDown)? 10 : 1; localProps[key]+= amount"
               class="p-1 opacity-25 cursor-pointer hover:opacity-100"
             >
-              <IconTriangle class="w-2 text-white" />
+              <IconTriangle class="w-2 text-content" />
             </div>
             <div
               @click="amount = (isShiftDown)? 10 : 1; localProps[key] -= amount"
               class="p-1 opacity-25 scale-y-[-1] cursor-pointer hover:opacity-100"
             >
-              <IconTriangle class="w-2 text-white" />
+              <IconTriangle class="w-2 text-content" />
             </div>
           </div>
 
@@ -91,31 +90,31 @@
 </template>
 
 <style>
-.dark ._props-machine input, 
-.dark ._props-machine input:disabled{
-  @apply text-12 h-6 border-none outline-none bg-black text-grape-200;
-  @apply focus:ring-0 focus:bg-opacity-60
+._props-machine input,
+._props-machine input:disabled{
+  @apply text-12 h-6 border-none outline-none bg-surface text-primary;
+  @apply focus:ring-0
 }
 
-.dark ._props-machine label{
-  @apply text-11 text-grey-400;
+._props-machine label{
+  @apply text-11 text-content-muted;
 }
 
-.dark ._props-machine select{
-  @apply bg-black text-grape-200 border-none;
+._props-machine select{
+  @apply bg-surface text-primary border-none;
 }
 
-.dark ._props-machine input[type="range"]{
-  @apply appearance-none bg-grape-200/20 h-1 rounded-full;
+._props-machine input[type="range"]{
+  @apply appearance-none bg-primary/20 h-1 rounded-full;
 }
 
-.dark ._props-machine input[type="range"]::-webkit-slider-thumb{
-  @apply appearance-none w-3 h-3 rounded-full bg-grape-200 cursor-pointer;
+._props-machine input[type="range"]::-webkit-slider-thumb{
+  @apply appearance-none w-3 h-3 rounded-full bg-primary cursor-pointer;
 }
 
-.dark ._props-machine input[type="range"]::-moz-range-thumb{
-  @apply appearance-none w-3 h-3 rounded-full bg-grape-200 cursor-pointer border-none;
-} 
+._props-machine input[type="range"]::-moz-range-thumb{
+  @apply appearance-none w-3 h-3 rounded-full bg-primary cursor-pointer border-none;
+}
 
 ._props-machine input:disabled{
   @apply opacity-40 pointer-events-none;

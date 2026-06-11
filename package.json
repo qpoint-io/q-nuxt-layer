@@ -26,6 +26,7 @@
     "utils/",
     "assets/css/shared.css",
     "assets/css/tokens.css",
+    "tokens/",
     "tailwind.config.js",
     "nuxt.config.ts",
     "vue/"

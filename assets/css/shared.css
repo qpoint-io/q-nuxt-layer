@@ -62,7 +62,7 @@
     @apply border-stroke-strong border-2 text-content-muted bg-transparent;
   }
   .btn-cancel:hover {
-    @apply hover:bg-transparent hover:border-grape-400;
+    @apply hover:bg-transparent hover:border-primary;
   }
 
   .btn-danger-outline {
@@ -76,7 +76,7 @@
     @apply bg-warn;
   }
   .btn-danger:hover {
-    @apply hover:bg-black;
+    @apply hover:bg-content;
   }
 
   .btn-outline {
@@ -87,7 +87,7 @@
   }
 
   .btn-outline-black {
-    @apply border-2 border-content text-grape bg-transparent;
+    @apply border-2 border-content text-primary bg-transparent;
   }
 
   /* ── Layout helpers ───────────────────────────────────────────────── */
@@ -115,7 +115,7 @@
   }
 
   ._underline {
-    @apply border-b-3 border-b-grey-300 pb-1 mb-4;
+    @apply border-b-3 border-b-stroke-strong pb-1 mb-4;
   }
 
   /* ── Surface ──────────────────────────────────────────────────────── */
