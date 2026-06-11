@@ -15,14 +15,14 @@
 
     <!-- Loading animation -->
     <div v-else-if="isLoading && val != '_blank'"  class="flex flex-col items-center justify-center p-3 relative">
-      <IconSpinner class="w-[20px] animate-spin ml-1 text-gray-300" style="transform-origin: 45% 50%; transition-duration: 5s;"></IconSpinner>
+      <IconSpinner class="w-[20px] animate-spin ml-1 text-content-subtle" style="transform-origin: 45% 50%; transition-duration: 5s;"></IconSpinner>
     </div>
   </div>
 </template>
 
 <style scoped>
   ._hot ._value{
-    @apply text-warn;
+    @apply text-signal-error;
   }
   ._value{ /* Dynamic val for 'value' size/weight */
     font-size: v-bind(fontSize);

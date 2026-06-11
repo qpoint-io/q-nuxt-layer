@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-full">
-    <div class="_bar h-full bg-grape-200" ></div>
+    <div class="_bar h-full bg-primary/25" ></div>
   </div>
 </template>
 

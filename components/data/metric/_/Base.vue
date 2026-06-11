@@ -1,5 +1,5 @@
 <template>
-  <div class="inline-block" @click="onClick" :class="(to !== '_none_')? 'cursor-pointer hover:text-grape' : ''">
+  <div class="inline-block" @click="onClick" :class="(to !== '_none_')? 'cursor-pointer hover:text-primary' : ''">
     <DataMetricLabel :label="label" v-if="label"/>
     <div class="_val flex justify-between items-baseline gap-2" :style="`margin-top: ${spaceAfterLabel}px`">
       <DataMetricValue :val="val" :unit="unit" :size="size" class="" :weight="weight" :healthMode="healthMode" :showFullNumber="showFullNumber" />
@@ -10,7 +10,7 @@
       :style="sparkMaxWidth ? `max-width: ${sparkMaxWidth}px` : ''"
       :data="spark"
       fillColor="none"
-      strokeColor="#BBA5FF"
+      :strokeColor="sparkInk"
       strokeWidth="2"
     />
   </div>
@@ -35,6 +35,9 @@ const props = defineProps({
   // optional link
   to              : { type:String, default:'_none_'},
 })
+
+// theme-reactive sparkline ink (canvas chart — needs a resolved color)
+const sparkInk = useTokenColor('primary')
 
 // use the router
 const router = useRouter()

@@ -9,11 +9,11 @@
 
 <style scoped>
 ._hot{
-  @apply text-warn;
+  @apply text-signal-error;
 }
 
 .--quiet ._text{
-  @apply text-12 font-med text-grey-500;
+  @apply text-12 font-med text-content-subtle;
 }
 
 .--small ._text{

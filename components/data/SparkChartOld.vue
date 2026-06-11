@@ -28,8 +28,8 @@
 const props = defineProps({
   data        : {type:Array, required: true},
   ceiling     : {type:Number},
-  fillColor   : {default:'black'},
-  strokeColor : {default:'black'},
+  fillColor   : {default:'currentColor'},
+  strokeColor : {default:'currentColor'},
   strokeWidth : {default:0},
   padding     : {default:0}
 })

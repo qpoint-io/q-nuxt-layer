@@ -7,7 +7,7 @@
 <style scoped>
   /* When hot, make bg red */
   ._is_hot{
-    @apply bg-warn bg-opacity-30;
+    @apply bg-signal-error/30;
   }
 </style>
 

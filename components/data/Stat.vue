@@ -4,8 +4,8 @@
     <div
       :class="[
         'border-b-4 pb-1 whitespace-nowrap',
-        size == StatSizes.SMALL ? 'text-13 font-med text-grey-400' : '',
-        size == StatSizes.MED ?   'text-13 font-med text-grey-400' : '',
+        size == StatSizes.SMALL ? 'text-13 font-med text-content-muted' : '',
+        size == StatSizes.MED ?   'text-13 font-med text-content-muted' : '',
       ]">
       <div class="-mb-1">
         {{ label }}
@@ -26,7 +26,7 @@
 
     <!-- Loading animation -->
     <div v-else-if="isLoading"  class="flex flex-col items-center justify-center p-3 relative">
-      <IconSpinner class="w-[20px] animate-spin ml-1 text-gray-300" style="transform-origin: 45% 50%; transition-duration: 5s;"></IconSpinner>
+      <IconSpinner class="w-[20px] animate-spin ml-1 text-content-subtle" style="transform-origin: 45% 50%; transition-duration: 5s;"></IconSpinner>
     </div>
 
   </div>
@@ -65,13 +65,13 @@ const formattedVal = computed(function(){
 const textColor = computed(function(){
   if( props.showHealth ){
     if(props.isHealthy)
-      return 'text-blue'
+      return 'text-signal-info'
     else
-      return 'text-[#F87F7D]'
+      return 'text-signal-error'
   }
 
 
-  return 'text-black'
+  return 'text-content'
 })
 
 const isLoading = computed(function(){

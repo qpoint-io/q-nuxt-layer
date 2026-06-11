@@ -40,7 +40,7 @@
 
       <!-------------- Loading animation -->
       <div v-else-if="isLoading"  class="flex flex-col items-center justify-center  relative">
-        <IconSpinner class="w-[20px] animate-spin ml-1 text-gray-300" style="transform-origin: 45% 50%; transition-duration: 5s;"></IconSpinner>
+        <IconSpinner class="w-[20px] animate-spin ml-1 text-content-subtle" style="transform-origin: 45% 50%; transition-duration: 5s;"></IconSpinner>
       </div>
 
 
@@ -52,7 +52,7 @@
 
 /* Styles for using as a radio button */
 .isChecked ._value-line{
-  @apply bg-grape-500  text-white rounded-6 px-2 duration-0;
+  @apply bg-primary  text-on-primary rounded-6 px-2 duration-0;
 }
 
 .isChecked ._value-line::before,
@@ -62,26 +62,26 @@
 }
 
 .isChecked ._value-line::before{
-  @apply rounded-full bg-grape-500 right-[10px];
+  @apply rounded-full bg-primary right-[10px];
   top: calc(100% + 20px);
   width: 11px;
   height: 11px;
 }
 .isChecked ._value-line::after{
-  @apply border-r-3 border-r-grape-500 top-full right-[14px];
+  @apply border-r-3 border-r-primary top-full right-[14px];
   height: 20px;
 }
 
 .isChecked ._value{
-  @apply  text-white duration-0;
+  @apply  text-on-primary duration-0;
 }
 
 .isChecked ._metric{
-  @apply  text-white duration-0;
+  @apply  text-on-primary duration-0;
 }
 
 .isChecked ._label{
-  @apply  text-grape duration-0;
+  @apply  text-primary duration-0;
 }
 
 .fitHeight{
@@ -137,22 +137,22 @@ const formattedVal = computed(function(){
 const textColor = computed(function(){
   if( props.showHealth ){
     if(props.isHealthy)
-      return 'text-black'
+      return 'text-content'
     else
-      return 'text-[#F87F7D]'
+      return 'text-signal-error'
   }
-  return 'text-black'
+  return 'text-content'
 })
 
 // Dynamic text color - used to denote health
 const metricColor = computed(function(){
   if( props.showHealth ){
     if(props.isHealthy)
-      return 'text-grey-400'
+      return 'text-content-muted'
     else
-      return 'text-[#F87F7D]'
+      return 'text-signal-error'
   }
-  return 'text-grey-400'
+  return 'text-content-muted'
 })
 
 // Is loading..

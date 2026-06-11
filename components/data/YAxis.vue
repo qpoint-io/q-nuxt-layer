@@ -5,8 +5,8 @@
       <!-- TODO : standardize border styles -->
       <div
         v-for="i in stops+2" :key="i"
-        class="border-b-1 border-b-black/20 relative" >
-          <div class="absolute top-[-10px] text-12 font-med text-grey-400" style="right: calc(100% + 6px)">{{ getStopValue(i) }}</div>
+        class="border-b-1 border-b-content/20 relative" >
+          <div class="absolute top-[-10px] text-12 font-med text-content-muted" style="right: calc(100% + 6px)">{{ getStopValue(i) }}</div>
       </div>
     </div>
   </div>
@@ -17,7 +17,7 @@
   content:"";
   height:calc(100% + 30px);
   top:-15px;
-  @apply w-full block absolute border-l-3 border-l-black border-r-3 border-r-black;
+  @apply w-full block absolute border-l-3 border-l-content border-r-3 border-r-content;
 }
 </style>
 

@@ -9,7 +9,7 @@
       class="h-[30px] "
       :data="spark"
       fillColor="none"
-      strokeColor="#BBA5FF"
+      :strokeColor="sparkInk"
       strokeWidth="2"
     />
   </div>
@@ -18,12 +18,15 @@
 <style scoped>
 
 .temp_hot ._val{
-    @apply text-warn;
+    @apply text-signal-error;
   }
 
 </style>
 
 <script setup>
+// theme-reactive sparkline ink (canvas chart — needs a resolved color)
+const sparkInk = useTokenColor('primary')
+
 const props = defineProps({
   label : { type: String },
   val   : { type: String },

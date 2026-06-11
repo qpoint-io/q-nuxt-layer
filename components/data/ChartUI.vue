@@ -41,6 +41,14 @@ const props = defineProps({
 // Determine which chart component to use
 const chartType = computed(() => props.type === 'bar' ? Bar : Line);
 
+// Theme-reactive chart ink — canvas can't resolve CSS var() strings, so
+// these resolve to concrete colors and re-evaluate on theme toggle,
+// which changes the options/data identity and triggers a chart update.
+const tickColor   = useTokenColor('content-muted');
+const lineColor   = useTokenColor('primary');
+const fillColor   = useTokenColor('primary', 0.2);
+const pointAccent = useTokenColor('surface');
+
 // customize the chart
 const options = computed(() => ({
   animation: {
@@ -70,7 +78,7 @@ const options = computed(() => ({
         font: {
           size: props.compact ? 8 : 12
         },
-        color: '#666',
+        color: tickColor.value,
         callback: function (value, index, values) {
           // is this compact mode?
           if (props.compact) {
@@ -96,7 +104,7 @@ const options = computed(() => ({
         font: {
           size: props.compact ? 8 : 12
         },
-        color: '#666',
+        color: tickColor.value,
         callback: function (value) {
           if (props.unit === 'bytes') {
             const { value: val, unit } = formatBytes(Number(value));
@@ -118,15 +126,15 @@ const options = computed(() => ({
     line: {
       borderWidth: 3,
       fill: true,
-      backgroundColor: 'rgba(153, 102, 255, 0.2)', // Light purple area under line
-      borderColor: 'rgb(153, 102, 255)', // Purple line color
+      backgroundColor: fillColor.value, // primary area under line
+      borderColor: lineColor.value,
       tension: 0.1,
       pointRadius: 0,
-      pointBackgroundColor: 'rgb(153, 102, 255)',
-      pointBorderColor: '#fff',
+      pointBackgroundColor: lineColor.value,
+      pointBorderColor: pointAccent.value,
       pointHoverRadius: 8,
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgb(153, 102, 255)',
+      pointHoverBackgroundColor: pointAccent.value,
+      pointHoverBorderColor: lineColor.value,
       pointStyle: 'circle',
     },
     point: {
@@ -136,8 +144,8 @@ const options = computed(() => ({
     },
     bar: {
       borderWidth: props.compact ? 0 : 2,
-      backgroundColor: 'rgba(153, 102, 255, 0.2)',
-      borderColor: 'rgb(153, 102, 255)', // Purple line color
+      backgroundColor: fillColor.value,
+      borderColor: lineColor.value,
     }
   }
 }));

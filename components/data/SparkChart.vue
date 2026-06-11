@@ -27,11 +27,15 @@ ChartJS.register(
 const props = defineProps({
   data        : { type: Array, default: [] },
   ceiling     : { type: Number },
-  fillColor   : { default: 'black' },
-  strokeColor : { default: 'black' },
+  fillColor   : { default: undefined },
+  strokeColor : { default: undefined },
   strokeWidth : { default: 1 },
   padding     : { default: 0 },
 });
+
+// Theme-reactive default ink — canvas can't resolve var() or currentColor,
+// so unset color props fall back to the resolved content token.
+const defaultInk = useTokenColor('content');
 
 // compute the point key
 const key = computed(() => {
@@ -96,8 +100,8 @@ const options = computed(() => ({
   elements: {
     line: {
       borderWidth: props.strokeWidth,
-      borderColor: props.strokeColor, // Line color
-      backgroundColor: props.fillColor, // Fill color
+      borderColor: props.strokeColor ?? defaultInk.value, // Line color
+      backgroundColor: (props.fillColor ?? defaultInk.value), // Fill color
       fill: (props.fillColor == 'none') ? false : true,
       tension: 0.1, // Smoothness of the line
       pointRadius: 0 // Hide the points

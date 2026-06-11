@@ -19,7 +19,7 @@
     >
       <div
         v-for="(line, index) in linesAr.section" :key="index"
-        class="border-l-1 border-l-black/20"
+        class="border-l-1 border-l-content/20"
         :class="`border-l-${line}`"
       />
     </div>

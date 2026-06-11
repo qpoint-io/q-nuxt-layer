@@ -4,7 +4,7 @@
       <DataMetricPercentBar v-if="percent" :percent="percent" class="absolute z-0 max-h-4 " :healthMode="healthMode"/>
       <div class="flex gap-2">
         <DataMetricValue :val="val" :unit="unit" :size="14" class="z-1 relative" :healthMode="healthMode"/>
-        <div class="text-13 text-gray-500 z-1 relative">{{ label }}</div>
+        <div class="text-13 text-content-subtle z-1 relative">{{ label }}</div>
       </div>
       <DataMetricTrend v-if="trend" :change="trend" :unit="unit" class="z-1 relative" :healthMode="healthMode" />
     </div>
@@ -13,7 +13,7 @@
         class="max-h-4"
         :data="spark"
         fillColor="none"
-        strokeColor="#BBA5FF"
+        :strokeColor="sparkInk"
         strokeWidth="2"
       />
     </div>
@@ -29,6 +29,9 @@
 </style>
 
 <script setup>
+// theme-reactive sparkline ink (canvas chart — needs a resolved color)
+const sparkInk = useTokenColor('primary')
+
 const props = defineProps({
   percent : { type: Number },
   val     : { type: Number },
