@@ -17,7 +17,7 @@
           {{ title }}
         </div>
         <div class="not-italic text-12" v-if="route">
-          <span class="text-grey-300">App route:</span> {{ route }}
+          <span class="text-content-subtle">App route:</span> {{ route }}
         </div>
       </DevH> -->
 

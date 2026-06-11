@@ -3,6 +3,44 @@
 > Audit of all 137 component files (+ shared.css) against the c2 semantic-token system.
 > Date: 2026-06-11 · Branch: `dark-mode` · Conversion rules: `cycles/c2.dark-mode/plan.md` Phase 6.
 
+## ✅ CONVERSION COMPLETE (2026-06-11)
+
+All 86 components below were converted in waves W1–W7 (one commit each on
+`dark-mode`; see `git log --oneline --grep "dark mode W"`). Implementation
+notes that supersede details below:
+
+- **New helper `composables/useTokenColor.ts`** — `qp(role, alpha?)` static
+  var-strings for DOM/SVG/inline styles; `useTokenColor(role, alpha?)`
+  reactive resolved colors for canvas/Chart.js (canvas can't resolve `var()`);
+  SSR falls back to light values from `tokens/semantic.mjs` (now shipped via
+  package.json `files`). SVG **presentation attributes** can't resolve
+  `var()` either — bind via `:style`, not `:fill` (see PolicyRibbon).
+- **Light-preserving deviations:** `border-black`/`bg-black` ink →
+  `border-content`/`bg-content` (not `stroke-strong`) in sentence/*,
+  SmallHeader, YAxis, Timeline, ViolationsTable, Avatar, BoxTag — keeps
+  near-black in light, flips near-white in dark.
+- **Severity ladders:** Severity.vue and SummaryItem.vue map their 4-tier
+  scales onto `signal-error / signal-warning / signal-warning/60 /
+  signal-success|stroke-strong` as full literal class strings.
+- **dev/Control\* family:** tokenized as `rgb(var(--qp-<role>, <original
+  channels>))` — qflow/qmap (no tokens.css) keep the exact dark-navy look
+  via fallbacks; token consumers follow the theme. Contract documented in
+  `vue/dev-controls/index.js`.
+- **Sanctioned `dark:` inventory** (the only allowed sites):
+  `_shadow-box` (shared.css), `ux/HoverBox` lifted card, `ExpandRow` ×2
+  flash tints, and the `.dark ._qp-select-caret` data-URI swap in
+  SimpleSelect.
+- **Intentional keeps:** Button filled kind (brand grape), Modal backdrop
+  scrim (`bg-black/25`), Dial gauge gradients + PolicyRibbon hot/warm/cool
+  two-tone pairs + PolicySkin/Ribbon white-list `#84CAFF` (beyond token
+  vocabulary), prose/ brand-grape accents, dev/Comment code-blue,
+  ControlColor's `#ffffff` data default.
+- **Post-audit arrivals (NOT converted — added to the repo after this
+  audit):** `prose/Callout.vue`, `ux/CardLink.vue`, `ux/Code.vue`,
+  `ux/CodeBlock.vue` — raw palette classes (`bg-white`, `bg-grey-100`,
+  `bg-amber-100`, grape/leaf accents). Convert with the same mapping when
+  they stabilize.
+
 ## Scoreboard
 
 | Status | Count | Meaning |
