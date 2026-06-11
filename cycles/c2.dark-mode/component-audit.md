@@ -35,11 +35,14 @@ notes that supersede details below:
   two-tone pairs + PolicySkin/Ribbon white-list `#84CAFF` (beyond token
   vocabulary), prose/ brand-grape accents, dev/Comment code-blue,
   ControlColor's `#ffffff` data default.
-- **Post-audit arrivals (NOT converted — added to the repo after this
-  audit):** `prose/Callout.vue`, `ux/CardLink.vue`, `ux/Code.vue`,
-  `ux/CodeBlock.vue` — raw palette classes (`bg-white`, `bg-grey-100`,
-  `bg-amber-100`, grape/leaf accents). Convert with the same mapping when
-  they stabilize.
+- **Post-audit arrivals — converted (2026-06-11, after the user finished
+  them):** `ux/BackLink`, `ux/CardLink`, `ux/Code`, `ux/CodeBlock`,
+  `ux/FilterGroup`, `ux/Pill`, `prose/Callout`, `dev/PatternCard`.
+  Already token-native as authored (no changes needed): `ux/Select`,
+  `ux/Table`, `data/metric/_/Card`. Additional intentional keeps from this
+  set: CodeBlock's `theme=dark` chrome (grey-800/900 code panel is
+  deliberately dark on both page themes, its raw grey label text included),
+  Callout's grape/leaf brand accents.
 
 ## Scoreboard
 

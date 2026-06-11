@@ -29,6 +29,14 @@ Auto-imported with the `Ux` prefix:
 | `UxIcon` | Dynamic SVG loader (project provides icons) |
 | `UxLabelText` | Two-line display: small grey label + bold value |
 | `UxSimpleSelect` | Minimal borderless native `<select>` with v-model |
+| `UxSelect` | Bordered native `<select>` form control with theme-aware caret |
+| `UxCardLink` | Card-as-link with grape hover border; static card when no `to` |
+| `UxBackLink` | Standard "← Back to X" link for detail pages |
+| `UxCode` | Inline code span (mono, grey chip, 0.9em); `warn` tone |
+| `UxCodeBlock` | Code block with copy button, optional collapse, dark/light themes |
+| `UxPill` | Read-only toned badge (grape/leaf/grey/warn) |
+| `UxFilterGroup` | Toggle-button filter/switcher group (single, multiple, required modes) |
+| `UxTable` | Static doc table styling slotted thead/tbody (line/band variants) |
 
 ### Icons (`components/icon/`)
 
@@ -103,6 +111,7 @@ Documentation and dev tools, auto-imported with the `Dev` prefix:
 | `DevControlSelect` | Dropdown select with normalized options |
 | `DevControlSection` | Collapsible section container with title |
 | `DevControls` | Top-level control panel with show/hide toggle |
+| `DevPatternCard` | Pattern-doc scaffold: name/description/when slots, live example, copyable code |
 
 ### Nav Components
 
