@@ -18,7 +18,7 @@
         <UxTableListExpandRow v-for="(row, i) in sorted" :key="rk(row, i)">
           <td v-for="c in columns" :key="c.key" :class="cellClass(c)">
             <slot :name="c.key" :row="row" :value="row[c.key]">
-              <UxPill v-if="c.pill && !slots[c.key]" :tone="toneFor(row[c.key])">{{ row[c.key] }}</UxPill>
+              <UxPill v-if="c.pill && row[c.key] != null" :tone="toneFor(row[c.key])">{{ row[c.key] }}</UxPill>
               <span v-else>{{ row[c.key] ?? '—' }}</span>
             </slot>
           </td>
@@ -39,7 +39,7 @@
         >
           <td v-for="c in columns" :key="c.key" :class="cellClass(c)">
             <slot :name="c.key" :row="row" :value="row[c.key]">
-              <UxPill v-if="c.pill && !slots[c.key]" :tone="toneFor(row[c.key])">{{ row[c.key] }}</UxPill>
+              <UxPill v-if="c.pill && row[c.key] != null" :tone="toneFor(row[c.key])">{{ row[c.key] }}</UxPill>
               <span v-else>{{ row[c.key] ?? '—' }}</span>
             </slot>
           </td>
@@ -52,6 +52,14 @@
 </template>
 
 <script setup lang="ts">
+// The DataTable pattern: sortable UxTableListColumnHeader, the signature heavy
+// header rule (bg-content, token-themed), uniform `px-3 py-2 text-14` cells
+// (mono for numeric/code columns). Cells render via per-column named slots
+// (#<key>), with two convenience defaults: plain text, or — when a column sets
+// `pill: true` — a tone-mapped UxPill (leaf by default, warn for High/Critical/
+// Blocked). Pass a #details slot to make rows expandable (UxTableListExpandRow);
+// otherwise rows are plain and `onRow` handles clicks.
+// Unifies qdash's DataTable and the design site's PermissionTable (c50/c51).
 import { ref, computed, useSlots } from 'vue'
 
 type Col = {
