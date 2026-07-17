@@ -1,0 +1,133 @@
+<template>
+  <div class="mb-4 overflow-x-auto">
+    <h3 v-if="title" class="text-16 font-bold text-content mb-3">{{ title }}</h3>
+    <UxTableList :compact="false">
+      <template #header>
+        <tr>
+          <UxTableListColumnHeader
+            v-for="(c, i) in columns" :key="c.key"
+            :metric="metrics[i]" :sortBy="sortBy"
+            @sortUp="onSort(c.label, 'up')" @sortDown="onSort(c.label, 'down')"
+          />
+        </tr>
+        <tr><th class="h-[5px] p-0 bg-content" colspan="100%"></th></tr>
+      </template>
+
+      <!-- expandable rows -->
+      <template v-if="expandable">
+        <UxTableListExpandRow v-for="(row, i) in sorted" :key="rk(row, i)">
+          <td v-for="c in columns" :key="c.key" :class="cellClass(c)">
+            <slot :name="c.key" :row="row" :value="row[c.key]">
+              <UxPill v-if="c.pill && !slots[c.key]" :tone="toneFor(row[c.key])">{{ row[c.key] }}</UxPill>
+              <span v-else>{{ row[c.key] ?? '—' }}</span>
+            </slot>
+          </td>
+          <template #details>
+            <div class="p-6 bg-surface shadow-lg rounded-12">
+              <slot name="details" :row="row" />
+            </div>
+          </template>
+        </UxTableListExpandRow>
+      </template>
+
+      <!-- plain rows -->
+      <template v-else>
+        <tr
+          v-for="(row, i) in sorted" :key="rk(row, i)"
+          :class="onRow ? 'cursor-pointer hover:bg-surface-sunken' : ''"
+          @click="onRow && onRow(row)"
+        >
+          <td v-for="c in columns" :key="c.key" :class="cellClass(c)">
+            <slot :name="c.key" :row="row" :value="row[c.key]">
+              <UxPill v-if="c.pill && !slots[c.key]" :tone="toneFor(row[c.key])">{{ row[c.key] }}</UxPill>
+              <span v-else>{{ row[c.key] ?? '—' }}</span>
+            </slot>
+          </td>
+        </tr>
+      </template>
+
+      <template #empty>{{ empty || 'No data yet.' }}</template>
+    </UxTableList>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, useSlots } from 'vue'
+
+type Col = {
+  key: string
+  label: string
+  width?: string
+  num?: boolean
+  mono?: boolean
+  search?: boolean
+  sortable?: boolean
+  pill?: boolean
+}
+
+const props = defineProps<{
+  title?: string
+  columns: Col[]
+  rows: any[]
+  empty?: string
+  onRow?: (r: any) => void
+  initialSort?: string
+  rowKey?: string
+}>()
+
+const slots = useSlots()
+const expandable = computed(() => !!slots.details)
+
+const sortBy = ref(props.initialSort || '')
+const dir = ref<'up' | 'down'>('down')
+const search = ref('')
+
+const metrics = computed(() =>
+  props.columns.map((c) => ({
+    name: c.label,
+    width: c.width,
+    search: c.search ? (n: string) => (search.value = n) : undefined,
+  })),
+)
+
+function onSort(label: string, d: 'up' | 'down') {
+  sortBy.value = label
+  dir.value = d
+}
+
+const sorted = computed(() => {
+  let r = [...(props.rows || [])]
+  const q = search.value.trim().toLowerCase()
+  if (q) r = r.filter((row) => Object.values(row).join(' ').toLowerCase().includes(q))
+  const col = props.columns.find((c) => c.label === sortBy.value)
+  if (col && col.sortable !== false) {
+    const k = col.key,
+      s = dir.value === 'up' ? 1 : -1
+    r.sort((a, b) => {
+      const x = a[k],
+        y = b[k]
+      return typeof x === 'string' || typeof y === 'string'
+        ? s * String(x ?? '').localeCompare(String(y ?? ''))
+        : s * ((x || 0) - (y || 0))
+    })
+  }
+  return r
+})
+
+const cellClass = (c: Col) => [
+  'px-3 py-2 text-14',
+  c.num ? 'font-mono' : c.mono ? 'font-mono' : '',
+]
+
+const rk = (row: any, i: number) => (props.rowKey ? row[props.rowKey] : i)
+
+// Tone map for pill rendering: map values to tone names for UxPill.
+// Default to 'leaf' (green); flag High/Critical/Blocked states as 'warn' (orange).
+const toneMap: Record<string, string> = {
+  High: 'warn',
+  Critical: 'warn',
+  Blocked: 'warn',
+}
+
+const toneFor = (val: any) => toneMap[String(val)] || 'leaf'
+</script>
