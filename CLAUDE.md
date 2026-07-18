@@ -37,6 +37,7 @@ Auto-imported with the `Ux` prefix:
 | `UxPill` | Read-only toned badge (grape/leaf/grey/warn) |
 | `UxFilterGroup` | Toggle-button filter/switcher group (single, multiple, required modes) |
 | `UxTable` | Static doc table styling slotted thead/tbody (line/band variants) |
+| `UxPageTitle` | Page header: optional breadcrumb trail + large title, hairline underline; `right`/`far-right`/`chin`/`chin-right` slots, `backText` + `@back`. Nuxt-only (`<NuxtLink>`) |
 
 ### Icons (`components/icon/`)
 

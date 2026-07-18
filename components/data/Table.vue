@@ -1,6 +1,6 @@
 <template>
   <div class="mb-4 overflow-x-auto">
-    <h3 v-if="title" class="text-16 font-bold text-content mb-3">{{ title }}</h3>
+    <h3 v-if="title" class="text-20 font-bold text-content pb-2 mb-1 border-b-2 border-b-content/10">{{ title }}</h3>
     <UxTableList :compact="false">
       <template #header>
         <tr>
@@ -46,7 +46,11 @@
         </tr>
       </template>
 
-      <template #empty>{{ empty || 'No data yet.' }}</template>
+      <template #empty>
+        <div class="flex items-center h-40 w-full bg-grey-200 justify-center rounded-10">
+          {{ empty || 'No data yet.' }}
+        </div>
+      </template>
     </UxTableList>
   </div>
 </template>
