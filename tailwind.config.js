@@ -125,10 +125,12 @@ export default {
         // generated from tokens/semantic.mjs), flip under `.dark`. Channel
         // form keeps opacity utilities working (bg-surface/50).
         surface:           'rgb(var(--qp-surface) / <alpha-value>)',
+        'surface-sunken-subtle': 'rgb(var(--qp-surface-sunken-subtle) / <alpha-value>)',
         'surface-sunken':  'rgb(var(--qp-surface-sunken) / <alpha-value>)',
         content:           'rgb(var(--qp-content) / <alpha-value>)',
         'content-muted':   'rgb(var(--qp-content-muted) / <alpha-value>)',
         'content-subtle':  'rgb(var(--qp-content-subtle) / <alpha-value>)',
+        'content-subtler': 'rgb(var(--qp-content-subtler) / <alpha-value>)',
         stroke:            'rgb(var(--qp-stroke) / <alpha-value>)',
         'stroke-strong':   'rgb(var(--qp-stroke-strong) / <alpha-value>)',
         primary:           'rgb(var(--qp-primary) / <alpha-value>)',

@@ -4,10 +4,12 @@
 
 :root {
   --qp-surface: 255 255 255;
+  --qp-surface-sunken-subtle: 250 250 250;
   --qp-surface-sunken: 245 245 245;
   --qp-content: 43 42 42;
   --qp-content-muted: 86 84 84;
   --qp-content-subtle: 122 123 124;
+  --qp-content-subtler: 212 212 212;
   --qp-stroke: 232 232 232;
   --qp-stroke-strong: 212 212 212;
   --qp-primary: 137 90 232;
@@ -20,10 +22,12 @@
 
 .dark {
   --qp-surface: 17 17 17;
+  --qp-surface-sunken-subtle: 22 21 21;
   --qp-surface-sunken: 26 25 25;
   --qp-content: 245 245 245;
   --qp-content-muted: 170 170 170;
   --qp-content-subtle: 122 123 124;
+  --qp-content-subtler: 212 212 212;
   --qp-stroke: 57 57 57;
   --qp-stroke-strong: 86 84 84;
   --qp-primary: 171 134 246;
