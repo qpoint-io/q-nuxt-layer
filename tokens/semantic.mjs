@@ -16,6 +16,7 @@ export const semantic = {
   surface:          { light: '#FFFFFF', dark: '#111111' }, // dark: grey-900
   'surface-sunken-subtle': { light: '#FAFAFA', dark: '#161515' }, // light: grey-50; barely recessed, between surface & sunken
   'surface-sunken': { light: '#F5F5F5', dark: '#1A1919' }, // light: grey-100
+  'surface-sunken-deeper': { light: '#e6e6e6', dark: '#1F1E1E' }, // light: grey-200/60 over white; deepest recess
   content:          { light: '#2B2A2A', dark: '#F5F5F5' }, // grey-800 / grey-100
   'content-muted':  { light: '#565454', dark: '#AAAAAA' }, // grey-600 / grey-350
   'content-subtle': { light: '#7A7B7C', dark: '#7A7B7C' }, // grey-500 both

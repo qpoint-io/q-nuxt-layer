@@ -127,6 +127,7 @@ export default {
         surface:           'rgb(var(--qp-surface) / <alpha-value>)',
         'surface-sunken-subtle': 'rgb(var(--qp-surface-sunken-subtle) / <alpha-value>)',
         'surface-sunken':  'rgb(var(--qp-surface-sunken) / <alpha-value>)',
+        'surface-sunken-deeper': 'rgb(var(--qp-surface-sunken-deeper) / <alpha-value>)',
         content:           'rgb(var(--qp-content) / <alpha-value>)',
         'content-muted':   'rgb(var(--qp-content-muted) / <alpha-value>)',
         'content-subtle':  'rgb(var(--qp-content-subtle) / <alpha-value>)',
