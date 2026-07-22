@@ -36,6 +36,7 @@ Auto-imported with the `Ux` prefix:
 | `UxCodeBlock` | Code block with copy button, optional collapse, dark/light themes |
 | `UxPill` | Read-only toned badge (grape/leaf/grey/warn) |
 | `UxFilterGroup` | Toggle-button filter/switcher group (single, multiple, required modes) |
+| `UxTabGroup` | Joined-segment tab switcher with heavy underline and right-action slot |
 | `UxTable` | Static doc table styling slotted thead/tbody (line/band variants) |
 | `UxPageTitle` | Page header: optional breadcrumb trail + large title, hairline underline; `right`/`far-right`/`chin`/`chin-right` slots, `backText` + `@back`. Nuxt-only (`<NuxtLink>`) |
 
@@ -94,6 +95,18 @@ Auto-imported with the `Security` prefix:
 | `SecurityPolicySkin` | Policy skin wrapper |
 | `SecurityViolationsTable` | Violations table |
 | `SecuritySeverity` | Severity badge (circle + label) |
+
+### Policy Components (`components/policy/`)
+
+Table-cell building blocks for policy-enforcement UIs (extracted from design's c54 Policy & Enforcement v2 mock), auto-imported with the `Policy` prefix:
+
+| Component | Description |
+|-----------|-------------|
+| `PolicySummaryCell` | Toggle + name + description + Details link + Beta pill (left table column) |
+| `PolicyValueSelect` | Value set at this cascade level: minimal select (UxSimpleSelect) + Configure.. + optional ⊕ |
+| `PolicyOverrideStack` | Inherited cascade value: purple label + dashed "+ Override" button |
+| `PolicyCoverageCell` | Framework coverage cell: Required + ✔ Active / red ! Required / dash |
+| `PolicyCompletenessCell` | Mini progress bar over "84% · 14 / 18 · Controls" |
 
 ### Dev Components (`components/dev/`)
 
