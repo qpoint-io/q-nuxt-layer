@@ -192,39 +192,36 @@ export default defineNuxtConfig({
 
 ## Releasing
 
-A release has two outputs: a **GitHub Packages publish** (for CI/production builds) and a **local tarball** (for `file:` consumers during dev). Both happen in one flow.
+All consumers declare `"@qpoint-io/q-nuxt-layer": "latest"` and install from **GitHub Packages** (the `file:` tarball flow is retired). A release is: bump → tag-push (CI publishes) → refresh consumer lockfiles.
 
 ### Full release steps
 
 ```bash
 # 1. Bump version
-npm version patch           # or minor/major — updates package.json + package-lock.json
+npm version patch --no-git-tag-version   # or minor/major — updates package.json + package-lock.json
 
-# 2. Build local tarball (for file: consumers)
-npm pack                    # produces qpoint-io-q-nuxt-layer-<version>.tgz
-
-# 3. Commit, tag, push
+# 2. Commit, tag, push
 git add package.json package-lock.json
 git commit -m "v<version>: <summary>"
 git tag v<version>
 git push && git push --tags # Tag push triggers .github/workflows/publish.yml
 
-# 4. Update consumers (design, bob-wire, and any others using file: tarball)
-cd ../design
-npm install @qpoint-io/q-nuxt-layer@file:../q-nuxt-layer/qpoint-io-q-nuxt-layer-<version>.tgz
-# repeat for each consumer
+# 3. Refresh consumer lockfiles (after CI publishes — check Actions)
+./scripts/update-consumers.sh   # runs `npm update @qpoint-io/q-nuxt-layer` in each consumer
 ```
 
-### Why both tarball and GitHub Packages?
+### Why the lockfile refresh?
 
-- **GitHub Packages** (`npm publish` via GitHub Actions) — used by Cloudflare Pages CI builds, which pull from the registry
-- **Local tarball** (`file:` in `package.json`) — used for TypeScript type resolution and production builds without `NUXT_LOCAL_LAYER`. npm caches `file:` tarballs by version, not content hash, so you must run the explicit `npm install @qpoint-io/q-nuxt-layer@file:...` command to force the lock file integrity hash to update
+npm resolves `"latest"` at install time and pins the result (version + integrity) in each
+consumer's lockfile — it does **not** float. `scripts/update-consumers.sh` re-resolves the
+pin in design, bob-wire, app.qpoint.io, www.qpoint.io, and qcontrol's qdash UI. Requires
+`GITHUB_TOKEN` (read:packages) in the environment. Commit the lockfile changes in each
+consumer repo.
 
 ### Important
 
-- `npm version` with `--no-git-tag-version` if you want to control the commit/tag yourself
-- The tarball is **not needed for local dev** when using `NUXT_LOCAL_LAYER` — layer changes are live via HMR
-- Old tarballs can be deleted after consumers are updated
+- The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
+- A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
 
 ## Authentication
 
