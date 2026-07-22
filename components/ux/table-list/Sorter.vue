@@ -29,7 +29,7 @@ const props = defineProps({
   isHot     : {type:Boolean, default:false},
   isSorting : {type:Boolean},
   disabled  : {type:Boolean},
-  width     : {type:String}, // optional
+  width     : {type:String, default:'1%'}, // '1%' shrinks the column to its content; pass a px/percent value to size explicitly
   align     : {type:String}, // optional
 })
 

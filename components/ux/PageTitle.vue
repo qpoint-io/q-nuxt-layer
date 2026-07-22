@@ -63,7 +63,7 @@ const props = defineProps({
   // String → plain (unlinked) crumb. Object → { title, to } linked crumb.
   // Pass an array to combine several.
   breadcrumb : { type: [String, Array, Object] },
-  titleSize  : { type: Number, default: 24 },   // px — bump for hero detail-page titles
+  titleSize  : { type: Number, default: 28 },   // px — bump for hero detail-page titles
 
 })
 

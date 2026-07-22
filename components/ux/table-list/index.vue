@@ -8,7 +8,11 @@
 
       <!-- content -->
       <!-- <UxTableListLoader :isLoading="isLoadingTop" /> -->
-      <slot/>
+      <!-- tbody wrapper matters for SSR: without it the browser inserts an
+           implicit tbody while parsing, and hydration mismatches. -->
+      <tbody>
+        <slot/>
+      </tbody>
       <!-- <UxTableListLoader :isLoading="isLoadingBottom" /> -->
     </table>
 
