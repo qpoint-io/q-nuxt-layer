@@ -103,7 +103,7 @@ Table-cell building blocks for policy-enforcement UIs (extracted from design's c
 | Component | Description |
 |-----------|-------------|
 | `PolicySummaryCell` | Toggle + name + description + Details link + Beta pill (left table column) |
-| `PolicyValueSelect` | Value set at this cascade level: minimal select (UxSimpleSelect) + Configure.. + optional ⊕ |
+| `PolicyValueSelect` | Value set at this cascade level: minimal select (UxSimpleSelect) + Config.. + optional ✕ (`deletable` → `delete`); compose ⊕ outside |
 | `PolicyOverrideStack` | Inherited cascade value: purple label + dashed "+ Override" button |
 | `PolicyCoverageCell` | Framework coverage cell: Required + ✔ Active / red ! Required / dash |
 | `PolicyCompletenessCell` | Mini progress bar over "84% · 14 / 18 · Controls" |

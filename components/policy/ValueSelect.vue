@@ -1,40 +1,36 @@
 <template>
-  <div class="flex items-start gap-2.5">
-    <div class="flex  items-center gap-3">
-      <div class="border-1 rounded-4 border-grape px-2">
-        <UxSimpleSelect
-          :model-value="value"
-          class="text-content"
-          @update:model-value="$emit('update:value', $event)"
-        >
-          <option v-for="o in options" :key="o">{{ o }}</option>
-        </UxSimpleSelect>
-      </div>
-      <button class="text-12 font-semi leading-none text-grape-500">Config..</button>
+  <div class="flex items-center gap-3">
+    <div class="border-1 rounded-4 border-grape px-2">
+      <UxSimpleSelect
+        :model-value="value"
+        class="text-content"
+        @update:model-value="$emit('update:value', $event)"
+      >
+        <option v-for="o in options" :key="o">{{ o }}</option>
+      </UxSimpleSelect>
     </div>
-    <slot />
+    <button class="text-12 font-semi leading-none text-grape-500">Config..</button>
     <button
-      v-if="add"
-      class="mt-1 flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full border border-grape-400 bg-surface text-content"
-      @click="$emit('add')"
+      v-if="deletable"
+      class="flex h-4 w-4 shrink-0 items-center justify-center text-content-subtle hover:text-error"
+      @click="$emit('delete')"
     >
-      <UxIcon id="plus" class="h-3 w-3" />
+      <UxIcon id="x" class="w-4" />
     </button>
-    <div v-else class="w-[26px] shrink-0"></div>
   </div>
 </template>
 
 <script setup>
 // A value set at this level of the enforcement cascade: minimal select
-// (UxSimpleSelect) with a "Configure.." link and an optional ⊕ add button
-// emitting `add` (absent buttons keep a 26px spacer so columns stay aligned,
-// per the Figma design). The default slot renders between "Config.." and the
-// ⊕ — for per-row actions a consumer stacks alongside, e.g. a remove button.
+// (UxSimpleSelect) with a "Config.." link and, when `deletable`, an ✕ that
+// emits `delete` (clear this level's value, falling back to the inherited
+// one). Adding another value to the cell is the parent's concern — compose
+// an add button alongside, outside this component.
 defineProps({
   value: { type: String, required: true },
   options: { type: Array, required: true },
-  add: { type: Boolean, default: false },
+  deletable: { type: Boolean, default: false },
 })
 
-defineEmits(['update:value', 'add'])
+defineEmits(['update:value', 'delete'])
 </script>
