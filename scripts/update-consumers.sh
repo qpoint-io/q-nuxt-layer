@@ -10,7 +10,8 @@
 set -e
 cd "$(dirname "$0")/.."
 
-CONSUMERS="../design ../bob-wire ../app.qpoint.io ../www.qpoint.io ../qcontrol/crates/qdash/ui"
+# qcontrol-qdash-ref is deliberately absent — frozen reference checkout, pinned.
+CONSUMERS="../design ../bob-wire ../app.qpoint.io ../www.qpoint.io ../qflow ../qcontrol/crates/qdash/ui"
 
 for dir in $CONSUMERS; do
   if [ ! -f "$dir/package.json" ]; then
