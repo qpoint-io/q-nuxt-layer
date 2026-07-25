@@ -15,7 +15,7 @@
 
 <script setup>
 const props = defineProps({
-  state: { type: String, default: 'cool' }, // 'hot' | 'warm' | 'cool' | 'white-list'
+  state: { type: String, default: 'cool' }, // 'hot' | 'warm' | 'tepid' | 'cool' | 'white-list'
 })
 
 // hot/warm/cool badge+tail are two-tone shade pairs beyond the token
@@ -24,6 +24,7 @@ const props = defineProps({
 const palette = {
   hot:            { badge: '#FF4D4D', tail: '#CC0000', check: qp('on-primary'), stroke: null },
   warm:           { badge: '#FFB020', tail: '#CC8800', check: qp('on-primary'), stroke: null },
+  tepid:          { badge: '#949494', tail: '#565454', check: qp('on-primary'), stroke: null },
   cool:           { badge: '#49CF81', tail: '#1C974F', check: qp('on-primary'), stroke: null },
   'white-list':   { badge: qp('surface'), tail: qp('surface'), check: '#84CAFF', stroke: qp('stroke') },
 }
