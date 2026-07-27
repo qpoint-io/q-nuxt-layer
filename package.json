@@ -36,6 +36,11 @@
     "@tailwindcss/forms": "^0.5.7",
     "tailwindcss-animation-delay": "^2.0.2"
   },
+  "devDependencies": {
+    "@headlessui/vue": "^1.7.23",
+    "chart.js": "^4.5.1",
+    "vue-chartjs": "^5.3.3"
+  },
   "peerDependencies": {
     "@headlessui/vue": "^1.7.23",
     "chart.js": "^4.0.0",
