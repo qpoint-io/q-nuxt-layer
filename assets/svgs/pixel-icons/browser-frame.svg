@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 48" shape-rendering="crispEdges">
+  <!-- Placeholder pixel icon — replaced by Illustrator export of the same filename.
+       Window chrome frame; the consumer overlays the count inside.
+       Loaded via <img>, so CSS vars can't reach in: fills are hardcoded to
+       token values — grey-400 (#949494) frame, grey-600 (#565454) accents. -->
+  <g fill="#949494">
+    <rect x="0" y="0" width="64" height="2"/>
+    <rect x="0" y="46" width="64" height="2"/>
+    <rect x="0" y="0" width="2" height="48"/>
+    <rect x="62" y="0" width="2" height="48"/>
+    <rect x="0" y="10" width="64" height="2"/>
+  </g>
+  <g fill="#565454">
+    <rect x="5" y="4" width="2" height="4"/>
+    <rect x="10" y="4" width="2" height="4"/>
+    <rect x="15" y="4" width="2" height="4"/>
+  </g>
+</svg>

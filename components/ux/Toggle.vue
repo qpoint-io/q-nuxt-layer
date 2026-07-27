@@ -15,7 +15,10 @@
           @apply peer-checked:after:translate-x-full peer-checked:after:border-white;"
         />
       </div>
-      <div class="w-full pl-2">
+      <div 
+        class="w-full "
+        :class="(size != 'micro')?  'pl-2' : '' "
+      >
         <slot name="label" />
       </div>
       <span v-if="label" class="_label ">{{ label }}</span>

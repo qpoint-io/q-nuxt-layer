@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 48" shape-rendering="crispEdges">
+  <!-- Placeholder pixel icon — replaced by Illustrator export of the same filename.
+       Page with folded corner; the consumer overlays the count inside.
+       Loaded via <img>, so CSS vars can't reach in: fills are hardcoded to
+       token values — grey-400 (#949494) frame, grey-600 (#565454) accents. -->
+  <g fill="#949494">
+    <rect x="0" y="0" width="28" height="2"/>
+    <rect x="0" y="46" width="40" height="2"/>
+    <rect x="0" y="0" width="2" height="48"/>
+    <rect x="38" y="10" width="2" height="38"/>
+    <!-- Uniform 2px staircase: the dog-ear cut from the top edge's end
+         (28,0) down to the right edge's start (38,10). -->
+    <rect x="28" y="0" width="2" height="2"/>
+    <rect x="30" y="2" width="2" height="2"/>
+    <rect x="32" y="4" width="2" height="2"/>
+    <rect x="34" y="6" width="2" height="2"/>
+    <rect x="36" y="8" width="2" height="2"/>
+  </g>
+  <!-- Solid fold flap: rows widen under the staircase to the base at y=10. -->
+  <g fill="#565454">
+    <rect x="28" y="2" width="2" height="2"/>
+    <rect x="28" y="4" width="4" height="2"/>
+    <rect x="28" y="6" width="6" height="2"/>
+    <rect x="28" y="8" width="8" height="2"/>
+    <rect x="28" y="10" width="10" height="2"/>
+  </g>
+</svg>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 22" shape-rendering="crispEdges">
+  <!-- Placeholder pixel icon — replaced by Illustrator export of the same filename. -->
+  <g>
+    <rect x="8" y="0" width="8" height="2" fill="#a6adad"/>
+    <rect x="8" y="2" width="2" height="2" fill="#a6adad"/>
+    <rect x="14" y="2" width="2" height="2" fill="#a6adad"/>
+    <rect x="2" y="4" width="20" height="6" fill="#a6adad"/>
+    <rect x="2" y="10" width="20" height="2" fill="#4d5c5a"/>
+    <rect x="10" y="8" width="4" height="4" fill="#4d5c5a"/>
+    <rect x="2" y="12" width="20" height="6" fill="#a6adad"/>
+    <rect x="2" y="18" width="20" height="2" fill="#5c6967"/>
+  </g>
+</svg>

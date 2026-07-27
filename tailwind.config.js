@@ -15,7 +15,7 @@ export default {
 
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
-      mono: ['Geist Mono', 'IBM Plex Mono', 'Consolas', 'monospace'],
+      mono: ['Consolas', 'Geist Mono', 'IBM Plex Mono', 'monospace'],
       dev:  ['rigid-square', 'sans-serif'],
     },
 

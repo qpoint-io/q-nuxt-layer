@@ -108,6 +108,26 @@ Table-cell building blocks for policy-enforcement UIs (extracted from design's c
 | `PolicyCoverageCell` | Framework coverage cell: Required + ✔ Active / red ! Required / dash |
 | `PolicyCompletenessCell` | Mini progress bar over "84% · 14 / 18 · Controls" |
 
+### Agent Components (`components/agent/`)
+
+Auto-imported with the `Agent` prefix:
+
+| Component | Description |
+|-----------|-------------|
+| `AgentAvatar` | Inline identity chip: agent logo + name. `name` resolves against the known-agent registry (`components/agent/registry.js`) for logo + canonical label; unknown agents get the generic mark + raw name. `label` prop overrides shown text |
+| `AgentLogo*` | One SFC per known agent under `components/agent/logo/` (Claude, Codex, Copilot, Cursor, Gemini, Goose, Openclaw, Opencode, Openhands, Windsurf, Zed, Aider, Devin, Pi) + `AgentLogoGeneric` fallback spark. Alias matching handles raw telemetry names ("Claude Code CLI", "cursor-agent", "chatgpt") |
+
+To add an agent: drop a logo SFC in `components/agent/logo/`, import it in `registry.js`, add an entry (order matters — specific entries before general ones).
+
+### Compliance Components (`components/compliance/`)
+
+Auto-imported with the `Compliance` prefix:
+
+| Component | Description |
+|-----------|-------------|
+| `ComplianceFrameworkIcon` | Framework-kind icon: pass `kind` ("Risk Taxonomy", "Regulation", "Attestation", "Governance", …) and the registry (`components/compliance/registry.js`) picks the icon. Deliberately many-to-one — icons are a small shared vocabulary; unknown kinds fall back to the scale |
+| `ComplianceIcon*` | The icon vocabulary under `components/compliance/icon/`: `Warn` (risk taxonomies), `Scale` (regulations/standards), `Ribbon` (attestation/governance). currentColor structure + grey accents |
+
 ### Dev Components (`components/dev/`)
 
 Documentation and dev tools, auto-imported with the `Dev` prefix:
