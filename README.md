@@ -48,8 +48,14 @@ That's it. Components, composables, tokens, and CSS are auto-imported.
 To edit this layer and see changes live in a consumer project:
 
 1. Clone this repo as a sibling directory (`../q-nuxt-layer`)
-2. Add `NUXT_LOCAL_LAYER=1` to the consumer's `.env` (gitignored)
-3. Use a conditional `extends` in the consumer's `nuxt.config.ts`:
+2. Run `npm install` **inside the checkout** — in local mode Vite resolves the
+   layer's imports from the checkout's own `node_modules`, and the optional
+   peers (chart.js, vue-chartjs, @headlessui/vue) are devDependencies here so
+   this one install covers them. Skipping this breaks consumers at runtime:
+   Vite stubs the missing peers (`__vite-optional-peer-dep:...:false`) and any
+   chart-using page throws during app init.
+3. Add `NUXT_LOCAL_LAYER=1` to the consumer's `.env` (gitignored)
+4. Use a conditional `extends` in the consumer's `nuxt.config.ts`:
 
 ```ts
 export default defineNuxtConfig({
@@ -110,4 +116,6 @@ This is a [Nuxt Layer](https://nuxt.com/docs/guide/going-further/layers). When a
 ## Peer Dependencies
 
 - `nuxt` ^4.0.0 (required)
-- `@headlessui/vue` ^1.7.0 (optional — needed only if using UxModal)
+- `@headlessui/vue` ^1.7.23 (optional — needed only if using UxModal)
+- `chart.js` ^4.0.0 (optional — needed only if using chart components)
+- `vue-chartjs` ^5.0.0 (optional — needed only if using chart components)
