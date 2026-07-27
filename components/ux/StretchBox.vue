@@ -59,6 +59,10 @@ const onWatchPropChange = ()=>{
 
   // Let the dom update, then find the width of the content
   setTimeout(( ()=>{
+    // component may have unmounted while the timer was pending
+    if(content.value == null)
+      return
+
     let parentHeight   = 0;
     let parentWidth    = 0;
     opacity.value        = 1;
@@ -92,7 +96,7 @@ const onWatchPropChange = ()=>{
     // remove copied el
     document.body.removeChild($content)
     setTimeout( ()=>{
-      stretcher.value.classList.add('_height-override')
+      stretcher.value?.classList.add('_height-override')
     }, 1000 )
   }), 200 )
 }
