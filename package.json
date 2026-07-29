@@ -1,6 +1,6 @@
 {
   "name": "@qpoint-io/q-nuxt-layer",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "type": "module",
   "description": "Qpoint design system — shared components, tokens, and CSS via Nuxt Layer",
   "repository": {
@@ -24,8 +24,7 @@
     "composables/",
     "plugins/",
     "utils/",
-    "assets/css/shared.css",
-    "assets/css/tokens.css",
+    "assets/",
     "tokens/",
     "tailwind.config.js",
     "nuxt.config.ts",
