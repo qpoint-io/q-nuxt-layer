@@ -15,7 +15,7 @@
           title="Reveal in Finder"
           @click="emit('reveal-folder')"
         >
-          <img v-if="icon('folder')" :src="icon('folder')" alt="" class="h-auto shrink-0" style="width: 16px">
+          <UxPixelArt v-if="icon('folder')" name="pixel-icons/folder" class="shrink-0" size="16px" />
           <span class="font-mono text-13 text-content truncate group-hover:underline">{{ folder }}</span>
           <UxIcon id="arrow-head" class="text-content-subtle shrink-0" style="height: 10px" />
         </button>
@@ -31,7 +31,7 @@
       <div>
         <div class="text-13 text-content-subtle border-b border-stroke-strong pb-1 mb-2">Requests</div>
         <div class="relative" style="width: 52px">
-          <img v-if="icon('browser-frame')" :src="icon('browser-frame')" alt="" class="block h-auto" style="width: 52px">
+          <UxPixelArt v-if="icon('browser-frame')" name="pixel-icons/browser-frame" class="block" size="52px" />
           <span class="absolute inset-x-0 bottom-0 flex items-center justify-center font-mono font-bold text-16 text-content leading-none" style="top: 22%">
             {{ requests }}
           </span>
@@ -43,7 +43,7 @@
           <!-- 32.5px width renders the 40×48 page.svg at 39px tall — the same
                height as the 64×48 browser-frame at its 52px width. -->
           <div class="relative shrink-0" style="width: 32.5px">
-            <img v-if="icon('page')" :src="icon('page')" alt="" class="block h-auto" style="width: 32.5px">
+            <UxPixelArt v-if="icon('page')" name="pixel-icons/page" class="block" size="32.5px" />
             <span class="absolute inset-0 flex items-center justify-center font-mono font-bold text-14 text-content leading-none">
               {{ files.total }}
             </span>
@@ -66,7 +66,7 @@
       </div>
       <div class="flex flex-col gap-1">
         <div v-for="item in visibleTools" :key="item.label" class="flex items-center gap-3">
-          <img v-if="icon(item.icon)" :src="icon(item.icon)" alt="" class="h-auto shrink-0" style="width: 16px">
+          <UxPixelArt v-if="icon(item.icon)" :name="`pixel-icons/${item.icon}`" class="shrink-0" size="16px" />
           <span class="font-mono text-13 text-content">{{ item.label }}</span>
         </div>
         <!-- The card truncates the list itself; "+N more" expands in place.
@@ -101,7 +101,7 @@
 // workspace + provider identity, request/file stats rendered inside
 // pixel-frame icons, tools & skills, and navigation links. In needs-input
 // state the AgentInputBubble hangs above the pawn and its button re-emits as
-// go-to-agent. Pixel icons load from assets/svgs/pixel-icons/ via <img>
+// go-to-agent. Pixel icons render via UxPixelArt (themed --px-* fills)
 // (multicolor art — not UxIcon). Provider row is rendered inline (mono,
 // subtle) rather than via AgentAvatar, whose bold chip styling is for table
 // cells.

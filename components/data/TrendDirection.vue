@@ -36,9 +36,8 @@ const triangleFlip = computed(()=>{
 </script>
 
 
-<style>
+<style scoped>
   .triangle{
     transform: v-bind( triangleFlip );
   }
-  svg{}
 </style>

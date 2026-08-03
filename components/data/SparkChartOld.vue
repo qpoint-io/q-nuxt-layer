@@ -41,11 +41,10 @@ const graph = computed( ()=>{
 
 </script>
 
-<style>
+<style scoped>
   polygon, polyline{
     fill        : v-bind( fillColor );
     stroke      : v-bind( strokeColor );
     stroke-width: v-bind( strokeWidth );
   }
-  svg{}
 </style>

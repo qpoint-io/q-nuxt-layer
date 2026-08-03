@@ -30,3 +30,21 @@ export const semantic = {
   warning:          { light: '#F59E0B', dark: '#F59E0B' },
   info:             { light: '#7742E2', dark: '#BBA5FF' }, // grape-600 / grape-300
 }
+
+// Pixel-art roles (c59) — emitted as `--px-<key>` in HEX form (not RGB
+// channels: these are consumed directly as SVG fills by UxPixelArt, never
+// through Tailwind alpha utilities). Light values are the art hexes verbatim,
+// so exports render unchanged in light mode; dark values are a conservative
+// first pass for dark surfaces — tune visually.
+export const pixelArt = {
+  body:          { light: '#A6ADAD', dark: '#A6ADAD' }, // awake pawn body + icon bodies
+  shade:         { light: '#4D5C5A', dark: '#5C6967' }, // awake shadow side
+  eye:           { light: '#FFFFFF', dark: '#FFFFFF' },
+  'pawn-pupil':  { light: '#000000', dark: '#111111' }, // sits on the light body — stays near-black
+  'sleep-body':  { light: '#5C6967', dark: '#6B7876' }, // + the zzz
+  'sleep-shade': { light: '#242B2A', dark: '#3A4543' }, // closed-eye bars stay legible on dark
+  alert:         { light: '#FF0030', dark: '#F87F7D' }, // dark aligns to --qp-error dark
+  accent:        { light: '#AB86F6', dark: '#AB86F6' }, // grape-400 (binary highlight)
+  'icon-frame':  { light: '#949494', dark: '#949494' },
+  'icon-accent': { light: '#565454', dark: '#8A8888' },
+}

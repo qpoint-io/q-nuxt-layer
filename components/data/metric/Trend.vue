@@ -107,10 +107,9 @@ const triangleFlip = computed(()=>{
 </script>
 
 
-<style>
+<style scoped>
   .triangle{
     /* transform: v-bind( fillColor ); */
     transform: v-bind( triangleFlip );
   }
-  svg{}
 </style>
