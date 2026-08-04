@@ -19,6 +19,8 @@ import Devin from './logo/Devin.vue'
 import Gemini from './logo/Gemini.vue'
 import Generic from './logo/Generic.vue'
 import Goose from './logo/Goose.vue'
+import Grok from './logo/Grok.vue'
+import Ollama from './logo/Ollama.vue'
 import Openclaw from './logo/Openclaw.vue'
 import Opencode from './logo/Opencode.vue'
 import Openhands from './logo/Openhands.vue'
@@ -34,6 +36,8 @@ export const AGENTS = [
   { slug: 'cursor', label: 'Cursor', logo: Cursor, aliases: ['cursor'] },
   { slug: 'gemini', label: 'Gemini', logo: Gemini, aliases: ['gemini'] },
   { slug: 'goose', label: 'Goose', logo: Goose, aliases: ['goose'] },
+  { slug: 'grok', label: 'Grok', logo: Grok, aliases: ['grok', 'xai'] },
+  { slug: 'ollama', label: 'Ollama', logo: Ollama, aliases: ['ollama'] },
   { slug: 'opencode', label: 'opencode', logo: Opencode, aliases: ['opencode'] },
   { slug: 'openclaw', label: 'OpenClaw', logo: Openclaw, aliases: ['openclaw'] },
   { slug: 'openhands', label: 'OpenHands', logo: Openhands, aliases: ['openhands', 'allhands'] },

@@ -13,6 +13,10 @@
       :strokeColor="sparkInk"
       strokeWidth="2"
     />
+    <!-- Additional content (e.g. a segment bar + legend). Rendering inside
+         the inline-block root means the label hairline spans the slot's
+         width, not just the label text. -->
+    <slot />
   </div>
 </template>
 

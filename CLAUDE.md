@@ -115,7 +115,7 @@ Auto-imported with the `Agent` prefix:
 | Component | Description |
 |-----------|-------------|
 | `AgentAvatar` | Inline identity chip: agent logo + name. `name` resolves against the known-agent registry (`components/agent/registry.js`) for logo + canonical label; unknown agents get the generic mark + raw name. `label` prop overrides shown text |
-| `AgentLogo*` | One SFC per known agent under `components/agent/logo/` (Claude, Codex, Copilot, Cursor, Gemini, Goose, Openclaw, Opencode, Openhands, Windsurf, Zed, Aider, Devin, Pi) + `AgentLogoGeneric` fallback spark. Alias matching handles raw telemetry names ("Claude Code CLI", "cursor-agent", "chatgpt") |
+| `AgentLogo*` | One SFC per known agent under `components/agent/logo/` (Claude, Codex, Copilot, Cursor, Gemini, Goose, Grok, Ollama, Openclaw, Opencode, Openhands, Windsurf, Zed, Aider, Devin, Pi) + `AgentLogoGeneric` fallback spark. Alias matching handles raw telemetry names ("Claude Code CLI", "cursor-agent", "chatgpt") |
 
 To add an agent: drop a logo SFC in `components/agent/logo/`, import it in `registry.js`, add an entry (order matters — specific entries before general ones).
 

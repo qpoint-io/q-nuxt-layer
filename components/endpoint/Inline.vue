@@ -51,9 +51,9 @@ defineProps({
     validator: v => ['active', 'idle', 'stopped', 'errored'].includes(v),
   },
   // Pawn width; number → px. The endpoint art is landscape, so this default
-  // is wider than AgentInline's 28 — a 36px endpoint matches a 28px agent
-  // in visual area.
-  size:     { type: [Number, String], default: 36 },
+  // differs from AgentInline's 28 (dialed to 29 by eye against the two-line
+  // text block).
+  size:     { type: [Number, String], default: 29 },
 })
 
 const DOTS = {

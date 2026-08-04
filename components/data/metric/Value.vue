@@ -26,12 +26,16 @@
   }
   ._value{ /* Dynamic val for 'value' size/weight */
     font-size: v-bind(fontSize);
-    font-weight: v-bind(fontWeight)
+    font-weight: v-bind(fontWeight);
+    /* display numerals: tight leading — inherited 1.5 reserves ~half the
+       font size as empty space below large values */
+    line-height: 1.05;
   }
 
   ._unit{ /* Dynamic val for unit size/weight */
     font-size: v-bind(unitFontSize);
-    font-weight: v-bind(fontWeight)
+    font-weight: v-bind(fontWeight);
+    line-height: 1.05; /* match ._value — a taller unit line box would inflate the baseline row */
   }
 </style>
 

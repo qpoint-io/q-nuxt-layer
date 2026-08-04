@@ -1,5 +1,8 @@
 <template>
-  <div class="relative inline-block align-top" :style="{ width: px }">
+  <!-- line-height 0 kills the baseline strut under the inline-block art span,
+       which otherwise pads the wrapper's bottom and floats the art high of
+       true center in flex/table contexts. -->
+  <div class="relative inline-block align-middle" :style="{ width: px, lineHeight: 0 }">
     <!-- Consumer content anchored above the machine — mirrors AgentPawn's slot. -->
     <div v-if="$slots.default" class="absolute" style="bottom: 104%; left: 50%">
       <slot />
