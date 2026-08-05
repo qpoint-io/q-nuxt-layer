@@ -1,5 +1,8 @@
 <template>
-  <div class="inline-flex items-center gap-1 rounded-full border border-stroke bg-surface px-1.5 py-1 shadow-md">
+  <div
+    class="inline-flex items-center gap-1 rounded-full border bg-surface px-1.5 py-1 shadow-md"
+    :class="active ? 'border-grape-300' : 'border-stroke'"
+  >
     <button
       v-for="s in sections"
       :key="s.id"
