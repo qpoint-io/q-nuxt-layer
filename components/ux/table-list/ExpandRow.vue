@@ -17,6 +17,19 @@
   <!-- Expanded view -->
   <tr v-if="isOpen" class="bg-[#f2f3d5] dark:bg-primary/15" :class="isOpen ? 'bg-primary/10' : 'bg-surface'">
     <td colspan="100%" v-if="isOpen" class="p-0 pb-6 border-1 border-primary/40">
+      <!-- Close affordance. Lives OUTSIDE UxStretchBox (overflow-hidden would
+           both hijack sticky resolution and clip the shifted icon) and uses
+           position:sticky, not absolute: the expanded row spans the full table
+           width, which can overflow the consumer's horizontal scroller — a
+           right-anchored absolute X sits in the scrolled-away region on
+           narrow viewports, while sticky pins it inside the visible
+           scrollport. h-0 wrapper + translate keep it out of flow. -->
+      <div class="pointer-events-none sticky right-14 z-10 ml-auto flex h-0 w-8">
+        <UxIcon id="x"
+          class="pointer-events-auto h-8 w-8 translate-y-9 text-content-subtle hover:text-content hover:duration-0 duration-300 cursor-pointer"
+          @click="onClick"
+        />
+      </div>
       <UxStretchBox
         :stretchWidth="false"
         :watch="contentChanged"
@@ -29,10 +42,6 @@
             <slot name="details" />
           </div>
         </div>
-        <UxIcon id="x"
-          class="absolute right-14 top-9 w-8 text-content-subtle hover:text-content hover:duration-0 duration-300 cursor-pointer"
-          @click="onClick"
-        />
       </UxStretchBox>
     </td>
   </tr>

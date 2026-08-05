@@ -1,6 +1,10 @@
 <template>
   <div>
-    <table class="relative whitespace-nowrap w-full overflow-x-scroll">
+    <!-- No overflow on the table itself: horizontal scrolling is the
+         consumer wrapper's job (e.g. DataTable's overflow-x-auto), and an
+         overflow value here hijacks position:sticky resolution for
+         descendants (the ExpandRow close X) away from the real scroller. -->
+    <table class="relative whitespace-nowrap w-full">
       <!-- headers -->
       <UxTableListHeader :compact="compact">
         <slot name="header" />
