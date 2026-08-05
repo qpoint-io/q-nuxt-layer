@@ -51,6 +51,13 @@ async function getIcon () {
       import: 'default'
     })
 
+    // Third-party brand logos (layer): assets/svgs/third-party-logos/<id>.svg
+    const logoIcons = import.meta.glob('../../assets/svgs/third-party-logos/**/*.svg', {
+      eager: false,
+      query: '?raw',
+      import: 'default'
+    })
+
     // App icons (app-specific, e.g. nav icons)
     const appIcons = import.meta.glob('~/assets/svg-icons/**/*.svg', {
       eager: false,
@@ -58,10 +65,13 @@ async function getIcon () {
       import: 'default'
     })
 
-    // Try layer first, then fall back to app icons
+    // Try layer icons, then layer brand logos, then app icons
     const layerPath = `../../assets/icons/${props.id}.svg`
 
     let loader = layerIcons[layerPath]
+    if (!loader) {
+      loader = logoIcons[`../../assets/svgs/third-party-logos/${props.id}.svg`]
+    }
     if (!loader) {
       // Find matching app icon by suffix
       const appKey = Object.keys(appIcons).find(k => k.endsWith(`/${props.id}.svg`))
