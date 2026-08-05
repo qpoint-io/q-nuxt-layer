@@ -15,7 +15,7 @@
 
       <!-- expandable rows -->
       <template v-if="expandable">
-        <UxTableListExpandRow v-for="(row, i) in sorted" :key="rk(row, i)">
+        <UxTableListExpandRow v-for="(row, i) in visible" :key="rk(row, i)">
           <td v-for="c in columns" :key="c.key" :class="cellClass(c)">
             <slot :name="c.key" :row="row" :value="row[c.key]">
               <UxPill v-if="c.pill && row[c.key] != null" :tone="toneFor(row[c.key])">{{ row[c.key] }}</UxPill>
@@ -33,7 +33,7 @@
       <!-- plain rows -->
       <template v-else>
         <tr
-          v-for="(row, i) in sorted" :key="rk(row, i)"
+          v-for="(row, i) in visible" :key="rk(row, i)"
           :class="onRow ? 'cursor-pointer hover:bg-surface-sunken' : ''"
           @click="onRow && onRow(row)"
         >
@@ -52,6 +52,10 @@
         </div>
       </template>
     </UxTableList>
+    <!-- footer (e.g. a View More link when `limit` hides rows), lower-right -->
+    <div v-if="$slots.footer" class="flex justify-end pt-1">
+      <slot name="footer" :total="sorted.length" :shown="visible.length" />
+    </div>
   </div>
 </template>
 
@@ -63,6 +67,9 @@
 // `pill: true` — a tone-mapped UxPill (leaf by default, warn for High/Critical/
 // Blocked). Pass a #details slot to make rows expandable (UxTableListExpandRow);
 // otherwise rows are plain and `onRow` handles clicks.
+// `limit` caps rendered rows AFTER sort+search, so the cap is the top-N of the
+// active sort (an outer rows.slice() would cap the pre-sorted set); pair it
+// with the #footer slot ({ total, shown }) for a "View more" affordance.
 // Unifies qdash's DataTable and the design site's PermissionTable (c50/c51).
 import { ref, computed, useSlots } from 'vue'
 
@@ -85,6 +92,7 @@ const props = defineProps<{
   onRow?: (r: any) => void
   initialSort?: string
   rowKey?: string
+  limit?: number
 }>()
 
 const slots = useSlots()
@@ -125,6 +133,8 @@ const sorted = computed(() => {
   }
   return r
 })
+
+const visible = computed(() => (props.limit ? sorted.value.slice(0, props.limit) : sorted.value))
 
 const cellClass = (c: Col) => [
   'px-3 py-2 text-14',
