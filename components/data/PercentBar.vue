@@ -3,6 +3,7 @@
   <UxPercentBar
     :title   = "formattedTotal"
     :percent = "percent"
+    :compact = "compact"
   />
 </template>
 <script setup>
@@ -10,6 +11,7 @@
 const props = defineProps({
   total   : {type:Number, required:true},
   percent : {type:Number, required:true},
+  compact : {type:Boolean, default:false},
 })
 
 const formattedTotal = computed(()=>{

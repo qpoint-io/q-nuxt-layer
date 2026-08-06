@@ -2,8 +2,8 @@
   <div class="flex items-center gap-4">
     <span class="shrink-0 flex items-center justify-center"><slot /></span>
     <div class="">
-      <div class="text-13 text-content-subtle">{{ label }}</div>
-      <div class="text-15 font-semi text-content -mt-1">{{ value }}</div>
+      <div class="text-11 text-content-subtle">{{ label }}</div>
+      <div class="text-13 font-semi text-content -mt-1.5">{{ value }}</div>
     </div>
   </div>
 </template>
