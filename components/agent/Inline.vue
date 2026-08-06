@@ -2,7 +2,6 @@
   <div class="flex items-center gap-3">
     <AgentPawn
       :state="PAWN_STATE[status] || 'working'"
-      :provider="provider"
       :size="size"
       :decorations="status === 'idle'"
       class="shrink-0"
@@ -52,8 +51,6 @@ defineProps({
     default: 'active',
     validator: v => ['active', 'idle', 'stopped', 'errored'].includes(v),
   },
-  // Provider logo overlaid on the pawn's face (see AgentPawn), e.g. "anthropic".
-  provider: { type: String, default: '' },
   // Pawn width; number → px.
   size:     { type: [Number, String], default: 28 },
 })

@@ -31,15 +31,6 @@
       v-else
       class="flex items-center justify-center w-full aspect-square border border-dashed border-stroke-strong text-content-subtle text-24 leading-none"
     >?</span>
-
-    <!-- Optional provider logo, overlaid on the pawn's face. -->
-    <img
-      v-if="providerSrc"
-      :src="providerSrc"
-      :alt="provider"
-      class="absolute"
-      style="left: 50%; top: 58%; width: 38%; transform: translate(-50%, -50%)"
-    >
   </div>
 </template>
 
@@ -49,12 +40,9 @@
 // optional decoration SVG floated above the head. Body and decorations render
 // through UxPixelArt, which inlines the art and rewrites its palette to
 // themed `--px-*` variables (multicolor preserved, flips under `.dark`).
-// The provider overlay stays an <img> — brand marks don't theme.
 const props = defineProps({
   // One of: working, idle, errored, needs-input, angel.
   state:    { type: String, default: 'angel' },
-  // Selects assets/svgs/pixel-pawns/providers/<provider>.svg. Empty = no overlay.
-  provider: { type: String, default: '' },
   // Pawn width; number → px. Height scales automatically.
   size:     { type: [Number, String], default: 96 },
   // Floating decorations above the head (working binary, idle zzz, error
@@ -124,10 +112,6 @@ const decorStyle = computed(() => {
   return `bottom: calc(100% + ${gap}px); width: ${width}%; ${decor.value.style}${nudge}`
 })
 
-const providerSrc = computed(() =>
-  props.provider ? url(`providers/${props.provider}`) : null,
-)
-
 if (import.meta.dev) {
   watchEffect(() => {
     if (!(props.state in BODIES)) {
@@ -135,9 +119,6 @@ if (import.meta.dev) {
     }
     if (props.decorations && decor.value && !decorSrc.value) {
       console.warn(`[AgentPawn] decoration art for state '${props.state}' is pending (expected assets/svgs/pixel-pawns/${decor.value.file}.svg)`)
-    }
-    if (props.provider && !providerSrc.value) {
-      console.warn(`[AgentPawn] no provider logo '${props.provider}' (expected assets/svgs/pixel-pawns/providers/${props.provider}.svg)`)
     }
   })
 }
