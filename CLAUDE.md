@@ -243,6 +243,13 @@ consumer repo.
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
 
+### Migration notes — v0.9.6
+
+- **`UxTableListExpandRow` close X moved.** The sticky viewport-anchored X is gone. By default the `#details` slot now renders inside one `UxTableListExpandSection` card (same chrome `DataTable` used to hand-roll) with a card-anchored close X. Consumers that bring their own details chrome — or compose their own ExpandSection stack — must pass `bare` on the row (details slot scope provides `close`; `open()`/`close()` are exposed for template refs). Notably: app.qpoint.io's direct ExpandRow sites (traffic/inventory ItemUI, alerting) will want `bare` when they take this version.
+- **`DataTable`** no longer wraps `#details` in its own card (ExpandRow's default supplies it); new `bareDetails` prop for sectioned stacks; `#details` slot scope is now `{ row, close }`.
+- **`UxButton`** default-kind background moved grape-400 → grape-600; new `size` prop (px height, default `'48'` — unchanged height by default).
+- **New `DataSurfacePanel`** (`data/SurfacePanel.vue`) — ranked rows + DataPercentBar column, extracted from qdash /inventory; qdash's and design's local `SurfacePanel.vue` copies are deleted in favor of it.
+
 ## Authentication
 
 Consumers need a `GITHUB_TOKEN` with `read:packages` scope. Each consumer project has an `.npmrc`:
