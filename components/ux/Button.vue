@@ -1,9 +1,12 @@
 <template>
-  <button :class="['h-12 rounded-lg px-px24 marker:flex items-center gap-px8 group  flex whitespace-nowrap',
-                   kind == 'stroke' ? 'bg-surface text-content border-primary border-2 hover:border-content' : 'bg-grape-400 text-white hover:bg-grape-500',
+  <button :class="['rounded-lg px-px24 marker:flex items-center gap-px8 group  flex whitespace-nowrap',
+                   kind == 'stroke' ? 'bg-surface text-content border-primary border-2 hover:border-content' : 'bg-grape-600 text-white hover:bg-grape-500',
                    disabled? 'opacity-50 pointer-events-none' : '',
                    spin?     'pointer-events-none' : '',
-                  ]">
+                   
+                  ]"
+    :style="`height: ${size}px`"
+  >
 
     <!-- This doubles as a slot for icons and the loading spinner. -->
     <div
@@ -27,5 +30,6 @@ defineProps({
   disabled : { type:Boolean, default:false },
   kind     : { type:String, default:'' },
   spin     : { type:Boolean, default: false},
+  size     : { type:String, default:'48' }
 })
 </script>

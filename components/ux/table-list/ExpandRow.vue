@@ -17,19 +17,6 @@
   <!-- Expanded view -->
   <tr v-if="isOpen" class="bg-[#f2f3d5] dark:bg-primary/15" :class="isOpen ? 'bg-primary/10' : 'bg-surface'">
     <td colspan="100%" v-if="isOpen" class="p-0 pb-6 border-1 border-primary/40">
-      <!-- Close affordance. Lives OUTSIDE UxStretchBox (overflow-hidden would
-           both hijack sticky resolution and clip the shifted icon) and uses
-           position:sticky, not absolute: the expanded row spans the full table
-           width, which can overflow the consumer's horizontal scroller — a
-           right-anchored absolute X sits in the scrolled-away region on
-           narrow viewports, while sticky pins it inside the visible
-           scrollport. h-0 wrapper + translate keep it out of flow. -->
-      <div class="pointer-events-none sticky right-14 z-10 ml-auto flex h-0 w-8">
-        <UxIcon id="x"
-          class="pointer-events-auto h-8 w-8 translate-y-9 text-content-subtle hover:text-content hover:duration-0 duration-300 cursor-pointer"
-          @click="onClick"
-        />
-      </div>
       <UxStretchBox
         :stretchWidth="false"
         :watch="contentChanged"
@@ -39,7 +26,14 @@
         <!-- Fade in / out -->
         <div ref="$fader" class="duration-[1000ms] delay-300 pb-4">
           <div ref="el" class="px-8 py-4 duration-300 pb-0 ">
-            <slot name="details" />
+            <!-- Default chrome: one ExpandSection card with the close X wired.
+                 `bare` opts out for consumers composing their own section
+                 stack (or bringing their own chrome) — they receive `close`
+                 through the slot scope instead. -->
+            <UxTableListExpandSection v-if="!bare" @close="close">
+              <slot name="details" :close="close" />
+            </UxTableListExpandSection>
+            <slot v-else name="details" :close="close" />
           </div>
         </div>
       </UxStretchBox>
@@ -90,6 +84,8 @@
 const props = defineProps({
   isOpen:  { type: Boolean, default: false },
   to:      { type: Object, default: null },
+  // Render the details slot bare (no default ExpandSection card).
+  bare:    { type: Boolean, default: false },
 })
 
 // emits
@@ -129,6 +125,11 @@ const close = () => {
   contentChanged.value++
   isOpen.value = false
 }
+
+// Programmatic control for consumers (template refs) — e.g. default-open a
+// featured row or close from custom chrome. Declarative `isOpen` prop
+// support is still a known gap (the local ref shadows it).
+defineExpose({ open, close })
 
 // row state
 const mainRow  = ref(null)

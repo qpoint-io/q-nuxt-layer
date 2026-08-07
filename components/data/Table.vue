@@ -15,17 +15,17 @@
 
       <!-- expandable rows -->
       <template v-if="expandable">
-        <UxTableListExpandRow v-for="(row, i) in visible" :key="rk(row, i)">
+        <UxTableListExpandRow v-for="(row, i) in visible" :key="rk(row, i)" :bare="bareDetails">
           <td v-for="c in columns" :key="c.key" :class="cellClass(c)">
             <slot :name="c.key" :row="row" :value="row[c.key]">
               <UxPill v-if="c.pill && row[c.key] != null" :tone="toneFor(row[c.key])">{{ row[c.key] }}</UxPill>
               <span v-else>{{ row[c.key] ?? '—' }}</span>
             </slot>
           </td>
-          <template #details>
-            <div class="p-6 bg-surface shadow-lg rounded-12">
-              <slot name="details" :row="row" />
-            </div>
+          <!-- ExpandRow supplies the card chrome (an ExpandSection with the
+               close X) unless bareDetails opts out for sectioned stacks. -->
+          <template #details="{ close }">
+            <slot name="details" :row="row" :close="close" />
           </template>
         </UxTableListExpandRow>
       </template>
@@ -67,6 +67,10 @@
 // `pill: true` — a tone-mapped UxPill (leaf by default, warn for High/Critical/
 // Blocked). Pass a #details slot to make rows expandable (UxTableListExpandRow);
 // otherwise rows are plain and `onRow` handles clicks.
+// Expanded details render inside ExpandRow's default ExpandSection card
+// (close X included); set `bareDetails` when the #details content composes
+// its own UxTableListExpandSection stack. The #details slot scope provides
+// { row, close }.
 // `limit` caps rendered rows AFTER sort+search, so the cap is the top-N of the
 // active sort (an outer rows.slice() would cap the pre-sorted set); pair it
 // with the #footer slot ({ total, shown }) for a "View more" affordance.
@@ -93,6 +97,7 @@ const props = defineProps<{
   initialSort?: string
   rowKey?: string
   limit?: number
+  bareDetails?: boolean
 }>()
 
 const slots = useSlots()

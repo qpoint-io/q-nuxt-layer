@@ -73,7 +73,7 @@ const DECORATIONS = {
   // idle's gap and width are size-aware (see decorStyle) — 10px/50% reads
   // right at card sizes, but at inline sizes (~28px) the zzz floats too far
   // off the head and shrinks to a smudge, so it hugs closer and scales up.
-  'idle':    { file: 'zzza',    style: 'left: 50%; transform: translateX(-50%)', gap: 10, width: 50 },
+  'idle':    { file: 'zzza',    style: 'bottom: 95%; left: 40%; transform: translateX(-50%)', gap: 10, width: 50 },
   'errored': { file: 'alerta',  style: 'bottom: 102%; left: 50%; width: 72%; transform: translateX(-50%)' },
   'angel':   { file: 'haloa',   style: 'bottom: 102%; left: 50%; width: 60%; transform: translateX(-50%)' },
 }
