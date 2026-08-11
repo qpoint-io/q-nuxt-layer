@@ -1,5 +1,9 @@
 <template>
-  <div class="relative rounded-12 bg-surface p-6 shadow-lg">
+  <!-- whitespace-normal: UxTableList sets whitespace-nowrap on the whole
+       table for cell behavior; an expand card is prose-shaped content and
+       must wrap, or long captions set the column's min-content and overflow
+       the card padding. -->
+  <div class="relative rounded-12 bg-surface p-6 shadow-lg whitespace-normal">
     <UxIcon
       v-if="hasClose"
       id="x"
