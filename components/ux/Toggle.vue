@@ -15,7 +15,10 @@
           @apply peer-checked:after:translate-x-full peer-checked:after:border-white;"
         />
       </div>
-      <div 
+      <!-- render only when a label slot is provided — an empty wrapper still
+           costs pl-2 + the root's gap-1 as a flex item (12px phantom on the right) -->
+      <div
+        v-if="$slots.label"
         class="w-full "
         :class="(size != 'micro')?  'pl-2' : '' "
       >
