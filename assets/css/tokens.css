@@ -7,7 +7,8 @@
   --qp-surface: 255 255 255;
   --qp-surface-sunken-subtle: 250 250 250;
   --qp-surface-sunken: 245 245 245;
-  --qp-surface-sunken-deeper: 230 230 230;
+  --qp-surface-sunken-deeper: 232 232 232;
+  --qp-surface-logo: 255 255 255;
   --qp-content: 43 42 42;
   --qp-content-muted: 86 84 84;
   --qp-content-subtle: 122 123 124;
@@ -36,7 +37,8 @@
   --qp-surface: 17 17 17;
   --qp-surface-sunken-subtle: 22 21 21;
   --qp-surface-sunken: 26 25 25;
-  --qp-surface-sunken-deeper: 31 30 30;
+  --qp-surface-sunken-deeper: 43 42 42;
+  --qp-surface-logo: 255 255 255;
   --qp-content: 245 245 245;
   --qp-content-muted: 170 170 170;
   --qp-content-subtle: 122 123 124;
