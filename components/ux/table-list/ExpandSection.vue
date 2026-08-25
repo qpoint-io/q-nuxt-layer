@@ -6,7 +6,7 @@
   <div
     class="relative rounded-12 p-6 whitespace-normal"
     :class="theme === 'grape'
-      ? 'bg-grape-50 border border-grape-150 dark:bg-grape-850/30 dark:border-grape-800'
+      ? 'bg-grape-50 border border-grape-150 shadow-lg dark:bg-grape-850/30 dark:border-grape-800'
       : 'bg-surface shadow-lg'"
   >
     <UxIcon
