@@ -10,7 +10,7 @@
     :class = "[
       quiet ? '_quiet' : '',
       (isOpen)
-        ? (quiet ? '_open-row duration-1000 bg-surface hover:bg-surface' : '_open-row duration-1000 bg-primary/10 hover:bg-primary/10')
+        ? (quiet ? '_open-row duration-1000 bg-grey-50 hover:bg-grey-50 dark:bg-grey-800 dark:hover:bg-grey-800' : '_open-row duration-1000 bg-primary/10 hover:bg-primary/10')
         : 'hover:border-y-primary hover:bg-surface bg-surface/50',
     ]"
     @click = "onClick"
@@ -20,7 +20,7 @@
   </tr>
 
   <!-- Expanded view -->
-  <tr v-if="isOpen" :class="quiet ? 'bg-surface' : 'bg-primary/10 bg-[#f2f3d5] dark:bg-primary/15'">
+  <tr v-if="isOpen" :class="quiet ? 'bg-grey-50 dark:bg-grey-800' : 'bg-primary/10 bg-[#f2f3d5] dark:bg-primary/15'">
     <td colspan="100%" v-if="isOpen" class="p-0 pb-6" :class="quiet ? 'border-0' : 'border-1 border-primary/40'">
       <UxStretchBox
         :stretchWidth="false"
