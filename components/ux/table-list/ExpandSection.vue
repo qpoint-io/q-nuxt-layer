@@ -3,7 +3,12 @@
        table for cell behavior; an expand card is prose-shaped content and
        must wrap, or long captions set the column's min-content and overflow
        the card padding. -->
-  <div class="relative rounded-12 bg-surface p-6 shadow-lg whitespace-normal">
+  <div
+    class="relative rounded-12 p-6 whitespace-normal"
+    :class="theme === 'grape'
+      ? 'bg-grape-50 border border-grape-150 dark:bg-grape-850/30 dark:border-grape-800'
+      : 'bg-surface shadow-lg'"
+  >
     <UxIcon
       v-if="hasClose"
       id="x"
@@ -15,15 +20,22 @@
 </template>
 
 <script setup>
-// One white section card inside a UxTableListExpandRow's #details well.
+// One section card inside a UxTableListExpandRow's #details well.
 // Stack any number; the consumer owns the stack spacing (space-y-4) so the
-// row's tinted well shows through the gaps between cards. Deliberately
-// borderless — the cards read soft on the tinted well (unlike a standalone
-// card, which would carry border-stroke). Close affordance: a card-anchored
-// X in the top-right, rendered only when the consumer listens for @close —
-// typically just the first section of a stack. Sections without the listener
-// stay chrome-less.
+// row's tinted well shows through the gaps between cards. Default theme is
+// borderless-with-shadow — the cards read soft on the tinted well (unlike a
+// standalone card, which would carry border-stroke). `theme="grape"` is the
+// CHILD register: grape-50 fill with a light grape border, no shadow — for a
+// card that belongs to a row of the section above it (e.g. a finding's
+// adjudication card under the findings table). Close affordance: a
+// card-anchored X in the top-right, rendered only when the consumer listens
+// for @close — typically just the first section of a stack. Sections without
+// the listener stay chrome-less.
 import { getCurrentInstance } from 'vue'
+
+defineProps({
+  theme: { type: String, default: 'default' }, // 'default' | 'grape'
+})
 
 const emit = defineEmits(['close'])
 
