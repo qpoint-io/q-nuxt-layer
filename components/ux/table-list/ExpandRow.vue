@@ -1,13 +1,18 @@
 <template>
-  <!-- purple Line above -->
-  <tr v-if="isOpen" >
+  <!-- purple Line above (loud register only) -->
+  <tr v-if="isOpen && !quiet" >
     <td colspan="100%" class="h-1 p-0 bg-primary" />
   </tr>
 
   <!-- Table Row View -->
   <tr
     class  = "font-bold text-13 cursor-pointer _stretchy z-10"
-    :class = "(isOpen)? '_open-row duration-1000 bg-primary/10 hover:bg-primary/10' : 'hover:border-y-primary hover:bg-surface bg-surface/50'"
+    :class = "[
+      quiet ? '_quiet' : '',
+      (isOpen)
+        ? (quiet ? '_open-row duration-1000 bg-surface hover:bg-surface' : '_open-row duration-1000 bg-primary/10 hover:bg-primary/10')
+        : 'hover:border-y-primary hover:bg-surface bg-surface/50',
+    ]"
     @click = "onClick"
     ref    = "mainRow"
   >
@@ -15,8 +20,8 @@
   </tr>
 
   <!-- Expanded view -->
-  <tr v-if="isOpen" class="bg-[#f2f3d5] dark:bg-primary/15" :class="isOpen ? 'bg-primary/10' : 'bg-surface'">
-    <td colspan="100%" v-if="isOpen" class="p-0 pb-6 border-1 border-primary/40">
+  <tr v-if="isOpen" :class="quiet ? 'bg-surface' : 'bg-primary/10 bg-[#f2f3d5] dark:bg-primary/15'">
+    <td colspan="100%" v-if="isOpen" class="p-0 pb-6" :class="quiet ? 'border-0' : 'border-1 border-primary/40'">
       <UxStretchBox
         :stretchWidth="false"
         :watch="contentChanged"
@@ -40,8 +45,8 @@
     </td>
   </tr>
 
-  <!-- purple Line below -->
-  <tr v-if="isOpen" >
+  <!-- purple Line below (loud register only) -->
+  <tr v-if="isOpen && !quiet" >
     <td colspan="100%" class="h-1 p-0 bg-primary" />
   </tr>
 </template>
@@ -65,6 +70,10 @@
  @apply pl-[10px] pt-3 pb-2 border-1 border-primary/40;
  transition-duration: 1000ms ;
 }
+/* quiet register: open-row cells keep normal stroke borders */
+._open-row._quiet td{
+ @apply border-stroke;
+}
 ._open-row td:first-of-type{
  @apply pl-8;
 }
@@ -86,6 +95,11 @@ const props = defineProps({
   to:      { type: Object, default: null },
   // Render the details slot bare (no default ExpandSection card).
   bare:    { type: Boolean, default: false },
+  // Quiet register: the open row and its details well stay surface-white —
+  // no purple rules, tint, or bordered well. For nested/child expand rows
+  // where a themed child card (ExpandSection theme="grape") carries the
+  // differentiation instead of the row chrome.
+  quiet:   { type: Boolean, default: false },
 })
 
 // emits
