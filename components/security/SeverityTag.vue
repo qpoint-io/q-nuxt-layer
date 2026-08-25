@@ -1,9 +1,12 @@
 <template>
+  <!-- transition-colors duration-1000: palette swaps (ink on row open, a
+       reclassified severity) glide on the same 1s clock as the table-list
+       _darken-me open-row treatment -->
   <span
-    class="inline-flex items-center whitespace-nowrap rounded-full border"
+    class="inline-flex items-center whitespace-nowrap rounded-full border transition-colors duration-1000"
     :class="[s.pad, palette.pill]"
   >
-    <span class="font-bold capitalize leading-none" :class="[s.text, palette.label]"><slot>{{ severity }}</slot></span>
+    <span class="font-bold capitalize leading-none transition-colors duration-1000" :class="[s.text, palette.label]"><slot>{{ severity }}</slot></span>
   </span>
 </template>
 
