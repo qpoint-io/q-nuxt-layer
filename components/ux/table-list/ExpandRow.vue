@@ -21,7 +21,9 @@
 
   <!-- Expanded view -->
   <tr v-if="isOpen" :class="quiet ? 'bg-grey-50 dark:bg-grey-800' : 'bg-primary/10 bg-[#f2f3d5] dark:bg-primary/15'">
-    <td colspan="100%" v-if="isOpen" class="p-0 pb-6" :class="quiet ? 'border-0' : 'border-1 border-primary/40'">
+    <!-- quiet keeps the table's stroke verticals so the well stays inside the
+         frame; top/bottom stay open so the row flows into its content -->
+    <td colspan="100%" v-if="isOpen" class="p-0 pb-6" :class="quiet ? 'border-0 border-x-1 border-stroke' : 'border-1 border-primary/40'">
       <UxStretchBox
         :stretchWidth="false"
         :watch="contentChanged"
