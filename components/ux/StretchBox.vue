@@ -73,6 +73,16 @@ const onWatchPropChange = ()=>{
 
     // append copy of content element off screen
     Object.assign($content.style, {top: '-2000px', position : 'absolute', opacity  : '0'})
+
+    // When width is externally determined (stretchWidth: false — e.g. an
+    // ExpandRow well), pin the clone to the live width: an absolutely
+    // positioned clone on <body> otherwise lays out at shrink-to-fit/body
+    // width, where text wraps differently and the measured height comes up
+    // short — the row then sits clipped until the height override snaps it
+    // open.
+    if( !props.stretchWidth )
+      $content.style.width = `${ content.value.offsetWidth }px`
+
     document.body.appendChild( $content )
 
     // if stretch-to-parent-container is true, measure parent height/width
