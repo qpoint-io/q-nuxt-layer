@@ -1,8 +1,10 @@
 <template>
-  <!-- shrink-0: overflow-hidden zeroes a flex item's automatic min-width, so
-       without it the pill compresses and clips its own text instead of
-       letting the consumer's container wrap -->
-  <span class="inline-flex shrink-0 items-stretch overflow-hidden rounded-8 border border-grape-300 bg-grape-50">
+  <!-- w-max + shrink-0: a chip never compresses. Without them the pill clips
+       its own text two ways — overflow-hidden zeroes a flex item's automatic
+       min-width (flex parents), and inline-flex width:auto is shrink-to-fit
+       (starved table cells). max-content sizing makes every container
+       accommodate the pill instead. -->
+  <span class="inline-flex w-max shrink-0 items-stretch overflow-hidden rounded-8 border border-grape-300 bg-grape-50">
     <span class="flex shrink-0 items-center border-r border-grape-300 bg-surface" :class="stacked ? 'px-2' : 'px-1.5'">
       <img :src="pawnUrl" alt="" :class="stacked ? 'h-7' : 'h-5'" class="w-auto" />
     </span>
