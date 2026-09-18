@@ -243,6 +243,12 @@ consumer repo.
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
 
+### Migration notes — v0.9.13
+
+- **Chrome tweaks visible to every consumer:** `UxAvatar` ring is now `border-2` (was `border-1`); `UxPageTitle`'s underline row has `pb-3` (was `pb-1`). No API change — expect avatars to read slightly heavier and page titles to sit a little higher off their rule.
+- **New `filter/*` namespace** — `Filter`, `FilterItem`, `FilterTriggerBar`, `FilterDatasetViewSelector`, `FilterEndcapPlaceholder` are the v2 segmented-bar design; the components extracted verbatim from app.qpoint.io live under `filter/old/` as `FilterOld*`. app.qpoint.io still runs its own local copies — migrating it to v2 is c88's pending next step.
+- **New `DataMachine`** (`data/machine/`) — composition harness over the DataMetric primitives. `svgMachine.sparkChart` gained a `closePath` param; `DataMetricSpark` passes `fillColor !== 'none'`, so line-only sparklines no longer show baseline-anchor drops.
+
 ### Migration notes — v0.9.6
 
 - **`UxTableListExpandRow` close X moved.** The sticky viewport-anchored X is gone. By default the `#details` slot now renders inside one `UxTableListExpandSection` card (same chrome `DataTable` used to hand-roll) with a card-anchored close X. Consumers that bring their own details chrome — or compose their own ExpandSection stack — must pass `bare` on the row (details slot scope provides `close`; `open()`/`close()` are exposed for template refs). Notably: app.qpoint.io's direct ExpandRow sites (traffic/inventory ItemUI, alerting) will want `bare` when they take this version.
