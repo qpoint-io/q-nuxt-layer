@@ -20,8 +20,11 @@ export const svgMachine = {
     return pts.join(' ')
   },
 
-  // Build a simple chart from the raw data we get from the server
-  sparkChart:(dataPts, ceiling=0, padding=0)=>{
+  // Build a simple chart from the raw data we get from the server.
+  // closePath adds baseline anchor points before/after the data so a polygon
+  // fill closes cleanly — skip it (closePath=false) for a stroked line with no
+  // fill: those anchors would otherwise render as a visible drop at each end.
+  sparkChart:(dataPts, ceiling=0, padding=0, closePath=true)=>{
 
     // init
     let points            = []
@@ -31,7 +34,7 @@ export const svgMachine = {
     let verticalIncrament = 1
 
     // start the line flush left
-    points.push(new Point(0, -10))
+    if (closePath) points.push(new Point(0, -10))
 
     // add all the points..
     for ( let pt of dataPts ){
@@ -45,7 +48,7 @@ export const svgMachine = {
     width -= widthIncrament
 
     // end flush right
-    points.push(new Point(width + 10, -1))
+    if (closePath) points.push(new Point(width + 10, -1))
 
     // If we're showing multiple charts, calibrate to tallest value
     if( ceiling > height )

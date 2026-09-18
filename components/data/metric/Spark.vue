@@ -38,7 +38,7 @@ const props = defineProps({
 
 // convert the data into a svg line
 const graph = computed( ()=>{
-  return svgMachine.sparkChart( props.data, props.ceiling, props.padding )
+  return svgMachine.sparkChart( props.data, props.ceiling, props.padding, props.fillColor !== 'none' )
 })
 
 </script>
