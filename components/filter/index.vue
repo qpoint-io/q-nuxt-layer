@@ -12,92 +12,114 @@
     @requestValSuggestions="onRequestValSuggestions"
   />
 
-  <div v-else>
-    <!-- Disabled -->
-    <div v-if="disabled" class="flex items-center gap-3 text-grey-400/80 text-16 font-semi text-nowrap">
-      <div>Not Applicable</div>
-    </div>
-
-    <!-- Empty state -->
+  <!-- Filter -->
+  <template v-else>
+    <!-- Stuck sentinel: CSS has no cross-browser "is stuck" state, so a 1px marker
+         is left at the bar's rest position and watched by an IntersectionObserver.
+         Absolute with no offsets = static position (where the bar sits at rest),
+         out of flow so it adds no width or flex gap, and — unlike anything inside
+         the sticky box — it stays put when the bar pins. -->
+    <div ref="stuckSentinel" class="absolute h-px w-px pointer-events-none" aria-hidden="true" />
+    <!-- The component owns pinning: it is sticky itself, so every consumer
+         gets the pinned bar for free. It needs a tall ancestor to detach
+         within (a layout band, the page root) — a title-row slot is not
+         tall enough. h-0 keeps it out of flow vertically so the bar can sit
+         on a title row without pushing content. At rest the backing is
+         transparent; once pinned it takes the page canvas tone so it reads
+         opaque over scrolled content, and `_stuck` is exposed as a class
+         hook (plus `stuck` emit) for consumers that want their own chrome. -->
     <div
-      v-else-if="filters.length === 0"
-      role="button" tabindex="0"
-      class="inline-flex items-center gap-3 rounded-[8px] rounded-bl-full rounded-tl-full border-2 border-blue bg-[#e0f1ff] cursor-pointer hover:bg-white transition-colors"
-      @click="startAdd" @keydown.enter.prevent="startAdd" @keydown.space.prevent="startAdd"
+      ref="barRef"
+      class="inline-block sticky z-40 h-0 rounded-8 px-3 py-3 transition-colors"
+      :class="filterStuck ? '_stuck bg-surface-sunken' : ''"
+      :style="{ top: `${stickyTop}px` }"
     >
-      <div class="bg-white w-8 h-8 -ml-[2px] -mt-[2px] -mb-[2px] rounded-full border-2 border-blue flex items-center justify-center text-[#0064b8] shrink-0">
-        <UxIcon id="plus" class="w-3.5" />
+      <!-- Disabled -->
+      <div v-if="disabled" class="flex items-center gap-3 text-grey-400/80 text-16 font-semi text-nowrap">
+        <div>Not Applicable</div>
       </div>
-      <div class="text-14 font-bold">Add Filter</div>
-      <FilterEndcapPlaceholder />
-    </div>
 
-    <!-- Populated bar: a table — ADD sits outside it; inside, each column's label
-         row is transparent and its value row carries the fill (white for a
-         filter, light blue for Config). Dividers use a darker tone than the
-         rest of the palette for table-line contrast. No overflow-hidden (it
-         would clip FilterItem's dropdown) — the first/last column instead
-         round their own value fill to match the table's outer corners. -->
-    <div v-else class="inline-flex items-end gap-3">
+      <!-- Empty state -->
       <div
+        v-else-if="filters.length === 0"
         role="button" tabindex="0"
-        class="flex flex-col gap-1 cursor-pointer shrink-0"
+        class="inline-flex items-center gap-3 rounded-[8px] rounded-bl-full rounded-tl-full border-2 border-blue bg-blue/10 cursor-pointer hover:bg-surface transition-colors"
         @click="startAdd" @keydown.enter.prevent="startAdd" @keydown.space.prevent="startAdd"
       >
-        <div class="text-11 font-med text-[#219bff]">ADD</div>
-        <div class="w-7 h-7 rounded-full bg-white border-2 border-blue flex items-center justify-center text-blue hover:bg-blue/5">
-          <UxIcon id="plus" class="w-2.5" />
+        <div class="bg-surface w-8 h-8 -ml-[2px] -mt-[2px] -mb-[2px] rounded-full border-2 border-blue flex items-center justify-center text-blue shrink-0">
+          <UxIcon id="plus" class="w-3.5" />
         </div>
+        <div class="text-14 font-bold">Add Filter</div>
+        <FilterEndcapPlaceholder />
       </div>
 
-      <!-- Each boundary is owned by one side only (the left border of the cell
-           after it) so there's a single line per divider, not two stacked. -->
-      <div class="inline-flex items-stretch rounded-b-6 border-x-1 border-b-1 border-[#add0ed] ">
-        <FilterItem
-          v-for="(filter, i) in filters" :key="filter.key"
-          :class="i > 0 ? 'border-l-2 border-[#add0ed]' : ''"
-          :roundLeft="i === 0"
-          :_key="filter.key"
-          :operator="filter.operator"
-          :val="filter.val ?? ''"
-          :isTagFilter="isTagFilter(filter.key)"
-          :valSuggestions="valSuggestions?.[filter.key] ?? []"
-          @update:val="updateFilterVal(filter.key, $event)"
-          @delete="removeFilter(filter.key)"
-        />
+      <!-- Populated bar: a table — ADD sits outside it; inside, each column's label
+           row is transparent and its value row carries the fill (white for a
+           filter, light blue for Config). Dividers use a darker tone than the
+           rest of the palette for table-line contrast. No overflow-hidden (it
+           would clip FilterItem's dropdown) — the first/last column instead
+           round their own value fill to match the table's outer corners. -->
+      <div v-else class="inline-flex items-end gap-3">
+        <div
+          role="button" tabindex="0"
+          class="flex flex-col gap-1 cursor-pointer shrink-0"
+          @click="startAdd" @keydown.enter.prevent="startAdd" @keydown.space.prevent="startAdd"
+        >
+          <div class="text-11 font-med text-blue">ADD</div>
+          <div class="w-7 h-7 rounded-full bg-surface border-2 border-blue flex items-center justify-center text-blue hover:bg-blue/5">
+            <UxIcon id="plus" class="w-2.5" />
+          </div>
+        </div>
 
-        <div class="flex flex-col border-l-1 border-[#add0ed]">
-          <div class="flex items-end pb-1 text-12 font-bold tracking-[0.07em] text-content-subtle uppercase px-3 border-b-2 border-[#add0ed] min-h-[32px]">Filter</div>
-          <div class="flex items-stretch bg-blue/10 rounded-br-8">
-            <button type="button" class="flex items-center gap-1 text-14 font-bold text-blue hover:text-grape px-3 " @click="openFilterManager">
-              <UxIcon id="gear" class="w-3.5 text-[#00559c]" />
-              Config
-            </button>
-            <!-- <FilterEndcapPlaceholder class="" /> -->
+        <!-- Each boundary is owned by one side only (the left border of the cell
+             after it) so there's a single line per divider, not two stacked. -->
+        <div class="inline-flex items-stretch rounded-b-6 border-x-1 border-b-1 border-blue/40">
+          <FilterItem
+            v-for="(filter, i) in filters" :key="filter.key"
+            :class="i > 0 ? 'border-l-2 border-blue/40' : ''"
+            :roundLeft="i === 0"
+            :_key="filter.key"
+            :operator="filter.operator"
+            :val="filter.val ?? ''"
+            :isTagFilter="isTagFilter(filter.key)"
+            :valSuggestions="valSuggestions?.[filter.key] ?? []"
+            @update:val="updateFilterVal(filter.key, $event)"
+            @delete="removeFilter(filter.key)"
+          />
+
+          <div class="flex flex-col border-l-1 border-blue/40">
+            <div class="flex items-end pb-1 text-12 font-bold tracking-[0.07em] text-content-subtle uppercase px-3 border-b-2 border-blue/40 min-h-[32px]">Filter</div>
+            <div class="flex items-stretch bg-blue/10 rounded-br-8">
+              <button type="button" class="flex items-center gap-1 text-14 font-bold text-blue hover:text-grape px-3 " @click="openFilterManager">
+                <UxIcon id="gear" class="w-3.5" />
+                Config
+              </button>
+              <!-- <FilterEndcapPlaceholder class="" /> -->
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Modal — reuses the Phase-1 manage modal (FilterOldManage) until a v2 design lands.
-         Both the ADD trigger and Config open it; ADD also kicks off its add-row flow. -->
-    <UxModal v-model:open="isManaging" :close-btn="false" :at-top="true">
-      <FilterOldManage
-        ref="manageRef"
-        :filters="filters"
-        :availableKeyDefs="availableKeyDefs"
-        :filterKeyDefs="filterKeyDefs"
-        :valSuggestions="valSuggestions"
-        :timeframe="timeframe"
-        :timeframeValue="timeframeValue"
-        :timeframeOptions="timeframeOptions"
-        @update:timeframeValue="$emit('update:timeframeValue', $event)"
-        @close="onManageClose"
-        @requestKeySuggestions="onRequestKeySuggestions"
-        @requestValSuggestions="onRequestValSuggestions"
-      />
-    </UxModal>
-  </div>
+      <!-- Modal — reuses the Phase-1 manage modal (FilterOldManage) until a v2 design lands.
+           Both the ADD trigger and Config open it; ADD also kicks off its add-row flow. -->
+      <UxModal v-model:open="isManaging" :close-btn="false" :at-top="true">
+        <FilterOldManage
+          ref="manageRef"
+          :filters="filters"
+          :availableKeyDefs="availableKeyDefs"
+          :filterKeyDefs="filterKeyDefs"
+          :valSuggestions="valSuggestions"
+          :timeframe="timeframe"
+          :timeframeValue="timeframeValue"
+          :timeframeOptions="timeframeOptions"
+          @update:timeframeValue="$emit('update:timeframeValue', $event)"
+          @close="onManageClose"
+          @requestKeySuggestions="onRequestKeySuggestions"
+          @requestValSuggestions="onRequestValSuggestions"
+        />
+      </UxModal>
+    </div>
+  </template>
 </template>
 
 <!-- Presentational — the timeframe value itself (route query, store, whatever
@@ -121,14 +143,43 @@ const props = defineProps({
   timeframeOptions: { type: Array, default: () => [] },
   disabled      : { type: Boolean, default: false },
   embed         : { type: Boolean, default: false },
+  // Pin offset in px from the top of the scroll container — a consumer with
+  // its own fixed header sets this to that header's height.
+  stickyTop     : { type: Number, default: 0 },
 })
 
 const emit = defineEmits([
   'update:keyValFilters',
   'update:timeframeValue',
   'requestKeySuggestions',
-  'requestValSuggestions'
+  'requestValSuggestions',
+  // true once the bar has pinned, false when it returns to rest
+  'stuck',
 ])
+
+// Stuck state for the sticky bar — see the sentinel comment in the template.
+// The observer's root is inset by the bar's pin offset plus the sentinel's own
+// 1px, so the sentinel stops intersecting at exactly the pixel the bar pins.
+// Re-armed when stickyTop changes (the observer's rootMargin is fixed at
+// construction).
+const barRef = ref(null)
+const stuckSentinel = ref(null)
+const filterStuck = ref(false)
+let stuckObserver = null
+const armStuckObserver = () => {
+  stuckObserver?.disconnect()
+  if (!stuckSentinel.value || typeof IntersectionObserver === 'undefined') return
+  const line = props.stickyTop + 1
+  stuckObserver = new IntersectionObserver(
+    ([entry]) => { filterStuck.value = !entry.isIntersecting && entry.boundingClientRect.top < line },
+    { rootMargin: `-${line}px 0px 0px 0px`, threshold: 0 },
+  )
+  stuckObserver.observe(stuckSentinel.value)
+}
+onMounted(armStuckObserver)
+watch(() => props.stickyTop, armStuckObserver)
+watch(filterStuck, (v) => emit('stuck', v))
+onBeforeUnmount(() => stuckObserver?.disconnect())
 
 // Modal state
 const isManaging = ref(false)

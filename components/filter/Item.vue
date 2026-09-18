@@ -3,15 +3,15 @@
      Change the key or operator itself in the Manage modal. -->
 <template>
   <div ref="containerRef" class="relative flex flex-col min-w-0">
-    <div class="flex items-center justify-between gap-2 text-13 font-med italic text-blue px-3 border-b-2 border-[#add0ed] min-h-[32px]">
+    <div class="flex items-center justify-between gap-2 text-13 font-med italic text-blue px-3 border-b-2 border-blue/40 min-h-[32px]">
       <span class="truncate">{{ _key }}:</span>
-      <button type="button" class="text-grey-700 hover:text-black shrink-0 flex items-center" @click.stop="$emit('delete')">
+      <button type="button" class="text-content-subtle hover:text-content shrink-0 flex items-center" @click.stop="$emit('delete')">
         <UxIcon id="x" class="w-4" />
       </button>
     </div>
     <div
       role="button" tabindex="0"
-      class="flex items-center gap-2 text-13 font-bold text-blue bg-white px-3 whitespace-nowrap"
+      class="flex items-center gap-2 text-13 font-bold text-blue bg-surface px-3 whitespace-nowrap"
       :class="[isTagFilter ? '' : 'cursor-pointer hover:bg-blue/5', roundLeft ? 'rounded-bl-4' : '']"
       @click="toggleDropdown" @keydown.enter.prevent="toggleDropdown" @keydown.space.prevent="toggleDropdown"
     >
@@ -21,11 +21,11 @@
     </div>
 
     <div v-if="showDropdown && valSuggestions.length > 0"
-      class="absolute z-50 top-full left-0 mt-1 bg-white border border-grey-200 rounded shadow-lg overflow-y-auto min-w-[160px] max-h-[300px]">
+      class="absolute z-50 top-full left-0 mt-1 bg-surface border border-stroke rounded shadow-lg overflow-y-auto min-w-[160px] max-h-[300px]">
       <div v-for="suggestion in valSuggestions" :key="suggestion"
         @click="selectVal(suggestion)"
-        class="px-3 py-2 hover:bg-grape-100 cursor-pointer text-12 text-content"
-        :class="{ 'bg-grape-50': suggestion === val }">
+        class="px-3 py-2 hover:bg-primary/10 cursor-pointer text-12 text-content"
+        :class="{ 'bg-primary/5': suggestion === val }">
         {{ suggestion }}
       </div>
     </div>

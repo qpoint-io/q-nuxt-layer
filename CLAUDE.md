@@ -243,6 +243,11 @@ consumer repo.
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
 
+### Migration notes — v0.9.14
+
+- **`Filter` (v2) owns pinning.** The bar is `position: sticky` itself (design c92 / qdash c15): new `stickyTop` prop (px pin offset, default 0), a `_stuck` class + `stuck` emit once it pins, and a `bg-surface-sunken` backing while pinned. It needs a *tall ancestor* to detach within — a title-row slot is not one; mount it in a layout band or the page root (qdash: `GlobalFilterBar` in `layouts/default.vue`). The bar keeps `h-0` so it can sit on a title row without pushing content.
+- **Filter v2 colours are tokens now** — the hard-coded hex (`#e0f1ff`, `#add0ed`, `#219bff`, `#0064b8`, `#00559c`) became `blue`/`blue/40`/`blue/10`, `bg-surface`, `border-stroke`, `text-content-*`, so the bar flips in dark mode. Expect a slightly different blue tint on light backgrounds.
+
 ### Migration notes — v0.9.13
 
 - **Chrome tweaks visible to every consumer:** `UxAvatar` ring is now `border-2` (was `border-1`); `UxPageTitle`'s underline row has `pb-3` (was `pb-1`). No API change — expect avatars to read slightly heavier and page titles to sit a little higher off their rule.

@@ -3,7 +3,7 @@
      same keyValFilters state that feeds its Filter bar so the two stay in
      sync (see phase2-global-filter.vue). -->
 <template>
-  <div class="inline-flex ml-2 items-stretch rounded-full rounded-tl-4 rounded-bl-4 bg-surface border-2 border-[#219bff]">
+  <div class="inline-flex ml-2 items-stretch rounded-full rounded-tl-4 rounded-bl-4 bg-surface border-2 border-blue">
     <img class="w-12 -ml-2" :src="filterEndcap" />
 
     <div class="flex items-center gap-2 px-4 border-l-1 border-r-1 border-stroke shrink-0">
@@ -24,7 +24,7 @@
       <button
         type="button"
         class="text-12 font-med rounded-[6px] border-2 px-4  whitespace-nowrap transition-colors"
-        :class="modelValue == null ? 'border-blue bg-blue/10 text-blue' : 'border-gre text-content-subtle hover:border-blue hover:text-blue'"
+        :class="modelValue == null ? 'border-blue bg-blue/10 text-blue' : 'border-stroke text-content-subtle hover:border-blue hover:text-blue'"
         @click="$emit('update:modelValue', null)"
       >
         View All
