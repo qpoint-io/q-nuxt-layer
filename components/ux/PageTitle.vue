@@ -12,7 +12,7 @@
     </div>
 
     <div class="flex gap-px24 whitespace-nowrap">
-      <div class="grow border-b border-stroke-strong pb-1 flex items-end">
+      <div class="grow border-b border-stroke-strong pb-3 flex items-end">
         <!-- Main slot -->
         <div class="flex items-baseline gap-2 font-bold text-15 grow">
 
