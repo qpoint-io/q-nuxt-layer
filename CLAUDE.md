@@ -243,6 +243,11 @@ consumer repo.
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
 
+### Migration notes — v0.9.15
+
+- **New `DataSurfaceSection`** (`data/surface-section/`) — the chrome around a set of `DataSurfacePanel`s: "Surface" heading, mono scope caption, lede, anchor id, responsive grid (`columns` 1 / 2 / 3), `#before` slot. Only the shell — panels, bars and links are the consumer's composition (qdash `components/surface/Section.vue` over `/api/surface`, design c92).
+- **`FilterKeyDefinition.formatVal`** — optional display-only formatter; `FilterItem` shows `formatVal(val)` in the pill and its suggestions while the URL/API value stays raw (qdash uses it so `?agent=<entity id>` reads as the agent's name). No change for defs without it.
+
 ### Migration notes — v0.9.14
 
 - **`Filter` (v2) owns pinning.** The bar is `position: sticky` itself (design c92 / qdash c15): new `stickyTop` prop (px pin offset, default 0), a `_stuck` class + `stuck` emit once it pins, and a `bg-surface-sunken` backing while pinned. It needs a *tall ancestor* to detach within — a title-row slot is not one; mount it in a layout band or the page root (qdash: `GlobalFilterBar` in `layouts/default.vue`). The bar keeps `h-0` so it can sit on a title row without pushing content.
