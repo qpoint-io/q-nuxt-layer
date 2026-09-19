@@ -39,6 +39,9 @@ export interface FilterKeyDefinition {
   // optional list of supported operators. defaults to all.
   operators?: FilterOperator[];
   type: FilterType;
+  // optional display formatter for the value pill — the URL/API value stays
+  // raw (an entity id, say) while the bar shows something readable.
+  formatVal?: (val: string) => string;
 }
 
 export function getOperatorsForFilterKey(

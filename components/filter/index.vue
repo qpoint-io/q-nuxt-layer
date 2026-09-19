@@ -82,6 +82,7 @@
             :operator="filter.operator"
             :val="filter.val ?? ''"
             :isTagFilter="isTagFilter(filter.key)"
+            :formatVal="formatValFor(filter.key)"
             :valSuggestions="valSuggestions?.[filter.key] ?? []"
             @update:val="updateFilterVal(filter.key, $event)"
             @delete="removeFilter(filter.key)"
@@ -227,6 +228,8 @@ const availableKeyDefs = computed(() => {
   const usedKeys = filters.value.map((f) => f.key)
   return allKeyDefs.value.filter((d) => !usedKeys.includes(d.key))
 })
+
+const formatValFor = (key) => allKeyDefs.value.find((d) => d.key === key)?.formatVal ?? null
 
 const isTagFilter = (key) => {
   const def = props.filterKeyDefs?.find((d) => d.key === key)

@@ -26,7 +26,7 @@
         @click="selectVal(suggestion)"
         class="px-3 py-2 hover:bg-primary/10 cursor-pointer text-12 text-content"
         :class="{ 'bg-primary/5': suggestion === val }">
-        {{ suggestion }}
+        {{ formatVal ? formatVal(suggestion) : suggestion }}
       </div>
     </div>
   </div>
@@ -40,6 +40,8 @@ const props = defineProps({
   isTagFilter: { type: Boolean, default: false },
   // string[] offered in the value dropdown — the current key's suggestions.
   valSuggestions: { type: Array, default: () => [] },
+  // Display-only formatter from the key definition (FilterKeyDefinition.formatVal).
+  formatVal: { type: Function, default: null },
   // True when this is the table's leftmost column, so its value box's
   // bottom-left corner can match the table's rounded corner (the table
   // itself has no overflow-hidden, so nothing does this automatically).
@@ -50,7 +52,7 @@ const emit = defineEmits(['delete', 'update:val'])
 
 const displayValue = computed(() => {
   if (props.isTagFilter && !props.val) return 'tag exists'
-  return props.val
+  return props.formatVal ? props.formatVal(props.val ?? '') : props.val
 })
 
 const showDropdown = ref(false)
