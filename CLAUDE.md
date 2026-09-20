@@ -259,7 +259,7 @@ consumer repo.
 
 ### Migration notes — v0.9.19
 
-- **New `DataRankedBars`** (`data/RankedBars.vue`) — the *Ranked share* DataMachine preset as a component (design c92 day-series §A; lifted verbatim from qdash's local `RankedBars`). Props `rows [{ label, value, pct, display? }]`, `width` (190), `labelWidth` (84, inline only), `mono` (true), `layout: 'inline' | 'stacked'`. Stacked puts the label on its own line above a full-width bar with the share at the right end, for id-shaped labels (model ids, hostnames, workspace paths) that truncated inline. Empty rows → an em-dash. qdash's `RankedBars.vue` is a shim over it for this release and is deleted in the next.
+- **New `DataRankedBars`** (`data/RankedBars.vue`) — the *Ranked share* DataMachine preset as a component (design c92 day-series §A; lifted verbatim from qdash's local `RankedBars`). Props `rows [{ label, value, pct, display? }]`, `width` (190), `labelWidth` (84, inline only), `mono` (true), `layout: 'inline' | 'stacked'`. Stacked puts the label on its own line above a full-width bar with the share at the right end, for id-shaped labels (model ids, hostnames, workspace paths) that truncated inline. Empty rows → an em-dash. qdash's `RankedBars.vue` is a shim over it for this release and is deleted in the next. **0.9.20** keys rows by index + label (two rows may share a label).
 
 ### Migration notes — v0.9.17
 
