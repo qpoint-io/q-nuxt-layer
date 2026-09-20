@@ -256,6 +256,11 @@ consumer repo.
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
 
+### Migration notes — v0.9.17
+
+- **`Filter` renders the timeframe again** (design c92 timeframe-always) — a permanent, non-removable `when:` column (a `FilterItem` with the new `removable=false` prop) last before Config, whenever `timeframe` is on (the default) **and** `timeframeOptions` is non-empty. The bar is then never in its "Add Filter" empty state. Consumers that pass options but did not expect a pill: pass `timeframe=false`. `timeframeValue` falls back to the first option's value; the pill shows the option's `label` and emits its `value`.
+- **`FilterItem.removable`** (default `true`) — false hides the ✕ and never emits `delete`.
+
 ### Migration notes — v0.9.16
 
 - **New `DataSegmentBar`** (`data/SegmentBar.vue`) — the segmented 100 % bar the listing overview bands kept hand-rolling (design c92 listing-viz). Props `items [{ title, value, color?, display? }]`, `width`, `height`, `gap`, `legend`, `ordinal`; `color: 'outline'` draws a bordered empty segment.
