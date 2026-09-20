@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center gap-2.5">
-    <component :is="agent.logo" class="h-5 w-5 shrink-0 text-content" />
+    <component :is="agent.logo" class="shrink-0 text-content" :style="{ width: `${size}px`, height: `${size}px` }" />
     <span class="text-13 font-bold text-content">{{ label || agent.label }}</span>
   </div>
 </template>
@@ -18,6 +18,8 @@ import { resolveAgent } from './registry'
 const props = defineProps({
   name: { type: String, required: true },
   label: { type: String, default: '' },
+  // Logo edge in px — 20 for rows and chips; larger as a page's identity mark (ActorHeader #mark).
+  size: { type: Number, default: 20 },
 })
 
 const agent = computed(() => resolveAgent(props.name))
