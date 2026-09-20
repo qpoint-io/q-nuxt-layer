@@ -3,6 +3,7 @@
     class="inline-flex max-w-full"
     :class="legend === 'beside' ? 'flex-row items-center gap-5' : 'flex-col gap-2'"
     :style="{ width: `${width}px` }"
+    data-segment-bar :data-total="total"
   >
 
     <!-- Bar — segments proportional to value, a `gap`-px surface gap between
@@ -35,7 +36,7 @@
       class="flex"
       :class="legend === 'beside' ? 'flex-col gap-1' : 'flex-row flex-wrap gap-x-4 gap-y-1'"
     >
-      <div v-for="seg in shown" :key="seg.key" class="flex items-center gap-1.5 whitespace-nowrap text-12 text-content-muted">
+      <div v-for="seg in shown" :key="seg.key" class="flex items-center gap-1.5 whitespace-nowrap text-12 text-content-muted" :data-value="seg.value">
         <span
           class="h-2.5 w-2.5 shrink-0 rounded-2"
           :class="seg.outline ? 'border border-stroke-strong' : ''"
@@ -86,27 +87,36 @@ const activeScheme = computed(() => mounted.value ? colorScheme.value : 'light')
 const compact = new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 })
 const num = (v) => Number(v) || 0
 
-// Identity fold: only uncolored items past the third fold into "Other" —
-// a consumer that names and colors every part opted out of the ladder.
+// Identity fold: the categorical slots are three, so uncolored items past
+// the third uncolored one fold into "Other". Explicitly colored items never
+// fold and don't consume a slot — a consumer that names and colors a part
+// (cache write in stroke-strong beside three identity parts) keeps it.
 const folded = computed(() => {
   const items = props.items.map((it) => ({ ...it, value: Math.max(0, num(it.value)) }))
-  if (props.ordinal || items.every((it) => it.color) || items.length <= FOLD_AT) return items
-  const head = items.slice(0, FOLD_AT)
-  const tail = items.slice(FOLD_AT)
-  return [...head, { title: OTHER_TITLE, value: tail.reduce((n, it) => n + it.value, 0), color: FOLD_COLOR }]
+  if (props.ordinal) return items
+  let uncolored = 0
+  const kept = []
+  let other = 0
+  for (const it of items) {
+    if (it.color) { kept.push(it); continue }
+    if (uncolored < FOLD_AT) { kept.push(it); uncolored++ } else other += it.value
+  }
+  if (uncolored < FOLD_AT || items.filter((it) => !it.color).length <= FOLD_AT) return items
+  return [...kept, { title: OTHER_TITLE, value: other, color: FOLD_COLOR }]
 })
 
 const total = computed(() => folded.value.reduce((n, it) => n + it.value, 0))
 
 const shown = computed(() => {
   const n = folded.value.length
+  let slot = 0
   return folded.value.map((it, i) => {
     const outline = it.color === 'outline'
     const fill = outline
       ? null
       : props.ordinal
         ? (it.color ? resolveColor(it.color) : ordinalColor(i, n, activeScheme.value))
-        : resolveColor(resolveCategoricalColor(it.color, i, activeScheme.value))
+        : (it.color ? resolveColor(it.color) : resolveCategoricalColor(null, slot++, activeScheme.value))
     return {
       key: `${i}-${it.title}`,
       title: it.title,

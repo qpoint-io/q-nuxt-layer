@@ -1,5 +1,5 @@
 <template>
-  <div class="inline-block" :class="to !== '_none_' ? 'cursor-pointer hover:text-primary' : ''" @click="onClick">
+  <div class="inline-block" :class="to !== '_none_' ? 'cursor-pointer hover:text-primary' : ''" data-machine :data-val="val" @click="onClick">
 
     <!-- Title -->
     <div class="font-bold text-content text-20" :style="titleSize ? `font-size:${titleSize}px` : ''">
