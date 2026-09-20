@@ -14,7 +14,7 @@
            labels read whole), the bar takes the full width beneath it with
            the share at its right end in text tokens. -->
       <div
-        v-for="r in rows" :key="r.label"
+        v-for="(r, i) in rows" :key="`${i}-${r.label}`"
         class="flex flex-col gap-0.5 text-11 text-content-muted"
         :title="`${r.label}: ${r.pct}% of the whole`"
       >
@@ -29,7 +29,7 @@
       <!-- Inline: label beside the bar in a fixed column — the compact form
            for short names (teams, harnesses, hosts). Long labels truncate. -->
       <div
-        v-for="r in rows" :key="r.label"
+        v-for="(r, i) in rows" :key="`${i}-${r.label}`"
         class="grid items-center gap-2 text-11 text-content-muted"
         :style="{ gridTemplateColumns: `${labelWidth}px 1fr` }"
         :title="`${r.label}: ${r.pct}% of the whole`"
@@ -49,7 +49,9 @@
 // concentration the card's provenance names ("top 3 = 62 % of spend").
 // Rows arrive ranked with their share already computed — the consumer's
 // rollup (qdash lib/actor-bands.shareOf) owns the arithmetic; this only
-// draws. Empty → an em-dash, never a placeholder.
+// draws. Rows are keyed by index + label — two rows may share a label (two
+// sessions by one user · agent, two workspaces with one basename). Empty →
+// an em-dash, never a placeholder.
 //
 // `layout`: 'inline' puts the label in a fixed column beside the bar (short
 // names); 'stacked' gives the label its own line above a full-width bar with
