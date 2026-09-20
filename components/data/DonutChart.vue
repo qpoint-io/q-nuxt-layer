@@ -67,11 +67,10 @@
 </template>
 
 <script setup>
-// Token roles we recognize as palette colors; anything else in `item.color`
-// is treated as a raw CSS color string.
-const TOKEN_ROLES = ['success', 'stroke-strong', 'primary', 'info', 'warning', 'error', 'content', 'content-muted', 'stroke']
-// Default palette assigned by index (cycles). Green first, grey second — see reference.
-const PALETTE = ['success', 'stroke-strong', 'primary', 'info', 'warning', 'error']
+// Colors resolve through the shared chart palette (components/data/palette.js):
+// a token role → live CSS var; anything else in `item.color` is a raw CSS
+// string; no color → the donut palette cycles by index.
+import { resolveDonutColor } from './palette'
 
 const props = defineProps({
   items       : { type: Array, required: true },   // [{ title, percent, html?, color? }]
@@ -92,8 +91,7 @@ const circumference = computed(() => 2 * Math.PI * radius.value)
 
 // Resolve an item's color: token role → live CSS var; otherwise raw CSS string.
 function strokeFor(item, i) {
-  const color = item.color ?? PALETTE[i % PALETTE.length]
-  return TOKEN_ROLES.includes(color) ? qp(color) : color
+  return resolveDonutColor(item.color, i)
 }
 
 // Point on the ring centerline at `deg` degrees clockwise from 12 o'clock.

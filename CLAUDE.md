@@ -157,6 +157,19 @@ Auto-imported (path-based prefix):
 | `NavVertical` | `components/nav/` | Vertical nav section: optional hairline title above a slot of `NavVerticalItem` links |
 | `NavVerticalItem` | `components/nav/` | Vertical-nav link — `<nuxt-link>` (`to`), external `<a>` (`href`), or plain slot; prop-driven `active` and small/medium `size`. Nuxt-only |
 
+### Data Components (`components/data/`)
+
+Auto-imported with the `Data` prefix. The chart family below shares one color file, `components/data/palette.js` (token-role resolver, donut palette, the three validated categorical slots, the grape ordinal ramp); the full list of stat/metric primitives is in `.claude/skills/layer-catalog.md`.
+
+| Component | Description |
+|-----------|-------------|
+| `DataMachine` | Composition harness for a stat card: title · hairline · description · value/unit/delta · `#left` `#right` · provenance · `:spark` |
+| `DataDonutChart` | Part-to-whole ring with a center slot and swatch legend, `[{ title, percent, html?, color? }]` |
+| `DataHistoryGraph` | Per-day unit-block lanes (or bars past ~40 columns), 1–3 series, `{ series, points }` |
+| `DataSegmentBar` | Horizontal 100 % bar of named segments — values in, normalized; 2 px surface gap; `legend` below/beside/none; `ordinal` one-hue ramp; identity series fold past three into "Other"; empty → hairline track |
+| `DataSurfacePanel` | Ranked rows + `DataPercentBar` column |
+| `DataSurfaceSection` | Chrome around a set of `DataSurfacePanel`s |
+
 ## Design Tokens
 
 Canonical source: `tailwind.config.js`. fontSize replaces Tailwind defaults (at theme root, not extend).
@@ -242,6 +255,11 @@ consumer repo.
 
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
+
+### Migration notes — v0.9.16
+
+- **New `DataSegmentBar`** (`data/SegmentBar.vue`) — the segmented 100 % bar the listing overview bands kept hand-rolling (design c92 listing-viz). Props `items [{ title, value, color?, display? }]`, `width`, `height`, `gap`, `legend`, `ordinal`; `color: 'outline'` draws a bordered empty segment.
+- **Shared `data/palette.js`** — `DataDonutChart`'s token-role resolver and palette, `DataHistoryGraph`'s categorical slots and the new ordinal ramp now live in one file. `history-graph/palette.js` re-exports `HISTORY_GRAPH_PALETTE` / `resolveHistoryGraphColor` unchanged, so nothing that imports from there moves; donut and history-graph rendering is byte-identical.
 
 ### Migration notes — v0.9.15
 

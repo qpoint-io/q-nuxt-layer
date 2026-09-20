@@ -329,6 +329,17 @@ Data visualization primitives for stats, charts, sparklines, trends, and percent
 
 ---
 
+### DataSegmentBar
+**Source:** `components/data/SegmentBar.vue`
+**Description:** Horizontal 100 % bar of named segments (a whole with 3–6 parts). Values in, not percents — the component normalizes, so the consumer passes the same numbers the card shows. 2 px surface gap between fills, per-segment hover title, legend (title + value in text tokens) below or beside. No colors → the three validated categorical slots, a 4th+ identity segment folds into "Other"; `ordinal` → one grape hue stepped light → dark; `color: 'outline'` → bordered empty segment. Empty items → a hairline track.
+**Use when:** A card's count is made of named parts that sum to it — coverage state, presence, posture, outcome, kind mix, token composition. Not for a single ratio (use the number + `DataMetricPercentBar`) and not for ranked magnitude (use `DataPercentBar` rows).
+**Props:** `items (Array, required)`, `width (Number, 200)`, `height (Number, 16)`, `gap (Number, 2)`, `legend (String, 'below')`, `ordinal (Boolean, false)`
+**Emits:** (none)
+**Slots:** (none)
+**Related:** `DataDonutChart`, `DataHistoryGraph`, `DataMachine`, `components/data/palette.js`
+
+---
+
 ### DataStat
 **Source:** `components/data/Stat.vue`
 **Description:** Stat block with label, formatted value, percentage/number display modes, health coloring, and loading spinner.
