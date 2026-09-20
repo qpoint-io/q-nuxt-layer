@@ -166,6 +166,7 @@ Auto-imported with the `Data` prefix. The chart family below shares one color fi
 | `DataMachine` | Composition harness for a stat card: title · hairline · description · value/unit/delta · `#left` `#right` · provenance · `:spark` |
 | `DataDonutChart` | Part-to-whole ring with a center slot and swatch legend, `[{ title, percent, html?, color? }]` |
 | `DataHistoryGraph` | Per-day unit-block lanes (or bars past ~40 columns), 1–3 series, `{ series, points }` |
+| `DataRankedBars` | Ranked-share rows — `[{ label, value, pct, display? }]` in, one compact `UxPercentBar` per row, each bar the share of the whole; `layout` inline (label column beside) or stacked (label on its own line, full-width bar, share at the right — nothing truncates); empty → em-dash |
 | `DataSegmentBar` | Horizontal 100 % bar of named segments — values in, normalized; 2 px surface gap; `legend` below/beside/none; `ordinal` one-hue ramp; identity series fold past three into "Other"; empty → hairline track |
 | `DataSurfacePanel` | Ranked rows + `DataPercentBar` column |
 | `DataSurfaceSection` | Chrome around a set of `DataSurfacePanel`s |
@@ -255,6 +256,10 @@ consumer repo.
 
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
+
+### Migration notes — v0.9.19
+
+- **New `DataRankedBars`** (`data/RankedBars.vue`) — the *Ranked share* DataMachine preset as a component (design c92 day-series §A; lifted verbatim from qdash's local `RankedBars`). Props `rows [{ label, value, pct, display? }]`, `width` (190), `labelWidth` (84, inline only), `mono` (true), `layout: 'inline' | 'stacked'`. Stacked puts the label on its own line above a full-width bar with the share at the right end, for id-shaped labels (model ids, hostnames, workspace paths) that truncated inline. Empty rows → an em-dash. qdash's `RankedBars.vue` is a shim over it for this release and is deleted in the next.
 
 ### Migration notes — v0.9.17
 

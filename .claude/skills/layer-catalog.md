@@ -329,6 +329,17 @@ Data visualization primitives for stats, charts, sparklines, trends, and percent
 
 ---
 
+### DataRankedBars
+**Source:** `components/data/RankedBars.vue`
+**Description:** The "Ranked share" DataMachine preset as a component — ranked rows in, one compact `UxPercentBar` per row in one hue, each bar the item's share of the whole (not of the max) so the rows read as the concentration the provenance names ("top 3 = 62 % of spend"). `layout: 'inline'` puts the label in a fixed column beside the bar; `'stacked'` gives the label its own line above a full-width bar with the share at the right end, so id-shaped labels never truncate. The consumer's rollup owns the ranking and the shares (qdash `lib/actor-bands.shareOf`); this only draws. Empty → an em-dash.
+**Use when:** A card's magnitude is concentrated in a few named items — top models by spend, top hosts by cost, top tools by calls. Inline for short names (teams, harnesses), stacked for ids (models, hosts, workspace paths). Not for a composition that sums to the card (use `DataSegmentBar`).
+**Props:** `rows (Array, required)`, `width (Number, 190)`, `labelWidth (Number, 84)`, `mono (Boolean, true)`, `layout (String, 'inline')`
+**Emits:** (none)
+**Slots:** (none)
+**Related:** `UxPercentBar`, `DataPercentBar`, `DataSegmentBar`, `DataMachine`
+
+---
+
 ### DataSegmentBar
 **Source:** `components/data/SegmentBar.vue`
 **Description:** Horizontal 100 % bar of named segments (a whole with 3–6 parts). Values in, not percents — the component normalizes, so the consumer passes the same numbers the card shows. 2 px surface gap between fills, per-segment hover title, legend (title + value in text tokens) below or beside. No colors → the three validated categorical slots, a 4th+ identity segment folds into "Other"; `ordinal` → one grape hue stepped light → dark; `color: 'outline'` → bordered empty segment. Empty items → a hairline track.
