@@ -39,9 +39,10 @@
         <div>Not Applicable</div>
       </div>
 
-      <!-- Empty state -->
+      <!-- Empty state — only when there is nothing permanent to show: with a
+           timeframe the table renders around the always-present `when:` pill. -->
       <div
-        v-else-if="filters.length === 0"
+        v-else-if="filters.length === 0 && !hasTimeframe"
         role="button" tabindex="0"
         class="inline-flex items-center gap-3 rounded-[8px] rounded-bl-full rounded-tl-full border-2 border-blue bg-blue/10 cursor-pointer hover:bg-surface transition-colors"
         @click="startAdd" @keydown.enter.prevent="startAdd" @keydown.space.prevent="startAdd"
@@ -88,6 +89,21 @@
             @delete="removeFilter(filter.key)"
           />
 
+          <!-- Timeframe: a permanent, non-removable column — last before Config
+               (app.qpoint.io's "When" pill; design c92 timeframe-always). Same
+               chrome as a filter pill, the value dropdown over timeframeOptions. -->
+          <FilterItem
+            v-if="hasTimeframe"
+            _key="when"
+            :val="timeframeVal"
+            :valSuggestions="timeframeOptions.map((o) => o.value)"
+            :formatVal="timeframeLabel"
+            :removable="false"
+            :roundLeft="filters.length === 0"
+            :class="filters.length ? 'border-l-2 border-blue/40' : ''"
+            @update:val="$emit('update:timeframeValue', $event)"
+          />
+
           <div class="flex flex-col border-l-1 border-blue/40">
             <div class="flex items-end pb-1 text-12 font-bold tracking-[0.07em] text-content-subtle uppercase px-3 border-b-2 border-blue/40 min-h-[32px]">Filter</div>
             <div class="flex items-stretch bg-blue/10 rounded-br-8">
@@ -125,9 +141,13 @@
 
 <!-- Presentational — the timeframe value itself (route query, store, whatever
      the consumer uses) is threaded through as timeframeValue/timeframeOptions
-     rather than read from a store here. v2 drops the always-visible timeframe
-     pill and onlyTime mode; timeframe selection now lives inside the Config
-     modal (FilterOldManage), which still renders it.
+     rather than read from a store here. The timeframe renders as a permanent
+     `when:` column (a FilterItem with removable=false) last before Config
+     whenever `timeframe` is on and options are given — so the bar is never in
+     its empty state on such a consumer (design c92 timeframe-always). Pass
+     timeframe=false (or no options) to get the plain "Add Filter" empty state.
+     The Config modal (FilterOldManage) still renders its own timeframe row.
+     onlyTime mode stays dropped.
 
      The bar itself is display-only: key and operator are fixed per pill: only
      the value is editable in place (FilterItem's own dropdown). Adding a new
@@ -181,6 +201,13 @@ onMounted(armStuckObserver)
 watch(() => props.stickyTop, armStuckObserver)
 watch(filterStuck, (v) => emit('stuck', v))
 onBeforeUnmount(() => stuckObserver?.disconnect())
+
+// The permanent timeframe column: on when the consumer wants it and gave
+// options. Its value falls back to the first option so the pill never reads
+// blank; the label comes from the matching option.
+const hasTimeframe = computed(() => props.timeframe && (props.timeframeOptions?.length ?? 0) > 0)
+const timeframeVal = computed(() => String(props.timeframeValue ?? props.timeframeOptions?.[0]?.value ?? ''))
+const timeframeLabel = (v) => props.timeframeOptions?.find((o) => String(o.value) === String(v))?.label ?? v
 
 // Modal state
 const isManaging = ref(false)

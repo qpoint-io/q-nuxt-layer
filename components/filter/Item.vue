@@ -1,11 +1,13 @@
 <!-- A column in Filter's table — key and operator are fixed here (not editable);
      only the value is interactive, via a closed dropdown over valSuggestions.
-     Change the key or operator itself in the Manage modal. -->
+     Change the key or operator itself in the Manage modal. `removable=false`
+     drops the ✕ for a column that is always in place (Filter's timeframe pill). -->
 <template>
   <div ref="containerRef" class="relative flex flex-col min-w-0">
     <div class="flex items-center justify-between gap-2 text-13 font-med italic text-blue px-3 border-b-2 border-blue/40 min-h-[32px]">
       <span class="truncate">{{ _key }}:</span>
-      <button type="button" class="text-content-subtle hover:text-content shrink-0 flex items-center" @click.stop="$emit('delete')">
+      <!-- A permanent column (the timeframe pill) has no ✕; the row keeps its height via min-h. -->
+      <button v-if="removable" type="button" class="text-content-subtle hover:text-content shrink-0 flex items-center" @click.stop="$emit('delete')">
         <UxIcon id="x" class="w-4" />
       </button>
     </div>
@@ -46,6 +48,9 @@ const props = defineProps({
   // bottom-left corner can match the table's rounded corner (the table
   // itself has no overflow-hidden, so nothing does this automatically).
   roundLeft: { type: Boolean, default: false },
+  // False for a column that is always in place (the timeframe pill): the key
+  // row renders no ✕ and never emits `delete`. The value stays editable.
+  removable: { type: Boolean, default: true },
 })
 
 const emit = defineEmits(['delete', 'update:val'])
