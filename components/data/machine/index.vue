@@ -22,7 +22,7 @@
       </div>
 
       <div class="flex items-baseline gap-2">
-        <DataMetricValue :val="val" :unit="unit" :size="valueSize" :healthMode="healthMode" />
+        <DataMetricValue :val="val" :unit="unit" :size="valueSize" :healthMode="healthMode" :showFullNumber="showFullNumber" />
         <DataMetricTrend v-if="delta != null" :change="delta" :unit="deltaUnit" :healthMode="healthMode" />
       </div>
 
@@ -60,6 +60,7 @@ const props = defineProps({
   val             : { required: true },            // passed straight to DataMetricValue; null shows loading
   valueSize       : { type: Number, default: 40 }, // matches DataMetricValue's own default
   unit            : { type: String },              // 'bytes' | 'duration' | 'ms' | '%' | any custom string
+  showFullNumber  : { type: Boolean, default: false }, // passed to DataMetricValue — money and exact counts must not abbreviate (1956.24, not 2k)
 
   delta           : { type: Number },              // passed to DataMetricTrend as `change`
   deltaUnit       : { type: String },              // passed to DataMetricTrend as `unit`
