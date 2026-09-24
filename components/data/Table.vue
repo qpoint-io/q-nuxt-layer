@@ -46,9 +46,11 @@
         </tr>
       </template>
 
+      <!-- Empty chrome is the table's; the #empty slot swaps the content
+           (e.g. a FilterNoMatches when the rows are filtered away, not absent). -->
       <template #empty>
         <div class="flex items-center h-40 w-full bg-grey-200 justify-center rounded-10">
-          {{ empty || 'No data yet.' }}
+          <slot name="empty">{{ empty || 'No data yet.' }}</slot>
         </div>
       </template>
     </UxTableList>
@@ -74,6 +76,7 @@
 // `limit` caps rendered rows AFTER sort+search, so the cap is the top-N of the
 // active sort (an outer rows.slice() would cap the pre-sorted set); pair it
 // with the #footer slot ({ total, shown }) for a "View more" affordance.
+// `#empty` replaces the empty-state text inside the table's own chrome.
 // Unifies qdash's DataTable and the design site's PermissionTable (c50/c51).
 import { ref, computed, useSlots } from 'vue'
 
