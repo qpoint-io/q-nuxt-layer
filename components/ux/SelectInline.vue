@@ -5,9 +5,10 @@
        invisible and stretched over the label (the FilterTriggerBar key-segment
        idiom). The focus ring is keyboard-only: Chrome reports a clicked <select>
        as :focus-visible, so a pointer press suppresses the ring until the next
-       key press (the trigger bar dropped its ring for that reason, c95). -->
+       key press (the trigger bar dropped its ring for that reason, c95). Never
+       wider than its container: a long label truncates, the caret stays. -->
   <span
-    class="group relative inline-flex items-center gap-1.5 rounded-4"
+    class="group relative inline-flex max-w-full items-center gap-1.5 rounded-4"
     :class="focused && !viaPointer ? 'ring-2 ring-primary/40 ring-offset-2 ring-offset-surface' : ''"
   >
     <!-- option values are indexes, so numbers and other non-string values round-trip unchanged -->
@@ -23,8 +24,8 @@
     >
       <option v-for="(o, i) in options" :key="i" :value="i">{{ o.label ?? o.value }}</option>
     </select>
-    <span class="whitespace-nowrap text-14 font-bold text-content-muted group-hover:text-content">{{ currentLabel }}</span>
-    <UxIcon id="triangle" class="w-2.5 rotate-180 text-primary" />
+    <span class="min-w-0 truncate text-14 font-bold text-content-muted group-hover:text-content">{{ currentLabel }}</span>
+    <UxIcon id="triangle" class="w-2.5 shrink-0 rotate-180 text-primary" />
   </span>
 </template>
 

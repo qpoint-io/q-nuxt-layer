@@ -3,13 +3,16 @@
 
     <!-- Title — with #title-right the row becomes title · slot, space-between, so
          a control (e.g. a UxSelectInline view switcher) sits at the card's right
-         edge on the title's baseline. Clicks inside the slot don't reach the
-         card's `to`. Without the slot the title renders exactly as before. -->
-    <div v-if="$slots['title-right']" class="flex items-baseline justify-between gap-3">
+         edge on the title's baseline. In a card too narrow for both, the slot
+         wraps under the title and stays right-aligned (ml-auto), capped at the
+         card's width (min-w-0 here, max-w-full on the slot) so a long control
+         can truncate rather than overflow. Clicks inside the slot don't reach the card's
+         `to`. Without the slot the title renders exactly as before. -->
+    <div v-if="$slots['title-right']" class="flex min-w-0 flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
       <div class="min-w-0 font-bold text-content text-20" :style="titleSize ? `font-size:${titleSize}px` : ''">
         {{ title }}
       </div>
-      <div class="shrink-0" @click.stop>
+      <div class="ml-auto min-w-0 max-w-full shrink-0" @click.stop>
         <slot name="title-right" />
       </div>
     </div>

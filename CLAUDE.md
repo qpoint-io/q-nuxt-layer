@@ -260,8 +260,8 @@ consumer repo.
 
 ### Migration notes — unreleased (design c92 todos plan 11 follow-up, 2026-09-25)
 
-- **`DataMachine` gains `#title-right`** — a slot on the title row, laid out title · slot with `justify-between` (baseline-aligned), so a control sits at the card's right edge. Clicks inside it don't trigger the card's `to`. Unused, the title renders exactly as before.
-- **New `UxSelectInline`** (`ux/SelectInline.vue`) — inline view switcher for a title row or sentence: the current option's label (14 px bold, `content-muted`) + a small primary triangle caret, no box; an invisible native `<select>` stretched over it owns the menu, keyboard and a11y. `options { value, label }[]`, v-model (compared with `===`, any primitive), `ariaLabel` (default "View"). Keyboard-only focus ring. Not `UxSimpleSelect` restyled: that one's grey chevron caret ships to many consumers.
+- **`DataMachine` gains `#title-right`** — a slot on the title row, laid out title · slot with `justify-between` (baseline-aligned), so a control sits at the card's right edge; in a card too narrow for both it wraps under the title, right-aligned and capped at the card width. Clicks inside it don't trigger the card's `to`. Unused, the title renders exactly as before.
+- **New `UxSelectInline`** (`ux/SelectInline.vue`) — inline view switcher for a title row or sentence: the current option's label (14 px bold, `content-muted`) + a small primary triangle caret, no box; an invisible native `<select>` stretched over it owns the menu, keyboard and a11y. `options { value, label }[]`, v-model (compared with `===`, any primitive), `ariaLabel` (default "View"). Keyboard-only focus ring; never wider than its container (a long label truncates, the caret stays). Not `UxSimpleSelect` restyled: that one's grey chevron caret ships to many consumers.
 
 ### Migration notes — v0.9.21
 
