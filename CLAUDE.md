@@ -257,6 +257,11 @@ consumer repo.
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
 
+### Migration notes — v0.9.21
+
+- **`FilterTriggerBar` restyle** (design c92 trigger-bar): one bordered bar — a key segment whose chevron points into hairline-divided value segments; **"View All" → "All"**; the endcap image and "Add Filter" label are gone. **The root is now full-width and right-aligns the bar** — drop any wrapper that positioned it, and expect it over the right edge of whatever follows. New optional `label` prop (lead-in text, e.g. "Global Filter :"). The key caret + dropdown render only when `filterKeyDefs` has more than one entry. Props and emits otherwise unchanged. `assets/svgs/filter/bar.svg` removed (it was only the old endcap).
+- **New `FilterNoMatches`** (`filter/NoMatches.vue`) — the "filtered to nothing" empty state: "No {subject} match the current filter." + a Clear filter button emitting `clear`. **`DataTable` gains an `#empty` slot** that replaces the empty-state text inside the table's own empty chrome (falls back to the `empty` prop).
+
 ### Migration notes — v0.9.19
 
 - **New `DataRankedBars`** (`data/RankedBars.vue`) — the *Ranked share* DataMachine preset as a component (design c92 day-series §A; lifted verbatim from qdash's local `RankedBars`). Props `rows [{ label, value, pct, display? }]`, `width` (190), `labelWidth` (84, inline only), `mono` (true), `layout: 'inline' | 'stacked'`. Stacked puts the label on its own line above a full-width bar with the share at the right end, for id-shaped labels (model ids, hostnames, workspace paths) that truncated inline. Empty rows → an em-dash. qdash's `RankedBars.vue` is a shim over it for this release and is deleted in the next. **0.9.20** keys rows by index + label (two rows may share a label).
