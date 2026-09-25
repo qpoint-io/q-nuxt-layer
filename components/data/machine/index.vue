@@ -1,8 +1,19 @@
 <template>
   <div class="inline-block" :class="to !== '_none_' ? 'cursor-pointer hover:text-primary' : ''" data-machine :data-val="val" @click="onClick">
 
-    <!-- Title -->
-    <div class="font-bold text-content text-20" :style="titleSize ? `font-size:${titleSize}px` : ''">
+    <!-- Title — with #title-right the row becomes title · slot, space-between, so
+         a control (e.g. a UxSelectInline view switcher) sits at the card's right
+         edge on the title's baseline. Clicks inside the slot don't reach the
+         card's `to`. Without the slot the title renders exactly as before. -->
+    <div v-if="$slots['title-right']" class="flex items-baseline justify-between gap-3">
+      <div class="min-w-0 font-bold text-content text-20" :style="titleSize ? `font-size:${titleSize}px` : ''">
+        {{ title }}
+      </div>
+      <div class="shrink-0" @click.stop>
+        <slot name="title-right" />
+      </div>
+    </div>
+    <div v-else class="font-bold text-content text-20" :style="titleSize ? `font-size:${titleSize}px` : ''">
       {{ title }}
     </div>
 

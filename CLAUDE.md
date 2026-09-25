@@ -30,6 +30,7 @@ Auto-imported with the `Ux` prefix:
 | `UxLabelText` | Two-line display: small grey label + bold value |
 | `UxSimpleSelect` | Minimal borderless native `<select>` with v-model |
 | `UxSelect` | Bordered native `<select>` form control with theme-aware caret |
+| `UxSelectInline` | Borderless inline view switcher: current label + small primary caret over an invisible native `<select>`; `options {value,label}[]`, v-model, `ariaLabel` |
 | `UxCardLink` | Card-as-link with grape hover border; static card when no `to` |
 | `UxBackLink` | Standard "← Back to X" link for detail pages |
 | `UxCode` | Inline code span (mono, grey chip, 0.9em); `warn` tone |
@@ -256,6 +257,11 @@ consumer repo.
 
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
+
+### Migration notes — unreleased (design c92 todos plan 11 follow-up, 2026-09-25)
+
+- **`DataMachine` gains `#title-right`** — a slot on the title row, laid out title · slot with `justify-between` (baseline-aligned), so a control sits at the card's right edge. Clicks inside it don't trigger the card's `to`. Unused, the title renders exactly as before.
+- **New `UxSelectInline`** (`ux/SelectInline.vue`) — inline view switcher for a title row or sentence: the current option's label (14 px bold, `content-muted`) + a small primary triangle caret, no box; an invisible native `<select>` stretched over it owns the menu, keyboard and a11y. `options { value, label }[]`, v-model (compared with `===`, any primitive), `ariaLabel` (default "View"). Keyboard-only focus ring. Not `UxSimpleSelect` restyled: that one's grey chevron caret ships to many consumers.
 
 ### Migration notes — v0.9.21
 
