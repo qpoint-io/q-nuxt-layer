@@ -34,7 +34,9 @@ Auto-imported with the `Ux` prefix:
 | `UxCardLink` | Card-as-link with grape hover border; static card when no `to` |
 | `UxBackLink` | Standard "← Back to X" link for detail pages |
 | `UxCode` | Inline code span (mono, grey chip, 0.9em); `warn` tone |
-| `UxCodeBlock` | Code block with copy button, optional collapse, dark/light themes |
+| `UxCodeBlock` | Code block with copy button, optional collapse, dark/light themes, optional `lineNumbers` gutter |
+| `UxFileTree` | Explorer-style file tree from `{ path, …meta }[]` (folders built from the paths): chevrons, file-type glyphs, compact rows, selected row; v-model path + `select`; `#adornment` per file; roving-focus keyboard |
+| `UxEditorFrame` | Small editor window: `#tray` left (sunken, `trayLabel`), tab strip (`tabs` + v-model, or `#tabs` / `#tab`) with `#toolbar` at its right, content in the default slot |
 | `UxPill` | Read-only toned badge (grape/leaf/grey/warn) |
 | `UxFilterGroup` | Toggle-button filter/switcher group (single, multiple, required modes) |
 | `UxTabGroup` | Joined-segment tab switcher with heavy underline and right-action slot |
@@ -262,6 +264,12 @@ consumer repo.
 
 - **`DataMachine` gains `#title-right`** — a slot on the title row, laid out title · slot with `justify-between` (baseline-aligned), so a control sits at the card's right edge; in a card too narrow for both it wraps under the title, right-aligned and capped at the card width. Clicks inside it don't trigger the card's `to`. Unused, the title renders exactly as before.
 - **New `UxSelectInline`** (`ux/SelectInline.vue`) — inline view switcher for a title row or sentence: the current option's label (14 px bold, `content-muted`) + a small primary triangle caret, no box; an invisible native `<select>` stretched over it owns the menu, keyboard and a11y. `options { value, label }[]`, v-model (compared with `===`, any primitive), `ariaLabel` (default "View"). Keyboard-only focus ring; never wider than its container (a long label truncates, the caret stays). Not `UxSimpleSelect` restyled: that one's grey chevron caret ships to many consumers.
+
+### Migration notes — unreleased, pending 0.9.22 (design c92 todos plan 12, 2026-09-25)
+
+- **New `UxFileTree`** (`ux/FileTree.vue`) — explorer-style tree (the VS Code explorer look). `files { path, …meta }[]` — folders come from the `/`-separated paths, meta rides along untouched; v-model = the selected file's path; `select` emits the file object; `foldersFirst` (default true; false puts e.g. SKILL.md above `scripts/`); `label` (aria), `empty` text / `#empty`; `#adornment` scope `{ file }` for right-aligned per-file marks (⚙ executable, ○ bundled only). Folders open by default; a selection inside a closed folder opens its ancestors. Keyboard: ↑/↓, Home/End, → expand / step in, ← collapse / step out, Enter/Space select or toggle. File-type glyph by extension (text, script, code, data, image, generic).
+- **New `UxEditorFrame`** (`ux/EditorFrame.vue`) — a small editor window with no editor inside: `#tray` (sunken left column, `md:w-60`, optional uppercase `trayLabel`), a tab strip from `tabs` (strings or `{ value, label, title? }`, v-model active; long labels truncate at `max-w-xs`) or `#tabs` / per-tab `#tab`, `#toolbar` at the strip's right end, default slot = content. Stacks under `md`; tray and content scroll on their own; size it from outside. First consumer: qdash Skill detail (UxFileTree tray, UxTabGroup Preview / Source toolbar).
+- **`UxCodeBlock` gains `lineNumbers`** — a sticky, unselectable gutter column (a single trailing newline gets no number). Off by default; nothing else changes.
 
 ### Migration notes — v0.9.21
 
