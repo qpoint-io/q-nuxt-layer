@@ -262,12 +262,16 @@ consumer repo.
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
 
-### Migration notes — unreleased (design c98, 2026-09-26)
+### Migration notes — v0.9.22 (design c92 header alignment, 2026-09-26)
+
+- **`UxPageTitle` `#right` is zero-height** — right-slot content (status badges, buttons) no longer sets the title row's height; it bottom-aligns just above the rule (same `pb-1`) and overflows upward. Before, anything taller than the title grew the ruled row and pushed the rule and the page down. Check pages with little room above the title: tall `#right` content now rises into it instead of pushing content down.
+
+### Migration notes — v0.9.22 (design c98, 2026-09-26)
 
 - **New `NavVerticalSubmenu`** (`nav/VerticalSubmenu.vue`): a nav row with children. `#label` is the parent row, and the default slot holds child `NavVerticalItem`s. The parent row is a `NavVerticalItem` link when it has `to`/`href`, and a toggle `<button>` (`aria-expanded`) otherwise. `active` and `size` apply to the parent row. The list shows when `route.path` is under `match` (`string | string[]`, defaults to `to`; segment-aware, so `/inventory` matches `/inventory/models` but not `/inventory-archive`). `open` / `update:open` (v-model) overrides the route. Children hang off a 1px `stroke-strong` rail at the parent's left edge, indented `pl-4`. With no children, no rail renders. `subWeight` (`reg`…`black`, default `med`) and `subSize` (px on the type scale 11–16, default 13) set the children's weight and size. `subGap` (px between child rows, default 1) is **provisional**, a tuning knob to be removed once the spacing is dialed in; don't depend on it.
 - **`NavVerticalItem` gains `sub`**: italic, tighter rows, with weight/size/gap from the enclosing submenu (med 13, 1px gap by default: ~23px rows against the default ~30px; the same when forced outside one). It is inherited from an enclosing `NavVerticalSubmenu` by inject; `true`/`false` forces it. Existing call sites are unchanged.
 
-### Migration notes — unreleased (design c95, 2026-09-25)
+### Migration notes — v0.9.22 (design c95, 2026-09-25)
 
 - **New `UxPopover`** (`ux/Popover.vue`) — trigger + anchored panel on Headless UI Popover (`align`, `side: 'below' | 'above'`, `wide`); `#trigger` scope `{ open }`, default slot scope `{ close }`. Root is `inline-flex`; focus ring inset. Extracted from the design site (c93).
 - **New `UxColumnPicker`** (`ux/ColumnPicker.vue`) — checkbox popover that shows/hides table columns: `columns { key, label, locked? }`, v-model = visible keys in catalog order, `minVisible`, `side`; `#trigger` slot (scope `{ open, label, visibleCount, hiddenCount, total }`) replaces the bordered default trigger. Extracted from the design site (c93).
@@ -277,7 +281,7 @@ consumer repo.
 - **`FilterTriggerBar` gains `#end`** — a trailing hairline-divided segment after the values, scope `{ tone }` (the TONE roles). The overflow clip moved from the bar to its key+values group so a popover from the end segment isn't clipped; end content carries `rounded-r-6` on its own hover/selected surface.
 - **`DataTable` gains `#toolbar`** — a control row over the table's right edge (shares the title row when `title` is set; its own row with table gap otherwise), rendered outside the horizontal-scroll box. The canonical seat for `DataListingBar`. **Sort fallback:** when `columns` changes and the sorted column is gone, sort falls back to `initialSort`, else the first sortable column (was: silently unsorted). `Col` type gains `locked?`.
 
-### Migration notes — unreleased (design c92, 2026-09-24)
+### Migration notes — v0.9.22 (design c92, 2026-09-24)
 
 - **`DataSegmentBar` / `DataRankedBars` fill their container by default** — `width` is `[Number, String]`, default `'100%'` (was 200 / 190 px). A number still pins px; drop fixed widths inside `DataMachine #right` so the device stretches. `DataRankedBars`' `fill` is now just `width="100%"`.
 - **`DataMachine`**: `#right` is always `min-w-0 flex-1` (fills the row, 24 px from the value); main row `items-start`; new `#below` slot (full width, above the footer); `val` optional (device-only card); provenance is an italic 12 px footer with a hairline above.
@@ -291,12 +295,12 @@ consumer repo.
 - **`Filter` / `FilterItem` restyle** (design c92 mock): Config button → **Filter** (gear + text `#2a62b2` on `#e3f0fe`, blank header cell); ADD is a 24 px circle with a 1 px `grey-400` ring and a 14 px `#4c99f8` plus, label `grey-500` on the column-label baseline; key rows 24 px, `grey-500`, not italic; values `#759ac0`, chevrons `#4c99f8`; dividers `stroke-strong`. Non-token hues are CSS vars on `.qf-bar` (scoped style, dark variants). qdash's `GlobalFilterBar` offset is now `-top-10`.
 - **`DataMachine` description** is `content-muted` (was `content-subtle`), 2 px under the hairline.
 
-### Migration notes — unreleased (design c92 todos plan 11 follow-up, 2026-09-25)
+### Migration notes — v0.9.22 (design c92 todos plan 11 follow-up, 2026-09-25)
 
 - **`DataMachine` gains `#title-right`** — a slot on the title row, laid out title · slot with `justify-between` (baseline-aligned), so a control sits at the card's right edge; in a card too narrow for both it wraps under the title, right-aligned and capped at the card width. Clicks inside it don't trigger the card's `to`. Unused, the title renders exactly as before.
 - **New `UxSelectInline`** (`ux/SelectInline.vue`) — inline view switcher for a title row or sentence: the current option's label (14 px bold, `content-muted`) + a small primary triangle caret, no box; an invisible native `<select>` stretched over it owns the menu, keyboard and a11y. `options { value, label }[]`, v-model (compared with `===`, any primitive), `ariaLabel` (default "View"). Keyboard-only focus ring; never wider than its container (a long label truncates, the caret stays). Not `UxSimpleSelect` restyled: that one's grey chevron caret ships to many consumers.
 
-### Migration notes — unreleased, pending 0.9.22 (design c92 todos plan 12, 2026-09-25)
+### Migration notes — v0.9.22 (design c92 todos plan 12, 2026-09-25)
 
 - **New `UxFileTree`** (`ux/FileTree.vue`) — explorer-style tree (the VS Code explorer look). `files { path, …meta }[]` — folders come from the `/`-separated paths, meta rides along untouched; v-model = the selected file's path; `select` emits the file object; `foldersFirst` (default true; false puts e.g. SKILL.md above `scripts/`); `label` (aria), `empty` text / `#empty`; `#adornment` scope `{ file }` for right-aligned per-file marks (⚙ executable, ○ bundled only). Folders open by default; a selection inside a closed folder opens its ancestors. Keyboard: ↑/↓, Home/End, → expand / step in, ← collapse / step out, Enter/Space select or toggle. File-type glyph by extension (text, script, code, data, image, generic).
 - **New `UxEditorFrame`** (`ux/EditorFrame.vue`) — a small editor window with no editor inside: `#tray` (sunken left column, `md:w-60`, optional uppercase `trayLabel`), a tab strip from `tabs` (strings or `{ value, label, title? }`, v-model active; long labels truncate at `max-w-xs`) or `#tabs` / per-tab `#tab`, `#toolbar` at the strip's right end, default slot = content. Stacks under `md`; tray and content scroll on their own; size it from outside. First consumer: qdash Skill detail (UxFileTree tray, UxTabGroup Preview / Source toolbar).
