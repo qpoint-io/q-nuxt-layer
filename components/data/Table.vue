@@ -1,6 +1,18 @@
 <template>
-  <div class="mb-4 overflow-x-auto">
-    <h3 v-if="title" class="text-20 font-bold text-content pb-2 mb-1 border-b-2 border-b-content/10">{{ title }}</h3>
+  <div class="mb-4">
+    <!-- Title row doubles as the toolbar seat: title left, #toolbar right (a
+         DataListingBar, which right-aligns itself). It lives outside the
+         overflow-x-auto scroll box below so a popover opened from the toolbar
+         isn't clipped. Without a title the row is just the toolbar, table-gap below. -->
+    <div
+      v-if="title || slots.toolbar"
+      class="flex items-end justify-between gap-4"
+      :class="title ? 'pb-2 mb-1 border-b-2 border-b-content/10' : 'mb-3'"
+    >
+      <h3 v-if="title" class="text-20 font-bold text-content">{{ title }}</h3>
+      <div v-if="slots.toolbar" class="min-w-0 flex-1"><slot name="toolbar" /></div>
+    </div>
+    <div class="overflow-x-auto">
     <UxTableList :compact="false">
       <template #header>
         <tr>
@@ -54,6 +66,7 @@
         </div>
       </template>
     </UxTableList>
+    </div>
     <!-- footer (e.g. a View More link when `limit` hides rows), lower-right -->
     <div v-if="$slots.footer" class="flex justify-end pt-1">
       <slot name="footer" :total="sorted.length" :shown="visible.length" />
@@ -77,8 +90,13 @@
 // active sort (an outer rows.slice() would cap the pre-sorted set); pair it
 // with the #footer slot ({ total, shown }) for a "View more" affordance.
 // `#empty` replaces the empty-state text inside the table's own chrome.
+// `#toolbar` seats a control row over the table's right edge (the title row
+// when there is a title) — the canonical home for DataListingBar (c95).
+// `columns` may change at runtime (a column picker filtering the catalog); if
+// the sorted column disappears the sort falls back to `initialSort`, else the
+// first sortable column, so the rows never silently drop to insertion order.
 // Unifies qdash's DataTable and the design site's PermissionTable (c50/c51).
-import { ref, computed, useSlots } from 'vue'
+import { ref, computed, useSlots, watch } from 'vue'
 
 type Col = {
   key: string
@@ -89,6 +107,11 @@ type Col = {
   search?: boolean
   sortable?: boolean
   pill?: boolean
+  locked?: boolean // read by UxColumnPicker, ignored here
+  // The global-filter key(s) this column answers to when named differently
+  // (a `providers` column ↔ the `provider` key); read by DataListingBar, which
+  // offers only the keys its table has a column for. Ignored here.
+  filterKey?: string | string[]
 }
 
 const props = defineProps<{
@@ -116,6 +139,15 @@ const metrics = computed(() =>
     width: c.width,
     search: c.search ? (n: string) => (search.value = n) : undefined,
   })),
+)
+
+watch(
+  () => props.columns,
+  (cols) => {
+    if (!sortBy.value || cols.some((c) => c.label === sortBy.value)) return
+    const sortable = cols.filter((c) => c.sortable !== false)
+    sortBy.value = (sortable.find((c) => c.label === props.initialSort) ?? sortable[0])?.label || ''
+  },
 )
 
 function onSort(label: string, d: 'up' | 'down') {

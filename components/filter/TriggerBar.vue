@@ -9,29 +9,39 @@
      Layout note: the root is full-width and right-aligns the bar. Alignment
      is owned here on purpose (every qdash listing wants it over the table's
      right edge), so a consumer never needs a wrapper to place it — and a
-     flex-row wrapper can't shrink it back to the left. -->
+     flex-row wrapper can't shrink it back to the left.
+
+     #end slot (c95): a trailing segment after the values, hairline-divided,
+     for a control that belongs on the bar but isn't a filter value — the
+     column picker in DataListingBar. Its scope hands over TONE so the content
+     can draw itself in the bar's colours. The bar's overflow clip sits on the
+     key+values group, not the whole bar, so a popover opened from the end
+     segment isn't clipped; end content should carry rounded-r-6 on its own
+     hover/selected surface to follow the bar's inner corner. -->
 <template>
   <div class="flex w-full items-center justify-end gap-3">
     <span v-if="label" class="text-14 font-med whitespace-nowrap" :class="TONE.text">{{ label }}</span>
 
-    <!-- overflow-hidden clips the selected fill to the rounded corners — which
-         also clips outset focus rings, hence the inset rings below. -->
-    <div class="inline-flex items-stretch rounded-8 bg-surface border-2 overflow-hidden" :class="TONE.lineBorder">
+    <div class="inline-flex items-stretch rounded-8 bg-surface border-2" :class="TONE.lineBorder">
+      <!-- overflow-hidden clips the selected fill to the corners (rounded-6 = the 8px
+           outer radius minus the 2px border) — which also clips outset focus rings,
+           hence the inset rings below. With an #end segment the right side is straight. -->
+      <div class="flex items-stretch overflow-hidden" :class="$slots.end ? 'rounded-l-6' : 'rounded-6'">
       <div class="relative flex items-center gap-2 pl-4 pr-3 shrink-0">
         <!-- Multi-key: a native <select>, invisible, stretched over the segment so the
-             whole segment opens it while the label + caret stay custom-drawn. It must
-             come first in the DOM so the `peer` ring overlay after it can show keyboard
-             focus (the select itself is opacity-0, so its own focus ring is invisible). -->
+             whole segment opens it while the label + caret stay custom-drawn. No focus
+             ring on this segment (Mark, c95): the c92 peer-focus-visible overlay lit up
+             after every mouse pick, because Chrome treats a <select> as keyboard-focused
+             even when clicked. The select's own ring is invisible (opacity-0). -->
         <select
           v-if="multiKey"
           :value="filterKey"
           aria-label="Filter key"
-          class="peer absolute inset-0 w-full opacity-0 cursor-pointer"
+          class="absolute inset-0 w-full opacity-0 cursor-pointer"
           @change="$emit('update:filterKey', $event.target.value)"
         >
           <option v-for="def in filterKeyDefs" :key="def.key" :value="def.key">{{ def.label ?? def.key }}</option>
         </select>
-        <span v-if="multiKey" class="pointer-events-none absolute inset-0 ring-inset peer-focus-visible:ring-2" :class="TONE.focusRing" />
 
         <span class="text-14 font-bold text-content-muted whitespace-nowrap">{{ currentKeyLabel }}</span>
         <!-- The caret only appears when there's a choice to make; a single fixed key is a plain label. -->
@@ -66,6 +76,12 @@
         >
           {{ option.label }}
         </button>
+      </div>
+      </div>
+
+      <!-- trailing segment(s): divided from the values, and from each other -->
+      <div v-if="$slots.end" class="flex items-stretch border-l divide-x" :class="[TONE.lineBorder, TONE.lineDivide]">
+        <slot name="end" :tone="TONE" />
       </div>
     </div>
   </div>
