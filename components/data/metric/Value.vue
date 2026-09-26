@@ -2,13 +2,18 @@
   <div>
     <div v-if="!isLoading && val != '_blank'" class="flex gap-[0.06em] items-baseline" :class="temperature">
 
+      <!-- Prefix unit ('$') — same dimmed treatment as a suffix unit -->
+      <div v-if="_prefix" class="_unit opacity-50">
+        {{ _prefix }}
+      </div>
+
       <!-- Value -->
       <div class="_value">
         {{ _val }}
       </div>
 
       <!-- Unit -->
-      <div class="_unit opacity-50" v-if="!showFullNumber">
+      <div class="_unit opacity-50" v-if="!showFullNumber && _unit">
         {{ _unit }}
       </div>
     </div>
@@ -45,7 +50,7 @@ const props = defineProps({
   val            : { required:true },             // Value
   size           : { type:Number, default:40 },   // Font size
   weight         : { type:String },               // Font weight
-  unit           : { type:String },               // unit
+  unit           : { type:String },               // unit — 'bytes' | 'duration' | '$' (prefix) | any suffix string
   unitSize       : { type:String },               // unit size
   showFullNumber : { type:Boolean },              // Don't abbreviate. when true, 10k becomes 10000
   healthMode     : { type:Function, default: healthModes.NEVER_HOT },
@@ -103,7 +108,13 @@ const _val = computed(() => {
   return abbreviateNumber(Number(props.val))[0];
 })
 
+// units that read before the number
+const PREFIX_UNITS = ['$']
+const _prefix = computed(() => PREFIX_UNITS.includes(props.unit) ? props.unit : '')
+
 const _unit = computed(() => {
+  if (_prefix.value)
+    return '';
   if (props.unit === 'bytes') {
     return formatBytes(Number(props.val)).unit;
   }

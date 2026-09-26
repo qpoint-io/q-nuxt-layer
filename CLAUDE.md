@@ -167,10 +167,11 @@ Auto-imported with the `Data` prefix. The chart family below shares one color fi
 
 | Component | Description |
 |-----------|-------------|
-| `DataMachine` | Composition harness for a stat card: title · hairline · description · value/unit/delta · `#left` `#right` · provenance · `:spark` |
+| `DataMachine` | Composition harness for a stat card: title · hairline · description · value/unit/delta · `#left` `#right` `#below` · italic provenance footer · `:spark`; omit `val` for a device-only card |
+| `DataMachineGroup` | Grid for a band of DataMachines — children become 4-row subgrids so value rows align across missing/wrapped descriptions; `grid-cols-*`/`gap-x-*` classes as usual, `rowGap` prop (not `gap-y-*`) between wrapped rows |
 | `DataDonutChart` | Part-to-whole ring with a center slot and swatch legend, `[{ title, percent, html?, color? }]` |
 | `DataHistoryGraph` | Per-day unit-block lanes (or bars past ~40 columns), 1–3 series, `{ series, points }` |
-| `DataRankedBars` | Ranked-share rows — `[{ label, value, pct, display? }]` in, one compact `UxPercentBar` per row, each bar the share of the whole; `layout` inline (label column beside) or stacked (label on its own line, full-width bar, share at the right — nothing truncates); empty → em-dash |
+| `DataRankedBars` | Ranked-share rows — `[{ label, value, pct, display?, mark?, title? }]` in, one compact `UxPercentBar` per row, each bar the share of the whole (`scale="max"`: top row full); `layout` inline (label column beside) or stacked (label on its own line, full-width bar, share at the right — nothing truncates); row `mark` = status dot, `legend` keys it; fills its container; empty → em-dash |
 | `DataSegmentBar` | Horizontal 100 % bar of named segments — values in, normalized; 2 px surface gap; `legend` below/beside/none; `ordinal` one-hue ramp; identity series fold past three into "Other"; empty → hairline track |
 | `DataSurfacePanel` | Ranked rows + `DataPercentBar` column |
 | `DataSurfaceSection` | Chrome around a set of `DataSurfacePanel`s |
@@ -265,6 +266,30 @@ consumer repo.
 
 - **New `NavVerticalSubmenu`** (`nav/VerticalSubmenu.vue`): a nav row with children. `#label` is the parent row, and the default slot holds child `NavVerticalItem`s. The parent row is a `NavVerticalItem` link when it has `to`/`href`, and a toggle `<button>` (`aria-expanded`) otherwise. `active` and `size` apply to the parent row. The list shows when `route.path` is under `match` (`string | string[]`, defaults to `to`; segment-aware, so `/inventory` matches `/inventory/models` but not `/inventory-archive`). `open` / `update:open` (v-model) overrides the route. Children hang off a 1px `stroke-strong` rail at the parent's left edge, indented `pl-4`. With no children, no rail renders. `subWeight` (`reg`…`black`, default `med`) and `subSize` (px on the type scale 11–16, default 13) set the children's weight and size. `subGap` (px between child rows, default 1) is **provisional**, a tuning knob to be removed once the spacing is dialed in; don't depend on it.
 - **`NavVerticalItem` gains `sub`**: italic, tighter rows, with weight/size/gap from the enclosing submenu (med 13, 1px gap by default: ~23px rows against the default ~30px; the same when forced outside one). It is inherited from an enclosing `NavVerticalSubmenu` by inject; `true`/`false` forces it. Existing call sites are unchanged.
+
+### Migration notes — unreleased (design c95, 2026-09-25)
+
+- **New `UxPopover`** (`ux/Popover.vue`) — trigger + anchored panel on Headless UI Popover (`align`, `side: 'below' | 'above'`, `wide`); `#trigger` scope `{ open }`, default slot scope `{ close }`. Root is `inline-flex`; focus ring inset. Extracted from the design site (c93).
+- **New `UxColumnPicker`** (`ux/ColumnPicker.vue`) — checkbox popover that shows/hides table columns: `columns { key, label, locked? }`, v-model = visible keys in catalog order, `minVisible`, `side`; `#trigger` slot (scope `{ open, label, visibleCount, hiddenCount, total }`) replaces the bordered default trigger. Extracted from the design site (c93).
+- **New `DataListingBar`** (`data/ListingBar.vue`) — `FilterTriggerBar` with `UxColumnPicker` seated as its last segment. Bar props/emits pass through; `columns` + `v-model:visibleColumns` add the picker (`columnPicker=false` opts out; `columnsLabel`, `side` default `'above'`, `minVisible`); `#end` for further trailing segments. Replace `<FilterTriggerBar>` over a `DataTable` with it and filter the table's `columns` by the visible keys.
+- **`DataListingBar` offers only the filter keys its table has a column for** (`restrictKeys`, default true): a column matches a key by its `key` or by the new `Col.filterKey?: string | string[]` (the key(s) a differently named column answers to, e.g. `{ key: 'providers', filterKey: 'provider' }`). A current `filterKey` the table can't answer is replaced by the first offered one (emits `update:filterKey`). One offered key → fixed label, no caret.
+- **`FilterTriggerBar` key segment has no focus ring** — the c92 `peer-focus-visible` overlay lit after every mouse pick (Chrome treats a `<select>` as keyboard-focused when clicked); removed.
+- **`FilterTriggerBar` gains `#end`** — a trailing hairline-divided segment after the values, scope `{ tone }` (the TONE roles). The overflow clip moved from the bar to its key+values group so a popover from the end segment isn't clipped; end content carries `rounded-r-6` on its own hover/selected surface.
+- **`DataTable` gains `#toolbar`** — a control row over the table's right edge (shares the title row when `title` is set; its own row with table gap otherwise), rendered outside the horizontal-scroll box. The canonical seat for `DataListingBar`. **Sort fallback:** when `columns` changes and the sorted column is gone, sort falls back to `initialSort`, else the first sortable column (was: silently unsorted). `Col` type gains `locked?`.
+
+### Migration notes — unreleased (design c92, 2026-09-24)
+
+- **`DataSegmentBar` / `DataRankedBars` fill their container by default** — `width` is `[Number, String]`, default `'100%'` (was 200 / 190 px). A number still pins px; drop fixed widths inside `DataMachine #right` so the device stretches. `DataRankedBars`' `fill` is now just `width="100%"`.
+- **`DataMachine`**: `#right` is always `min-w-0 flex-1` (fills the row, 24 px from the value); main row `items-start`; new `#below` slot (full width, above the footer); `val` optional (device-only card); provenance is an italic 12 px footer with a hairline above.
+- **New `DataMachineGroup`** (`data/machine/Group.vue`) — wrap a band's grid in it to align value rows across siblings (CSS subgrid). Replace the band's `gap-y-N` class with `:rowGap` (px, default 32).
+- **`DataMetricValue` `unit="$"`** renders the `$` before the number (`$331`, `$4.2k`); other units stay suffixes.
+- **`DataRankedBars`**: `scale: 'whole' | 'max'`; per-row `mark` (status dot) + `legend` prop; per-row `title` tooltip override; `valuePosition: 'inside' | 'left' | 'right'`; `thin` (6 px bars + compact rows, side values only). Bars are now solid (black / inverted text); labels 12 px, values 10 px; stacked % column fixed 32 px.
+- **`UxPercentBar`**: `solid` (content-colored fill, inside title inverted and clipped to the fill), `titlePosition: 'inside' | 'left' | 'right'` (side titles right-aligned in their own column), `thin` (6 px bar, side titles only), `titleSize` (px). Defaults unchanged.
+- **`DataDonutChart`**: `align: 'center' | 'left'` (legendBelow only). With `legendBelow` the chart now fills its container and each legend item stays on one line (title · value).
+- **Categorical palette** (`data/palette.js`): black · slate · grey (`#121212 #7c93b5 #909090`, dark `#ededed #8ea4c6 #7a7a7a`), was purple · blue · green — every uncolored identity segment and `DataHistoryGraph` series. Fails the dataviz validator's slate↔grey separation; legend + titles carry identity.
+- **`UxPill` is now an outlined pill** for every tone: full radius, 1.5 px border (tone-400), tone-300 at 20 % fill, `content` mono bold 13 px text (was tinted text on a tinted chip). `warn` uses `rose-*`.
+- **`Filter` / `FilterItem` restyle** (design c92 mock): Config button → **Filter** (gear + text `#2a62b2` on `#e3f0fe`, blank header cell); ADD is a 24 px circle with a 1 px `grey-400` ring and a 14 px `#4c99f8` plus, label `grey-500` on the column-label baseline; key rows 24 px, `grey-500`, not italic; values `#759ac0`, chevrons `#4c99f8`; dividers `stroke-strong`. Non-token hues are CSS vars on `.qf-bar` (scoped style, dark variants). qdash's `GlobalFilterBar` offset is now `-top-10`.
+- **`DataMachine` description** is `content-muted` (was `content-subtle`), 2 px under the hairline.
 
 ### Migration notes — unreleased (design c92 todos plan 11 follow-up, 2026-09-25)
 

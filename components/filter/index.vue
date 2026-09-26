@@ -28,16 +28,18 @@
          transparent; once pinned it takes the page canvas tone so it reads
          opaque over scrolled content, and `_stuck` is exposed as a class
          hook (plus `stuck` emit) for consumers that want their own chrome. -->
+    <!-- Disabled (the filter doesn't apply here) renders nothing: v-show drops
+         the bar's padding box too. The state stays a prop in case a
+         not-applicable treatment comes back. -->
     <div
+      v-show="!disabled"
       ref="barRef"
       class="inline-block sticky z-40 h-0 rounded-8 px-3 py-3 transition-colors"
       :class="filterStuck ? '_stuck bg-surface-sunken' : ''"
       :style="{ top: `${stickyTop}px` }"
     >
-      <!-- Disabled -->
-      <div v-if="disabled" class="flex items-center gap-3 text-grey-400/80 text-16 font-semi text-nowrap">
-        <div>Not Applicable</div>
-      </div>
+      <!-- Disabled: intentionally empty -->
+      <template v-if="disabled" />
 
       <!-- Empty state — only when there is nothing permanent to show: with a
            timeframe the table renders around the always-present `when:` pill. -->
@@ -56,28 +58,28 @@
 
       <!-- Populated bar: a table — ADD sits outside it; inside, each column's label
            row is transparent and its value row carries the fill (white for a
-           filter, light blue for Config). Dividers use a darker tone than the
+           filter, light blue for the Filter button). Dividers use a darker tone than the
            rest of the palette for table-line contrast. No overflow-hidden (it
            would clip FilterItem's dropdown) — the first/last column instead
            round their own value fill to match the table's outer corners. -->
-      <div v-else class="inline-flex items-end gap-3">
+      <div v-else class="qf-bar inline-flex items-end gap-3">
         <div
           role="button" tabindex="0"
-          class="flex flex-col gap-1 cursor-pointer shrink-0"
+          class="flex flex-col gap-1.5 cursor-pointer shrink-0"
           @click="startAdd" @keydown.enter.prevent="startAdd" @keydown.space.prevent="startAdd"
         >
-          <div class="text-11 font-med text-blue">ADD</div>
-          <div class="w-7 h-7 rounded-full bg-surface border-2 border-blue flex items-center justify-center text-blue hover:bg-blue/5">
-            <UxIcon id="plus" class="w-2.5" />
+          <div class="text-11 font-med text-grey-500">ADD</div>
+          <div class="qf-plus w-6 h-6 rounded-full bg-surface border border-grey-400 flex items-center justify-center hover:bg-surface-sunken">
+            <UxIcon id="plus" class="w-3.5" />
           </div>
         </div>
 
         <!-- Each boundary is owned by one side only (the left border of the cell
              after it) so there's a single line per divider, not two stacked. -->
-        <div class="inline-flex items-stretch rounded-b-6 border-x-1 border-b-1 border-blue/40">
+        <div class="inline-flex items-stretch rounded-b-6 border-x-1 border-b-1 border-stroke-strong">
           <FilterItem
             v-for="(filter, i) in filters" :key="filter.key"
-            :class="i > 0 ? 'border-l-2 border-blue/40' : ''"
+            :class="i > 0 ? 'border-l-2 border-stroke-strong' : ''"
             :roundLeft="i === 0"
             :_key="filter.key"
             :operator="filter.operator"
@@ -89,7 +91,7 @@
             @delete="removeFilter(filter.key)"
           />
 
-          <!-- Timeframe: a permanent, non-removable column — last before Config
+          <!-- Timeframe: a permanent, non-removable column — last before the Filter button
                (app.qpoint.io's "When" pill; design c92 timeframe-always). Same
                chrome as a filter pill, the value dropdown over timeframeOptions. -->
           <FilterItem
@@ -100,16 +102,16 @@
             :formatVal="timeframeLabel"
             :removable="false"
             :roundLeft="filters.length === 0"
-            :class="filters.length ? 'border-l-2 border-blue/40' : ''"
+            :class="filters.length ? 'border-l-2 border-stroke-strong' : ''"
             @update:val="$emit('update:timeframeValue', $event)"
           />
 
-          <div class="flex flex-col border-l-1 border-blue/40">
-            <div class="flex items-end pb-1 text-12 font-bold tracking-[0.07em] text-content-subtle uppercase px-3 border-b-2 border-blue/40 min-h-[32px]">Filter</div>
-            <div class="flex items-stretch bg-blue/10 rounded-br-8">
-              <button type="button" class="flex items-center gap-1 text-14 font-bold text-blue hover:text-grape px-3 " @click="openFilterManager">
-                <UxIcon id="gear" class="w-3.5" />
-                Config
+          <div class="flex flex-col border-l-1 border-stroke-strong">
+            <div class="flex items-end pb-1 text-12 font-bold tracking-[0.07em] text-content-subtle uppercase px-3 border-b-2 border-stroke-strong h-6" aria-hidden="true" />
+            <div class="qf-wash flex items-stretch rounded-br-8">
+              <button type="button" class="qf-ink flex items-center gap-1 text-14 font-bold hover:text-grape px-3 " @click="openFilterManager">
+                <UxIcon id="gear" class="w-3.5" filled />
+                Filter
               </button>
               <!-- <FilterEndcapPlaceholder class="" /> -->
             </div>
@@ -118,7 +120,7 @@
       </div>
 
       <!-- Modal — reuses the Phase-1 manage modal (FilterOldManage) until a v2 design lands.
-           Both the ADD trigger and Config open it; ADD also kicks off its add-row flow. -->
+           Both the ADD trigger and the Filter button open it; ADD also kicks off its add-row flow. -->
       <UxModal v-model:open="isManaging" :close-btn="false" :at-top="true">
         <FilterOldManage
           ref="manageRef"
@@ -142,7 +144,7 @@
 <!-- Presentational — the timeframe value itself (route query, store, whatever
      the consumer uses) is threaded through as timeframeValue/timeframeOptions
      rather than read from a store here. The timeframe renders as a permanent
-     `when:` column (a FilterItem with removable=false) last before Config
+     `when:` column (a FilterItem with removable=false) last before the Filter button
      whenever `timeframe` is on and options are given — so the bar is never in
      its empty state on such a consumer (design c92 timeframe-always). Pass
      timeframe=false (or no options) to get the plain "Add Filter" empty state.
@@ -320,3 +322,23 @@ const createFilter = () => {
 
 defineExpose({ createFilter })
 </script>
+
+<style scoped>
+/* Filter bar palette (design c92, 2026-09-24) — the three non-token hues from the
+   reference, set here as vars so FilterItem (a child) reads them too. Plain CSS, not
+   arbitrary Tailwind values: a consumer's scan doesn't reliably cover layer files. */
+.qf-bar {
+  --qf-accent: #4c99f8; /* ADD plus, value chevrons */
+  --qf-value:  #759ac0; /* filter values */
+  --qf-ink:    #2a62b2; /* Filter/Config button text */
+  --qf-wash:   #e3f0fe; /* Filter/Config button fill */
+}
+.dark .qf-bar { /* scoping applies to the last compound only, so the .dark ancestor matches */
+  --qf-value: #9bb6d6;
+  --qf-ink:   #9cc3f5;
+  --qf-wash:  rgba(76, 153, 248, 0.15);
+}
+.qf-plus   { color: var(--qf-accent); } /* grey-400 ring, accent plus */
+.qf-ink    { color: var(--qf-ink); }
+.qf-wash   { background: var(--qf-wash); }
+</style>

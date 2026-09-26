@@ -4,7 +4,7 @@
      drops the ✕ for a column that is always in place (Filter's timeframe pill). -->
 <template>
   <div ref="containerRef" class="relative flex flex-col min-w-0">
-    <div class="flex items-center justify-between gap-2 text-13 font-med italic text-blue px-3 border-b-2 border-blue/40 min-h-[32px]">
+    <div class="flex items-center justify-between gap-2 text-13 font-med text-grey-500 px-3 border-b-2 border-stroke-strong h-6">
       <span class="truncate">{{ _key }}:</span>
       <!-- A permanent column (the timeframe pill) has no ✕; the row keeps its height via min-h. -->
       <button v-if="removable" type="button" class="text-content-subtle hover:text-content shrink-0 flex items-center" @click.stop="$emit('delete')">
@@ -13,13 +13,13 @@
     </div>
     <div
       role="button" tabindex="0"
-      class="flex items-center gap-2 text-13 font-bold text-blue bg-surface px-3 whitespace-nowrap"
-      :class="[isTagFilter ? '' : 'cursor-pointer hover:bg-blue/5', roundLeft ? 'rounded-bl-4' : '']"
+      class="qf-value flex items-center gap-2 text-13 font-bold bg-surface px-3 whitespace-nowrap"
+      :class="[isTagFilter ? '' : 'cursor-pointer hover:bg-surface-sunken', roundLeft ? 'rounded-bl-4' : '']"
       @click="toggleDropdown" @keydown.enter.prevent="toggleDropdown" @keydown.space.prevent="toggleDropdown"
     >
       <UxIcon v-if="operator === 'neq'" id="no" class="w-3 shrink-0" />
       <span class="truncate">{{ displayValue }}</span>
-      <UxIcon v-if="!isTagFilter" id="down-arrow" class="w-3 shrink-0 opacity-50" />
+      <UxIcon v-if="!isTagFilter" id="down-arrow" class="qf-chevron w-3 shrink-0" />
     </div>
 
     <div v-if="showDropdown && valSuggestions.length > 0"
@@ -88,3 +88,9 @@ onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside)
 })
 </script>
+
+<style scoped>
+/* colors come from Filter's .qf-bar vars (design c92, 2026-09-24); fallbacks for standalone use */
+.qf-value   { color: var(--qf-value, #759ac0); }
+.qf-chevron { color: var(--qf-accent, #4c99f8); }
+</style>

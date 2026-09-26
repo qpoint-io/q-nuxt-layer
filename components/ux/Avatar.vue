@@ -15,12 +15,13 @@ const props = defineProps({
   size:{type:String, default:'reg'},
 })
 
+// Initials are always capitals — "mark parson" and "Mark Parson" both read "MP".
 const initials = computed(()=>{
-  let ar = props.name.split(' ')
+  let ar = props.name.trim().split(/\s+/)
   if(ar.length == 1)
-    return ar[0].charAt(0)
+    return ar[0].charAt(0).toUpperCase()
 
-  return `${ar[0].charAt(0)}${ar[ar.length-1].charAt(0)}`
+  return `${ar[0].charAt(0)}${ar[ar.length-1].charAt(0)}`.toUpperCase()
 })
 
 </script>

@@ -2,7 +2,7 @@
   <div
     class="inline-flex max-w-full"
     :class="legend === 'beside' ? 'flex-row items-center gap-5' : 'flex-col gap-2'"
-    :style="{ width: `${width}px` }"
+    :style="{ width: cssLength(width) }"
     data-segment-bar :data-total="total"
   >
 
@@ -69,12 +69,14 @@ const OTHER_TITLE = 'Other'
 
 const props = defineProps({
   items   : { type: Array, required: true },         // [{ title, value, color?, display? }]
-  width   : { type: Number, default: 200 },          // bar width in px (a flex child has no intrinsic width)
+  width   : { type: [Number, String], default: '100%' }, // CSS length — fills its container by default; number = px
   height  : { type: Number, default: 16 },           // bar height in px
   gap     : { type: Number, default: 2 },            // surface gap between fills in px
   legend  : { type: String, default: 'below' },      // 'below' | 'beside' | 'none'
   ordinal : { type: Boolean, default: false },       // one hue stepped light → dark by index
 })
+
+const cssLength = w => typeof w === 'number' ? `${w}px` : w
 
 // SSR renders light; flip to the real scheme after mount (same gate as
 // DataHistoryGraph — the literal-hex palettes aren't CSS vars, so nothing

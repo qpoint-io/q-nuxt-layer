@@ -1,5 +1,8 @@
 <template>
-  <div class="inline-flex" :class="legendBelow ? 'flex-col items-center gap-4' : 'items-center gap-8'">
+  <!-- legendBelow: a full-width column so the legend row gets the container's
+       width to wrap in (inline-flex would shrink it to the donut's width and
+       stack every item) -->
+  <div class="gap-4" :class="legendBelow ? ['flex w-full flex-col', alignLeft ? 'items-start' : 'items-center'] : 'inline-flex items-start'">
 
     <!-- Donut -->
     <div class="relative shrink-0" :style="{ width: `${size}px`, height: `${size}px` }">
@@ -49,16 +52,19 @@
     <!-- Legend -->
     <div
       v-if="items.length"
-      :class="legendBelow ? 'flex flex-row flex-wrap justify-center gap-x-6 gap-y-2' : 'flex flex-col gap-3'"
+      :class="legendBelow ? ['flex flex-row flex-wrap gap-x-6 gap-y-2', alignLeft ? 'justify-start' : 'justify-center'] : 'flex flex-col gap-2'"
     >
-      <div v-for="(item, i) in items" :key="i" class="flex items-start gap-3">
+      <!-- legendBelow: each item on one line (swatch · title · value) and never
+           wrapping inside itself — the row wraps between items instead -->
+      <div v-for="(item, i) in items" :key="i" class="flex gap-3" :class="legendBelow ? 'items-center whitespace-nowrap' : 'items-start'">
         <span
-          class="mt-1 rounded-3 shrink-0"
+          class="rounded-3 shrink-0"
+          :class="legendBelow ? '' : 'mt-0.5'"
           :style="{ width: '14px', height: '14px', background: strokeFor(item, i) }"
         />
-        <div>
-          <div class="text-15 font-med text-content">{{ item.title }}</div>
-          <div v-if="item.html" class="text-15 text-content-muted" v-html="item.html" />
+        <div :class="legendBelow ? 'flex items-baseline gap-1.5' : ''">
+          <div class="text-13 leading-[18px] font-med text-content">{{ item.title }}</div>
+          <div v-if="item.html" class="text-content-muted" :class="legendBelow ? 'text-13 leading-[18px]' : 'text-15'" v-html="item.html" />
         </div>
       </div>
     </div>
@@ -78,6 +84,7 @@ const props = defineProps({
   thickness   : { type: Number, default: 24 },      // ring stroke width in px
   gap         : { type: Number, default: 0 },       // gap between segments in px
   legendBelow : { type: Boolean, default: false },  // legend below in a horizontal row vs. beside (default)
+  align       : { type: String, default: 'center' }, // legendBelow only: 'center' | 'left' — donut + legend row flush left
   // Center content (used when the #center slot is not provided)
   centerValue : { default: null },                  // → DataMetricValue val (auto-abbreviated, e.g. 273000 → "273k")
   centerUnit  : { type: String },                   // → DataMetricValue unit ('bytes', 'duration', or custom)
@@ -85,6 +92,7 @@ const props = defineProps({
   centerSize  : { type: Number, default: 23 },      // value font size in px
 })
 
+const alignLeft     = computed(() => props.align === 'left')
 const middle        = computed(() => props.size / 2)
 const radius        = computed(() => (props.size - props.thickness) / 2)
 const circumference = computed(() => 2 * Math.PI * radius.value)

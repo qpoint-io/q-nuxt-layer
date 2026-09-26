@@ -37,8 +37,12 @@ export const DONUT_PALETTE = ['success', 'stroke-strong', 'primary', 'info', 'wa
 
 /** Categorical identity slots — three validated hues per mode (DataHistoryGraph's palette). */
 export const CATEGORICAL_PALETTE = {
-  light: ['#53458a', '#2a78d6', '#70a971'],
-  dark:  ['#60549a', '#3987e5', '#539156'],
+  // Reference black · slate · grey (design c92, 2026-09-24), sampled from the
+  // mock. Fails the validator's chroma floor and slate↔grey separation
+  // (ΔE 5.8 light / 14.5 dark) — the legend + per-mark titles carry identity.
+  light: ['#121212', '#7c93b5', '#909090'],
+  dark:  ['#ededed', '#8ea4c6', '#7a7a7a'],
+  // previous validated slots: light ['#53458a', '#2a78d6', '#70a971'] · dark ['#60549a', '#3987e5', '#539156']
 }
 
 /** Ordered-scale ramp — grape, light → dark by index. Four steps per mode. */
