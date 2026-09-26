@@ -158,7 +158,8 @@ Auto-imported (path-based prefix):
 |-----------|-----|-------------|
 | `IconNavItem` | `components/icon-nav/` | Icon-led left-nav link: icon slot + collapsible label, route-aware active state (`basePath` match) and grape underline. Nuxt-only (uses `<nuxt-link>`/`useRoute`) |
 | `NavVertical` | `components/nav/` | Vertical nav section: optional hairline title above a slot of `NavVerticalItem` links |
-| `NavVerticalItem` | `components/nav/` | Vertical-nav link — `<nuxt-link>` (`to`), external `<a>` (`href`), or plain slot; prop-driven `active` and small/medium `size`. Nuxt-only |
+| `NavVerticalItem` | `components/nav/` | Vertical-nav link — `<nuxt-link>` (`to`), external `<a>` (`href`), or plain slot; prop-driven `active` and small/medium `size`; `sub` treatment (bold italic, tighter rows) inherited inside a `NavVerticalSubmenu`. Nuxt-only |
+| `NavVerticalSubmenu` | `components/nav/` | A `NavVertical` row that owns child rows: a parent row (link with `to`/`href`, toggle button otherwise) above a hairline-railed list of child `NavVerticalItem`s. The list opens when the route is under `match` (defaults to `to`, segment-aware); `v-model:open` overrides. Nuxt-only (`useRoute`) |
 
 ### Data Components (`components/data/`)
 
@@ -259,6 +260,11 @@ consumer repo.
 
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
+
+### Migration notes — unreleased (design c98, 2026-09-26)
+
+- **New `NavVerticalSubmenu`** (`nav/VerticalSubmenu.vue`): a nav row with children. `#label` is the parent row, and the default slot holds child `NavVerticalItem`s. The parent row is a `NavVerticalItem` link when it has `to`/`href`, and a toggle `<button>` (`aria-expanded`) otherwise. `active` and `size` apply to the parent row. The list shows when `route.path` is under `match` (`string | string[]`, defaults to `to`; segment-aware, so `/inventory` matches `/inventory/models` but not `/inventory-archive`). `open` / `update:open` (v-model) overrides the route. Children hang off a 1px `stroke-strong` rail at the parent's left edge, indented `pl-4`. With no children, no rail renders. `subWeight` (`reg`…`black`, default `med`) and `subSize` (px on the type scale 11–16, default 13) set the children's weight and size. `subGap` (px between child rows, default 1) is **provisional**, a tuning knob to be removed once the spacing is dialed in; don't depend on it.
+- **`NavVerticalItem` gains `sub`**: italic, tighter rows, with weight/size/gap from the enclosing submenu (med 13, 1px gap by default: ~23px rows against the default ~30px; the same when forced outside one). It is inherited from an enclosing `NavVerticalSubmenu` by inject; `true`/`false` forces it. Existing call sites are unchanged.
 
 ### Migration notes — unreleased (design c92 todos plan 11 follow-up, 2026-09-25)
 
