@@ -34,8 +34,11 @@
           </div>
         </div>
 
-        <!-- Optional right slot -->
-        <div v-if="slots['right']" class="overflow-y-visible flex items-end pb-1 ml-5">
+        <!-- Optional right slot — zero-height so it never sets the title row's
+             height: content bottom-aligns just above the rule and overflows
+             upward, so buttons/badges taller than the title don't push the
+             rule (and the page) down. -->
+        <div v-if="slots['right']" class="h-0 overflow-visible flex items-end pb-1 ml-5">
           <slot name="right" />
         </div>
       </div>
