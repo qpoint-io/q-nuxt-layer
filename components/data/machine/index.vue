@@ -5,9 +5,13 @@
        value rows aligned across the band, and a description row no card fills
        collapses to zero. The body (main row + provenance + spark) is one cell,
        so a tall device in one card doesn't push its siblings' provenance away
-       from their values. Standalone it's an inline-block. -->
+       from their values. Standalone it shrinks to fit its contents (an
+       inline-block, never wider than its container — so a no-wrap #title
+       control truncates instead of pushing the card past its column); with
+       `fill` it takes the width its container gives, and a device that fills
+       (w-full) in #right / #below grows with it. -->
   <div
-    :class="[group ? 'grid row-span-4 grid-rows-subgrid' : 'inline-block', to !== '_none_' ? 'cursor-pointer hover:text-primary' : '']"
+    :class="[group ? 'grid row-span-4 grid-rows-subgrid' : fill ? 'block w-full' : 'inline-block max-w-full', to !== '_none_' ? 'cursor-pointer hover:text-primary' : '']"
     :style="group ? { marginTop: `${group.rowGap}px` } : undefined"
     data-machine :data-val="val" @click="onClick">
 
@@ -17,17 +21,24 @@
          wraps under the title and stays right-aligned (ml-auto), capped at the
          card's width (min-w-0 here, max-w-full on the slot) so a long control
          can truncate rather than overflow. Clicks inside the slot don't reach the card's
-         `to`. Without the slot the title renders exactly as before. -->
+         `to`. Without the slot the title renders exactly as before.
+
+         #title replaces the title text and keeps the title's type (20 px bold,
+         titleSize) — for a control that IS the title, e.g. a UxSelectInline
+         with `inherit` picking the card's subject (design c100). Its clicks
+         don't reach `to` either. The `title` prop is then optional. -->
     <div v-if="$slots['title-right']" class="flex min-w-0 flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
       <div class="min-w-0 font-bold text-content text-20" :style="titleSize ? `font-size:${titleSize}px` : ''">
-        {{ title }}
+        <span v-if="$slots.title" class="block min-w-0" @click.stop><slot name="title" /></span>
+        <template v-else>{{ title }}</template>
       </div>
       <div class="ml-auto min-w-0 max-w-full shrink-0" @click.stop>
         <slot name="title-right" />
       </div>
     </div>
-    <div v-else class="font-bold text-content text-20" :style="titleSize ? `font-size:${titleSize}px` : ''">
-      {{ title }}
+    <div v-else class="min-w-0 font-bold text-content text-20" :style="titleSize ? `font-size:${titleSize}px` : ''">
+      <span v-if="$slots.title" class="block min-w-0" @click.stop><slot name="title" /></span>
+      <template v-else>{{ title }}</template>
     </div>
 
     <!-- Hairline — spans the full width of the card, independent of DataMetricLabel's
@@ -36,13 +47,20 @@
 
     <!-- Description — in a group an empty cell holds the row (zero height,
          no margin) so a sibling's description sets it -->
-    <div v-if="description" class="-mt-1.5 text-content-muted text-14 mb-3" :style="descriptionSize ? `font-size:${descriptionSize}px` : ''">
-      {{ description }}
-    </div>
-    <div v-else-if="inGroup" />
+    <!-- With `fadeKey`, a change of key fades the description and body out and
+         back in (out-in, 250 + 250 ms — the 500 ms content transition): pass a
+         title switcher's value so a new subject doesn't snap in (c100). The
+         Transition renders no element, so the subgrid cells are unchanged. -->
+    <Transition name="_machine-fade" mode="out-in">
+      <div v-if="description" :key="fadeKey" class="-mt-1.5 text-content-muted text-14 mb-3" :style="descriptionSize ? `font-size:${descriptionSize}px` : ''">
+        {{ description }}
+      </div>
+      <div v-else-if="inGroup" :key="fadeKey" />
+    </Transition>
 
     <!-- Body — main row, provenance, spark: one subgrid cell -->
-    <div>
+    <Transition name="_machine-fade" mode="out-in">
+    <div :key="fadeKey">
       <!-- Main row -->
       <div class="flex items-start gap-3">
         <div v-if="$slots.left" :style="slotGap ? `margin-right:${slotGap}px` : ''">
@@ -52,7 +70,19 @@
         <!-- Value group — omitted entirely when no `val` is passed, so a card can
              be a device alone (a ranked list that IS the story, with nothing to
              headline). `null` still means loading. -->
-        <div v-if="hasVal" class="flex items-baseline gap-2">
+        <!-- With `reserve`, the other values this card may show render invisibly in
+             the same grid cell, so the slot is as wide as the widest of them and
+             #right never moves when the value changes (a title switcher, c100). -->
+        <div v-if="hasVal && reserve?.length" class="grid">
+          <div class="flex items-baseline gap-2" style="grid-area: 1 / 1">
+            <DataMetricValue :val="val" :unit="unit" :size="valueSize" :healthMode="healthMode" :showFullNumber="showFullNumber" />
+            <DataMetricTrend v-if="delta != null" :change="delta" :unit="deltaUnit" :healthMode="healthMode" />
+          </div>
+          <div v-for="(r, i) in reserve" :key="i" class="flex items-baseline gap-2" style="grid-area: 1 / 1; visibility: hidden" aria-hidden="true">
+            <DataMetricValue :val="r.val" :unit="r.unit" :size="valueSize" :showFullNumber="showFullNumber" />
+          </div>
+        </div>
+        <div v-else-if="hasVal" class="flex items-baseline gap-2">
           <DataMetricValue :val="val" :unit="unit" :size="valueSize" :healthMode="healthMode" :showFullNumber="showFullNumber" />
           <DataMetricTrend v-if="delta != null" :change="delta" :unit="deltaUnit" :healthMode="healthMode" />
         </div>
@@ -90,12 +120,13 @@
         strokeWidth="2"
       />
     </div>
+    </Transition>
   </div>
 </template>
 
 <script setup>
 const props = defineProps({
-  title           : { type: String, required: true },
+  title           : { type: String, default: '' },   // the card's name; optional when #title supplies it
   titleSize       : { type: Number },              // font-size override
   description     : { type: String },
   descriptionSize : { type: Number },              // font-size override
@@ -114,7 +145,10 @@ const props = defineProps({
   spark           : { type: Array },
 
   slotGap         : { type: Number }, // extra px gap between #left/#right slot content and the main value/delta group
+  reserve         : { type: Array },  // [{ val, unit? }] — other values this card may show (a title switcher's options); the value slot keeps the widest one's width so #right never moves
 
+  fadeKey         : { default: undefined },          // when it changes, description + body fade out and back in (a title switcher's value)
+  fill            : { type: Boolean, default: false }, // take the container's width (block, w-full); default shrinks to fit the contents
   to              : { type: String, default: '_none_' }, // click-to-navigate, mirrors DataMetric_Base's `to` prop
 })
 
@@ -139,3 +173,12 @@ const onClick = () => {
   }
 }
 </script>
+
+<style scoped>
+/* fadeKey: a content transition (500 ms total, out-in) — Tailwind can't
+   express Vue's transition classes; names prefixed per the layer rule */
+._machine-fade-enter-active,
+._machine-fade-leave-active { transition: opacity 250ms ease; }
+._machine-fade-enter-from,
+._machine-fade-leave-to { opacity: 0; }
+</style>

@@ -30,7 +30,7 @@ Auto-imported with the `Ux` prefix:
 | `UxLabelText` | Two-line display: small grey label + bold value |
 | `UxSimpleSelect` | Minimal borderless native `<select>` with v-model |
 | `UxSelect` | Bordered native `<select>` form control with theme-aware caret |
-| `UxSelectInline` | Borderless inline view switcher: current label + small primary caret over an invisible native `<select>`; `options {value,label}[]`, v-model, `ariaLabel` |
+| `UxSelectInline` | Borderless inline view switcher: current label + small primary caret over an invisible native `<select>`; `options {value,label}[]`, v-model, `ariaLabel`; `inherit` takes the surrounding type (a DataMachine `#title`) |
 | `UxCardLink` | Card-as-link with grape hover border; static card when no `to` |
 | `UxBackLink` | Standard "← Back to X" link for detail pages |
 | `UxCode` | Inline code span (mono, grey chip, 0.9em); `warn` tone |
@@ -167,12 +167,13 @@ Auto-imported with the `Data` prefix. The chart family below shares one color fi
 
 | Component | Description |
 |-----------|-------------|
-| `DataMachine` | Composition harness for a stat card: title · hairline · description · value/unit/delta · `#left` `#right` `#below` · italic provenance footer · `:spark`; omit `val` for a device-only card |
+| `DataMachine` | Composition harness for a stat card: title · hairline · description · value/unit/delta · `#title` `#title-right` `#left` `#right` `#below` · italic provenance footer · `:spark`; omit `val` for a device-only card |
 | `DataMachineGroup` | Grid for a band of DataMachines — children become 4-row subgrids so value rows align across missing/wrapped descriptions; `grid-cols-*`/`gap-x-*` classes as usual, `rowGap` prop (not `gap-y-*`) between wrapped rows |
 | `DataDonutChart` | Part-to-whole ring with a center slot and swatch legend, `[{ title, percent, html?, color? }]` |
 | `DataHistoryGraph` | Per-day unit-block lanes (or bars past ~40 columns), 1–3 series, `{ series, points }` |
 | `DataRankedBars` | Ranked-share rows — `[{ label, value, pct, display?, mark?, title? }]` in, one compact `UxPercentBar` per row, each bar the share of the whole (`scale="max"`: top row full); `layout` inline (label column beside) or stacked (label on its own line, full-width bar, share at the right — nothing truncates); row `mark` = status dot, `legend` keys it; fills its container; empty → em-dash |
 | `DataSegmentBar` | Horizontal 100 % bar of named segments — values in, normalized; 2 px surface gap; `legend` below/beside/none; `ordinal` one-hue ramp; identity series fold past three into "Other"; empty → hairline track |
+| `DataHoverBreakdown` | Pointer-following card breaking a row's number into its items: 28 px one-line title, `metric { label, value }` big in the upper right, tight `lines`, `#summary="{ width }"` (a full-width drawing), then `items` via `#row="{ item, index }"` flowing into columns (`rowsPerCol` ~12, `colWidth`, `colGap` 28) that widen to the window; above the pointer (measured height), else below; no items → a plain tooltip. Sizes to its content (at least the columns), up to `maxWidth` (default: the window), where the title truncates. Render with `v-if` while hovering, pass pointer `x` / `y` |
 | `DataSurfacePanel` | Ranked rows + `DataPercentBar` column |
 | `DataSurfaceSection` | Chrome around a set of `DataSurfacePanel`s |
 
@@ -261,6 +262,17 @@ consumer repo.
 
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
+
+### Migration notes — v0.9.23 (design c100 title switcher, 2026-09-30)
+
+- **`DataMachine` gains `#title`** — replaces the title text inside the title element, so the slot keeps the title's type (20 px bold, `titleSize`), the hairline and `DataMachineGroup` alignment. Clicks inside it don't trigger `to`. The `title` prop is no longer required (default `''`). Unused, the title renders exactly as before. A standalone card is now `max-w-full` — never wider than its container (before, a no-wrap child pushed it past its column).
+- **`UxSelectInline` gains `inherit`** — drops the 14 px `content-muted` switcher type and takes the surrounding type (size, weight, colour; hover → `primary`), with the caret scaled to it (`0.5em`). Default off: existing switchers are unchanged.
+- **New `DataHoverBreakdown`** (`data/HoverBreakdown.vue`) — extracted from design c100 (lever-strip variations, where every lens's row hovers into its people). A fixed, pointer-following card: one-line 28 px title, the main datapoint (`metric`) in the upper right, context `lines` on 16 px leading, a `#summary` slot given the list's full inner `width`, then `items` rendered by `#row` and flowing into columns — down, then across — widening the card up to the window. Placed above the pointer from its measured height (below when there's no room), clamped inside the window; taller than the window it clips (it follows the pointer, so it can't scroll). No emits; render it with `v-if` while hovering and feed it the pointer's `clientX` / `clientY`.
+- **`UxPercentBar` gains `outlined`** — the unfilled rest renders as an outlined surface track (rounded, 1 px content outline, surface ground; inverts in dark mode), so the whole and its gap both read. With `solid` + `thin` it's the meter design c100 formalized (black share, outlined white rest). Takes the side-title layout; with no title it's the bar alone. Default off: existing bars unchanged.
+- **`DataMachine` gains `fill`** — standalone sizing mode: `fill` takes the width its container gives (`block w-full`), and a filling device in `#right` / `#below` grows with it; the default shrinks to fit the contents (inline-block, `max-w-full`). Inside a `DataMachineGroup` the group's grid sizes the card either way.
+- **`DataMachine` gains `reserve`** — `[{ val, unit? }]`, the other values the card may show. They render invisibly in the value's grid cell, so the value slot is as wide as the widest and `#right` never moves when the value changes. Unset, the value group renders exactly as before.
+- **`DataMachine` gains `fadeKey`** — when it changes, the description and body (value, `#left` `#right` `#below`, provenance, spark) fade out and back in (out-in, 250 + 250 ms, the 500 ms content transition). The title row stays put, so a title switcher keeps focus. Pass the switcher's value. Unset, nothing fades.
+- **The title-switcher pattern** (first instance: design `/pages/phase3/landing-lever-strip-variations`): `<DataMachine …><template #title><UxSelectInline v-model="subject" :options="subjects" ariaLabel="…" inherit /></template></DataMachine>`. Use `#title` when the choice changes what the card *is* (its subject — a lens, a metric); use `#title-right` when it picks a parameter of that subject or how it's *shown* (which harness, a ranking, a window). A subject with a parameter carries both — `#title` the subject, `#title-right` the parameter, shown only while that subject is picked (design: Harness · Claude Code ▾). Option labels must read as titles; pass the switcher's value — subject and parameter — as `fadeKey`. **Size to the domain, not the selection** — switching must change ink and data, never geometry: either the card fills its column (`fill`, or a `DataMachineGroup`) and its device fills the rest, or the card shrinks to fit and its device is given a fixed width; the device sizes its own columns over every option (not the current one). The headline then either takes its minimum width and the filling device absorbs the difference (the default in design — Mark 2026-09-30: the value takes min space, the drawing expands), or `reserve` holds every option's headline so nothing moves at all, at the cost of device width.
 
 ### Migration notes — v0.9.22 (design c92 header alignment, 2026-09-26)
 

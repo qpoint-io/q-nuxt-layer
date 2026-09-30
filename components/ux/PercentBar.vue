@@ -2,14 +2,17 @@
   <!-- titlePosition 'left' | 'right': the title sits in its own column beside
        the bar, right-aligned either way — at 'right' the column is the far end
        of the row, so stacked rows' numbers align on their last digit -->
-  <div v-if="titlePosition !== 'inside'" class="w-full flex items-stretch gap-1.5 font-semi" :class="compact ? 'text-12' : 'text-16'">
+  <!-- outlined takes this layout too: a meter with no title reads as a bar alone -->
+  <div v-if="titlePosition !== 'inside' || outlined" class="w-full flex items-stretch gap-1.5 font-semi" :class="compact ? 'text-12' : 'text-16'">
     <div
       v-if="title"
       class="shrink-0 self-center text-right tabular-nums whitespace-nowrap"
       :class="[compact ? '' : 'text-13', titlePosition === 'right' ? 'order-last' : '']"
       :style="titleStyle"
     >{{ title }}</div>
-    <div class="relative min-w-0 flex-1" :class="thin ? 'h-1.5 self-center' : ''">
+    <!-- outlined: the unfilled rest is an outlined surface track, so the whole and
+         its gap both read (content outline, surface ground — inverts in dark mode) -->
+    <div class="relative min-w-0 flex-1" :class="[thin ? 'h-1.5 self-center' : '', outlined ? 'overflow-hidden' : '']" :style="outlined ? trackStyle : undefined">
       <div class="absolute top-0 left-0 h-full" :class="fillClass" :style="`width: ${percent}%`"></div>
     </div>
     <slot></slot>
@@ -61,9 +64,16 @@ const props = defineProps({
   thin    : {type:Boolean, default:false},
   // Title font-size override in px (compact default 9)
   titleSize : {type:Number},
+  // The unfilled rest as an outlined surface track (rounded, content outline):
+  // a whole with a readable gap — with `solid` + `thin`, the c100 meter.
+  // Uses the side-title layout; with no title it's the bar alone.
+  outlined : {type:Boolean, default:false},
 })
 
 const fillClass = computed(() => props.solid ? 'bg-content' : 'bg-primary/15')
+
+// inline, not classes: layer class strings aren't reliably in the consumer's scan
+const trackStyle = { border: '1px solid rgb(var(--qp-content))', background: 'rgb(var(--qp-surface))', borderRadius: '9999px' }
 
 const titleStyle = computed(() => props.compact
   ? { minWidth: '36px', fontSize: `${props.titleSize ?? 9}px`, lineHeight: `${(props.titleSize ?? 9) + 2}px` }
