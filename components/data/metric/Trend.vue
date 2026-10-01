@@ -1,6 +1,6 @@
 <template>
   <div :class="`${temperature} ${viewClass}` ">
-    <div v-if="_change.value > 0" class="flex text-13 gap-[2px] items-baseline _text">
+    <div v-if="Number(change) !== 0 && !Number.isNaN(Number(change))" class="flex text-13 gap-[2px] items-baseline _text">
       <div>{{ changeIndicator }}{{ _change.value }}{{ _change.unit }}</div>
       <UxIcon id="triangle" class="w-3 triangle" />
     </div>

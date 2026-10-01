@@ -5,13 +5,17 @@
        value rows aligned across the band, and a description row no card fills
        collapses to zero. The body (main row + provenance + spark) is one cell,
        so a tall device in one card doesn't push its siblings' provenance away
-       from their values. Standalone it shrinks to fit its contents (an
+       from their values. With the group's `alignFooters` the card spans a 5th
+       row instead: the body wrapper turns `display: contents`, so its main part
+       (main row + #below) and its footer (provenance + spark) become separate
+       cells and every card's provenance hairline starts on one line, at the
+       foot of the band's tallest body (c104). Standalone it shrinks to fit its contents (an
        inline-block, never wider than its container — so a no-wrap #title
        control truncates instead of pushing the card past its column); with
        `fill` it takes the width its container gives, and a device that fills
        (w-full) in #right / #below grows with it. -->
   <div
-    :class="[group ? 'grid row-span-4 grid-rows-subgrid' : fill ? 'block w-full' : 'inline-block max-w-full', to !== '_none_' ? 'cursor-pointer hover:text-primary' : '']"
+    :class="[group ? (alignFooters ? 'grid row-span-5 grid-rows-subgrid' : 'grid row-span-4 grid-rows-subgrid') : fill ? 'block w-full' : 'inline-block max-w-full', to !== '_none_' ? 'cursor-pointer hover:text-primary' : '']"
     :style="group ? { marginTop: `${group.rowGap}px` } : undefined"
     data-machine :data-val="val" @click="onClick">
 
@@ -58,9 +62,11 @@
       <div v-else-if="inGroup" :key="fadeKey" />
     </Transition>
 
-    <!-- Body — main row, provenance, spark: one subgrid cell -->
+    <!-- Body — main row, provenance, spark: one subgrid cell; with alignFooters a
+         display:contents wrapper whose two children (main · footer) are cells -->
     <Transition name="_machine-fade" mode="out-in">
-    <div :key="fadeKey">
+    <div :key="fadeKey" :class="alignFooters ? '_machine-split contents' : ''">
+      <div>
       <!-- Main row -->
       <div class="flex items-start gap-3">
         <div v-if="$slots.left" :style="slotGap ? `margin-right:${slotGap}px` : ''">
@@ -73,7 +79,11 @@
         <!-- With `reserve`, the other values this card may show render invisibly in
              the same grid cell, so the slot is as wide as the widest of them and
              #right never moves when the value changes (a title switcher, c100). -->
-        <div v-if="hasVal && reserve?.length" class="grid">
+        <!-- #value-below sits inside the value group, under the number (a spark,
+             a caption): the wrapper is w-0 min-w-full, so the slot takes the
+             value's width and never widens it (c103) -->
+        <div v-if="hasVal" class="flex flex-col">
+        <div v-if="reserve?.length" class="grid">
           <div class="flex items-baseline gap-2" style="grid-area: 1 / 1">
             <DataMetricValue :val="val" :unit="unit" :size="valueSize" :healthMode="healthMode" :showFullNumber="showFullNumber" />
             <DataMetricTrend v-if="delta != null" :change="delta" :unit="deltaUnit" :healthMode="healthMode" />
@@ -82,9 +92,13 @@
             <DataMetricValue :val="r.val" :unit="r.unit" :size="valueSize" :showFullNumber="showFullNumber" />
           </div>
         </div>
-        <div v-else-if="hasVal" class="flex items-baseline gap-2">
+        <div v-else class="flex items-baseline gap-2">
           <DataMetricValue :val="val" :unit="unit" :size="valueSize" :healthMode="healthMode" :showFullNumber="showFullNumber" />
           <DataMetricTrend v-if="delta != null" :change="delta" :unit="deltaUnit" :healthMode="healthMode" />
+        </div>
+        <div v-if="$slots['value-below']" class="mt-1 w-0 min-w-full">
+          <slot name="value-below" />
+        </div>
         </div>
 
         <!-- #right takes all remaining row space (min-w-0 + flex-1), with or
@@ -100,7 +114,11 @@
       <div v-if="$slots.below" class="mt-3">
         <slot name="below" />
       </div>
+      </div>
 
+      <!-- Footer — provenance + spark (its own cell with alignFooters; an empty
+           one still holds the row so a sibling's footer sets it) -->
+      <div v-if="provenance || spark || alignFooters">
       <!-- Provenance / context row — hairline above, italic, a step below
            the description so it reads as a footnote to the value -->
       <div v-if="provenance" class="mt-2">
@@ -119,6 +137,7 @@
         :strokeColor="sparkInk"
         strokeWidth="2"
       />
+      </div>
     </div>
     </Transition>
   </div>
@@ -157,6 +176,8 @@ const props = defineProps({
 const groupRef = inject('dataMachineGroup', null)
 const group = computed(() => groupRef?.value ?? null)
 const inGroup = computed(() => !!group.value)
+// the group's alignFooters: the footer becomes its own subgrid row (see the template header)
+const alignFooters = computed(() => !!group.value?.alignFooters)
 provide('dataMachineGroup', null)
 
 // device-only card: no `val` prop at all (undefined). `null` is still loading.
@@ -181,4 +202,9 @@ const onClick = () => {
 ._machine-fade-leave-active { transition: opacity 250ms ease; }
 ._machine-fade-enter-from,
 ._machine-fade-leave-to { opacity: 0; }
+/* a display:contents wrapper draws no box, so its opacity does nothing — fade its cells instead */
+._machine-split._machine-fade-enter-active > *,
+._machine-split._machine-fade-leave-active > * { transition: opacity 250ms ease; }
+._machine-split._machine-fade-enter-from > *,
+._machine-split._machine-fade-leave-to > * { opacity: 0; }
 </style>

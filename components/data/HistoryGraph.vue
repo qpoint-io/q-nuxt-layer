@@ -1,9 +1,18 @@
 <template>
-  <div class="flex items-start gap-8" :class="legendBelow ? 'flex-col' : 'flex-row'">
-    <div class="flex min-w-0" :style="{ width: `${columnsAreaWidth}px`, gap: `${dayGap}px` }">
+  <!-- chart → legend gap: 32 px beside or wrapping below; 12 px for the one-line legend below,
+       which reads as part of the chart, not a separate block (c104) -->
+  <div class="flex items-start" :class="legendBelow ? (legendWrap ? 'flex-col gap-8' : 'flex-col gap-3') : 'flex-row gap-8'">
+    <!-- hover: listened to, a column reports itself (index, date, values, resolved series,
+         pointer) on every move and the area reports `leave` — the consumer renders the
+         card (e.g. DataHoverBreakdown); crossing a gap keeps the last column -->
+    <div class="flex min-w-0" :style="{ width: `${columnsAreaWidth}px`, gap: `${dayGap}px` }" @mouseleave="hasHover && onLeave()">
       <DataHistoryGraphColumn
         v-for="(col, i) in columns"
         :key="col.key"
+        :class="hasHover ? 'cursor-default' : ''"
+        :native-titles="!hasHover"
+        :active="hovered === i"
+        @mousemove="hasHover && onMove($event, i)"
         :label="col.label"
         :show-label="isTickVisible(i)"
         :series="resolvedSeries"
@@ -21,6 +30,7 @@
       v-if="resolvedSeries.length"
       :series="resolvedSeries"
       :horizontal="legendBelow"
+      :wrap="legendWrap"
       :font-size="Number(labelSize) + 1"
     />
   </div>
@@ -60,6 +70,7 @@ const props = defineProps({
   maxBlocksPerColumn : { type: Number, default: 12 },      // block/bar switch threshold + unit-scaling cap
   mode               : { type: String, default: 'auto' },  // 'blocks' | 'bars' | 'auto'
   legendBelow        : { type: Boolean, default: false },
+  legendWrap         : { type: Boolean, default: true },   // with legendBelow: false keeps the legend on one line (labels ellipsize) and out of the chart's width
   blockSize          : { type: Number, default: 6 },       // unit block width/height in px
   blockGap           : { type: Number, default: 2 },       // vertical gap between stacked blocks in px
   dayGap             : { type: Number, default: 8 },       // horizontal gap between day columns in px
@@ -164,6 +175,19 @@ const maxUnits = computed(() => Math.max(1, ...points.value.flatMap((p) =>
 
 const tickEvery = computed(() => Math.max(1, Math.ceil(points.value.length / MAX_VISIBLE_TICKS)))
 function isTickVisible(i) { return i % tickEvery.value === 0 }
+
+// ── hover ──
+const emit = defineEmits(['hover', 'leave'])
+// a listener on `hover` turns reporting on (and the blocks' native titles off, so two tooltips never stack)
+const hasHover = computed(() => !!getCurrentInstance()?.vnode.props?.onHover)
+// the hovered column draws an outline (the day the card is describing)
+const hovered = ref(null)
+function onLeave() { hovered.value = null; emit('leave') }
+function onMove(e, i) {
+  hovered.value = i
+  const p = props.data.points[i]
+  emit('hover', { index: i, date: p.date, values: p.values, series: resolvedSeries.value, x: e.clientX, y: e.clientY })
+}
 
 const columns = computed(() => points.value.map((p) => ({
   key: p.date.toISOString(),
