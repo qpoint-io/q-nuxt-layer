@@ -12,7 +12,11 @@
       <h3 v-if="title" class="text-20 font-bold text-content">{{ title }}</h3>
       <div v-if="slots.toolbar" class="min-w-0 flex-1"><slot name="toolbar" /></div>
     </div>
-    <div class="overflow-x-auto">
+    <!-- Horizontal scroll box, armed only while the table is wider than it.
+         Any overflow value (overflow-x-auto forces overflow-y to auto too)
+         makes this box the sticky container for the thead, and since it never
+         scrolls vertically the header would never pin to the page. -->
+    <div ref="scrollBox" :class="{ 'overflow-x-auto': overflows }">
     <UxTableList :compact="false">
       <template #header>
         <tr>
@@ -96,7 +100,7 @@
 // the sorted column disappears the sort falls back to `initialSort`, else the
 // first sortable column, so the rows never silently drop to insertion order.
 // Unifies qdash's DataTable and the design site's PermissionTable (c50/c51).
-import { ref, computed, useSlots, watch } from 'vue'
+import { ref, computed, useSlots, watch, onMounted, onBeforeUnmount } from 'vue'
 
 type Col = {
   key: string
@@ -128,6 +132,27 @@ const props = defineProps<{
 
 const slots = useSlots()
 const expandable = computed(() => !!slots.details)
+
+// Sticky header vs horizontal scroll (see the scroll-box comment in the
+// template): the box scrolls only while the table overflows it, so a table
+// that fits keeps its thead pinned to the page scroller. A wide table on a
+// narrow viewport trades the pinned header for horizontal scroll.
+const scrollBox = ref<HTMLElement | null>(null)
+const overflows = ref(false)
+let ro: ResizeObserver | null = null
+const measure = () => {
+  const box = scrollBox.value
+  const table = box?.querySelector('table')
+  overflows.value = !!box && !!table && table.offsetWidth > box.clientWidth
+}
+onMounted(() => {
+  measure()
+  ro = new ResizeObserver(measure)
+  ro.observe(scrollBox.value!)
+  const table = scrollBox.value!.querySelector('table')
+  if (table) ro.observe(table)
+})
+onBeforeUnmount(() => ro?.disconnect())
 
 const sortBy = ref(props.initialSort || '')
 const dir = ref<'up' | 'down'>('down')
