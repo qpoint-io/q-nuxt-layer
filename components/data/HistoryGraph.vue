@@ -2,8 +2,8 @@
   <!-- chart → legend gap: 32 px beside or wrapping below; 12 px for the one-line legend below,
        which reads as part of the chart, not a separate block (c104) -->
   <div class="flex items-start" :class="legendBelow ? (legendWrap ? 'flex-col gap-8' : 'flex-col gap-3') : 'flex-row gap-8'">
-    <!-- hover: listened to, a column reports itself (index, date, values, resolved series,
-         pointer) on every move and the area reports `leave` — the consumer renders the
+    <!-- hover: listened to, a column reports itself (index, date, values, missing, resolved
+         series, pointer) on every move and the area reports `leave` — the consumer renders the
          card (e.g. DataHoverBreakdown); crossing a gap keeps the last column -->
     <div class="flex min-w-0" :style="{ width: `${columnsAreaWidth}px`, gap: `${dayGap}px` }" @mouseleave="hasHover && onLeave()">
       <DataHistoryGraphColumn
@@ -17,6 +17,7 @@
         :show-label="isTickVisible(i)"
         :series="resolvedSeries"
         :values="col.values"
+        :missing="col.missing"
         :unit-value="unitValue"
         :max-units="maxUnits"
         :mode="effectiveMode"
@@ -65,7 +66,7 @@ const MAX_VISIBLE_TICKS = 15
 const NICE_STEPS = [1, 2, 5]
 
 const props = defineProps({
-  data               : { type: Object, required: true },  // { series: HistorySeries[], points: HistoryPoint[] }
+  data               : { type: Object, required: true },  // { series: HistorySeries[], points: HistoryPoint[] } — a point with values: null or missing: true = not collected
   labelFormat        : { type: String, default: null },   // 'weekday' | 'day' | 'date' — auto-detected from range length when omitted
   maxBlocksPerColumn : { type: Number, default: 12 },      // block/bar switch threshold + unit-scaling cap
   mode               : { type: String, default: 'auto' },  // 'blocks' | 'bars' | 'auto'
@@ -103,10 +104,14 @@ function toLocalDate(input) {
   return new Date(input)
 }
 
-const points = computed(() => props.data.points.map((p) => ({
-  date: toLocalDate(p.date),
-  values: p.values,
-})))
+// A day that wasn't collected — `values: null` or `missing: true` — keeps its
+// slot and label but draws no lanes, and Column marks it (dashed baseline,
+// hatched area) so it never reads as a quiet day of zeros (c103). Its values
+// become {} so the scale math below skips it.
+const points = computed(() => props.data.points.map((p) => {
+  const missing = p.missing === true || p.values == null
+  return { date: toLocalDate(p.date), values: missing ? {} : p.values, missing }
+}))
 
 const effectiveLabelFormat = computed(() => {
   if (props.labelFormat) return props.labelFormat
@@ -186,12 +191,13 @@ function onLeave() { hovered.value = null; emit('leave') }
 function onMove(e, i) {
   hovered.value = i
   const p = props.data.points[i]
-  emit('hover', { index: i, date: p.date, values: p.values, series: resolvedSeries.value, x: e.clientX, y: e.clientY })
+  emit('hover', { index: i, date: p.date, values: points.value[i].values, missing: points.value[i].missing, series: resolvedSeries.value, x: e.clientX, y: e.clientY })
 }
 
 const columns = computed(() => points.value.map((p) => ({
   key: p.date.toISOString(),
   label: FORMATTERS[effectiveLabelFormat.value].format(p.date),
   values: p.values,
+  missing: p.missing,
 })))
 </script>
