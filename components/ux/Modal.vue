@@ -14,7 +14,9 @@
         <div class="fixed inset-0 bg-black bg-opacity-25" />
       </TransitionChild>
 
-      <div class="fixed inset-0 overflow-y-auto">
+      <!-- Its own scroller: table headers inside pin to its top, not under the
+           page's sticky band. -->
+      <div class="fixed inset-0 overflow-y-auto" style="--q-sticky-top: 0px">
         <div
           class="flex min-h-full justify-center p-4 text-center"
           :class="getAlign()"

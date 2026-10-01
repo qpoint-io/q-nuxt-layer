@@ -169,6 +169,10 @@ const props = defineProps({
   // Pin offset in px from the top of the scroll container — a consumer with
   // its own fixed header sets this to that header's height.
   stickyTop     : { type: Number, default: 0 },
+  // Join the page's sticky band (useStickyBand, design c104): the pinned bar's
+  // height counts toward `--q-sticky-top`, so table headers pin below it and
+  // UxStickyBand backs it. Off by default — a layout opts in once.
+  band          : { type: Boolean, default: false },
 })
 
 const emit = defineEmits([
@@ -203,6 +207,12 @@ onMounted(armStuckObserver)
 watch(() => props.stickyTop, armStuckObserver)
 watch(filterStuck, (v) => emit('stuck', v))
 onBeforeUnmount(() => stuckObserver?.disconnect())
+useStickyBandMember({
+  el: barRef,
+  top: () => props.stickyTop,
+  stuck: filterStuck,
+  enabled: () => props.band && !props.disabled && !props.embed,
+})
 
 // The permanent timeframe column: on when the consumer wants it and gave
 // options. Its value falls back to the first option so the pill never reads

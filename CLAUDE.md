@@ -42,6 +42,8 @@ Auto-imported with the `Ux` prefix:
 | `UxTabGroup` | Joined-segment tab switcher with heavy underline and right-action slot |
 | `UxTable` | Static doc table styling slotted thead/tbody (line/band variants) |
 | `UxPageTitle` | Page header: optional breadcrumb trail + large title, hairline underline; `right`/`far-right`/`chin`/`chin-right` slots, `backText` + `@back`. Nuxt-only (`<NuxtLink>`) |
+| `UxStickyBand` | Backing strip behind the page's pinned controls (c104): mount once at the top of the layout's content column; shows (page tone + hairline, `--q-sticky-top` tall) while a band member is pinned, transparent at rest. See `useStickyBand` |
+| `UxOverflowX` | Horizontal scroll only when needed (c104): wrap a table instead of a hand-rolled `overflow-x-auto` div. Fits → no overflow, so sticky table headers pin to the page; overflows → scrolls sideways and resets `--q-sticky-top` inside |
 
 ### Icons (`components/icon/`)
 
@@ -262,6 +264,15 @@ consumer repo.
 
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
+
+### Migration notes — unreleased, ships as v0.9.24 (design c104 sticky band, 2026-10-01)
+
+- **`DataTable` table headers pin again.** The always-on `overflow-x-auto` wrapper (since c51) was the thead's sticky container and never scrolled vertically, so no `DataTable` header pinned. The table now sits in **new `UxOverflowX`**, which arms horizontal scroll only while the content is wider than the box (`scrollWidth`, so nested wrappers are seen; absolutely positioned overflow counts too). A table that still overflows scrolls sideways and its header gives up pinning for that case. Replace hand-rolled `overflow-x-auto` wrappers around `UxTableList` with `<UxOverflowX>`.
+- **The sticky band** (`composables/useStickyBand.ts`): the global `Filter` and `NavJumpPills` stay sticky where they sit and register with the band, which publishes `--q-sticky-top` on `<html>` (the lowest registered bottom edge + 8px; removed when nothing is registered). It counts every registered control, pinned or not, so it never changes mid-scroll. `useStickyBand()` → `{ stuck }`; `useStickyBandMember({ el, top, stuck, enabled })` for a new kind of member (height = `el.scrollHeight`).
+- **`UxTableListHeader`** pins at `var(--q-sticky-top, 0px)` (was `top-0`); `compact` stays `top-0`. Pages without a band are unchanged. Any other vertical scroll box that holds a non-compact table must reset the var (`style="--q-sticky-top: 0px"`) or its header is pushed down inside it — `UxModal` and `UxOverflowX` already do.
+- **`Filter` gains `band`** (default off): its pinned bar joins the band. A layout opts in once on its global filter.
+- **`NavJumpPills` gains `sticky` + `stickyTop`** (default 8): the component pins itself as a full-row sticky box (z-30, pointer events only on the bar) and joins the band — drop the per-page `sticky top-2 z-30` wrapper (keep its margin as a class on the component) and the sections' `scroll-mt-*`: jumps set `scroll-margin-top: calc(var(--q-sticky-top) + 16px)` on the target, and the spy line follows the band. `offset` now defaults to that (96 without `sticky`, as before). Without `sticky` the root is now an `inline-flex` wrapper around the bar; rendering is unchanged.
+- **New `UxStickyBand`**: the backing. Mount once at the top of the layout's content column (inside the relative wrapper that holds the global filter), with negative margins to cover the column padding (`class="-mx-8"`).
 
 ### Migration notes — v0.9.23 (design c100 title switcher, 2026-09-30)
 
