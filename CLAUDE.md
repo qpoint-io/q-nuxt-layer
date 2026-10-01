@@ -265,7 +265,7 @@ consumer repo.
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
 
-### Migration notes — unreleased, ships as v0.9.24 (design c104 sticky band, 2026-10-01)
+### Migration notes — v0.9.24 (design c104 sticky band, 2026-10-01)
 
 - **`DataTable` table headers pin again.** The always-on `overflow-x-auto` wrapper (since c51) was the thead's sticky container and never scrolled vertically, so no `DataTable` header pinned. The table now sits in **new `UxOverflowX`**, which arms horizontal scroll only while the content is wider than the box (`scrollWidth`, so nested wrappers are seen; absolutely positioned overflow counts too). A table that still overflows scrolls sideways and its header gives up pinning for that case. Replace hand-rolled `overflow-x-auto` wrappers around `UxTableList` with `<UxOverflowX>`.
 - **The sticky band** (`composables/useStickyBand.ts`): the global `Filter` and `NavJumpPills` stay sticky where they sit and register with the band, which publishes `--q-sticky-top` on `<html>` (the lowest registered bottom edge + 8px; removed when nothing is registered). It counts every registered control, pinned or not, so it never changes mid-scroll. `useStickyBand()` → `{ stuck }`; `useStickyBandMember({ el, top, stuck, enabled })` for a new kind of member (height = `el.scrollHeight`).

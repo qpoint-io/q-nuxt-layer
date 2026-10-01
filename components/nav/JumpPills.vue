@@ -1,12 +1,12 @@
 <template>
-  <!-- Sticky mode: a full-row sticky box (the old per-page wrapper) that joins
-       the page's sticky band; pointer-events pass through everywhere but the
-       pill bar itself. Plain mode: the bar alone, positioned by the consumer. -->
   <div
     ref="root"
     :class="sticky ? 'sticky z-30 pointer-events-none' : 'inline-flex'"
     :style="sticky ? { top: `${stickyTop}px` } : undefined"
   >
+    <!-- Sticky mode: a full-row sticky box (the old per-page wrapper) that joins
+         the page's sticky band; pointer-events pass through everywhere but the
+         pill bar itself. Plain mode: the bar alone, positioned by the consumer. -->
     <div
       class="pointer-events-auto inline-flex items-center gap-1 rounded-full border bg-surface px-1.5 py-1 shadow-md"
       :class="active ? 'border-grape-300' : 'border-stroke'"
