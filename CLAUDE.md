@@ -265,6 +265,12 @@ consumer repo.
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
 
+### Migration notes — v0.9.25 (design c103 gap-aware, 2026-10-01)
+
+- **A day not collected draws as a gap, not a zero.** `DataMetricSpark`: a point `{ count: null }` (or a bare `null` entry) keeps its x slot and breaks the line; a filled area closes each unbroken run to the baseline, the stroke runs along the top edge only, and a lone known day between gaps is a dot. Before, `{ count: null }` plotted as 0 and a bare `null` threw. Data without nulls renders byte-identical (`svgMachine.sparkChart` output unchanged; with gaps it also returns `lines`, `segments`, `dots`).
+- **`DataHistoryGraph`**: a point with `values: null` or `missing: true` keeps its slot and label, draws no lanes, a faint hatch over the area and a dashed baseline (native title "not collected"); the `hover` payload gains `missing`. `values: null` used to throw. A per-series `null` inside `values` still reads as 0.
+- Consumers that zero-filled unknown days to dodge the old behavior should pass `null` instead — a zero is a real quiet day; `null` is "we don't know".
+
 ### Migration notes — v0.9.24 (design c104 sticky band, 2026-10-01)
 
 - **`DataTable` table headers pin again.** The always-on `overflow-x-auto` wrapper (since c51) was the thead's sticky container and never scrolled vertically, so no `DataTable` header pinned. The table now sits in **new `UxOverflowX`**, which arms horizontal scroll only while the content is wider than the box (`scrollWidth`, so nested wrappers are seen; absolutely positioned overflow counts too). A table that still overflows scrolls sideways and its header gives up pinning for that case. Replace hand-rolled `overflow-x-auto` wrappers around `UxTableList` with `<UxOverflowX>`.
