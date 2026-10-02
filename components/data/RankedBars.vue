@@ -76,17 +76,22 @@
     </template>
     <template v-else>
       <!-- Inline: label beside the bar in a fixed column — the compact form
-           for short names (teams, harnesses, hosts). Long labels truncate. -->
-      <div
-        v-for="(r, i) in rows" :key="`${i}-${r.label}`"
-        class="grid items-center gap-2 text-12 text-content-muted"
-        :style="{ gridTemplateColumns: hasMarks ? `${labelWidth}px 8px 1fr` : `${labelWidth}px 1fr` }"
-        :title="rowTitle(r)"
-      >
-        <span class="truncate" :class="[mono ? 'font-mono' : '', isThin ? 'leading-tight' : '']" data-ranked-label>{{ r.label }}</span>
-        <!-- mark column only when some row carries one; an unmarked row keeps the column empty -->
-        <span v-if="hasMarks" class="h-2 w-2 rounded-2" :style="r.mark ? { background: resolveColor(r.mark) } : undefined" :data-mark="r.mark" />
-        <div :class="isThin ? '' : 'h-4'"><UxPercentBar :title="r.display ?? compact.format(r.value)" :percent="barPct(r)" compact solid :titlePosition="valuePosition" :thin="isThin" :titleSize="10" /></div>
+           for short names (teams, harnesses, hosts). Long labels truncate.
+           labelWidth 'auto' (Mark, 2026-10-02 — qdash Activity): one grid
+           shared by every row (each row a subgrid), its label column as wide
+           as the longest label, capped at 45 % — the bars take the rest. -->
+      <div :class="autoLabel ? 'grid items-center gap-x-2 gap-y-1' : 'contents'" :style="autoLabel ? { gridTemplateColumns: inlineCols } : undefined">
+        <div
+          v-for="(r, i) in rows" :key="`${i}-${r.label}`"
+          class="grid items-center gap-2 text-12 text-content-muted"
+          :style="autoLabel ? { gridColumn: '1 / -1', gridTemplateColumns: 'subgrid' } : { gridTemplateColumns: inlineCols }"
+          :title="rowTitle(r)"
+        >
+          <span class="truncate" :class="[mono ? 'font-mono' : '', isThin ? 'leading-tight' : '']" data-ranked-label>{{ r.label }}</span>
+          <!-- mark column only when some row carries one; an unmarked row keeps the column empty -->
+          <span v-if="hasMarks" class="h-2 w-2 rounded-2" :style="r.mark ? { background: resolveColor(r.mark) } : undefined" :data-mark="r.mark" />
+          <div :class="isThin ? '' : 'h-4'"><UxPercentBar :title="r.display ?? compact.format(r.value)" :percent="barPct(r)" compact solid :titlePosition="valuePosition" :thin="isThin" :titleSize="10" /></div>
+        </div>
       </div>
     </template>
 
@@ -147,7 +152,7 @@ import { resolveColor } from './palette'
 const props = defineProps({
   rows       : { type: Array, required: true },     // [{ label, value, pct, display?, mark?, title? }] — pct 0–100, share of the whole
   width      : { type: [Number, String], default: '100%' }, // CSS length, or number = px
-  labelWidth : { type: Number, default: 84 },       // px label column, inline layout only
+  labelWidth : { type: [Number, String], default: 84 }, // px label column, inline layout only; 'auto' = fit the longest label (≤ 45 %), bars fill the rest
   mono       : { type: Boolean, default: true },    // labels in the mono face (ids); false for people / team names
   layout     : { type: String, default: 'inline' }, // 'inline' | 'stacked'
   fill       : { type: Boolean, default: false },   // legacy — same as width '100%'
@@ -165,6 +170,12 @@ const props = defineProps({
 const isThin = computed(() => props.thin && props.valuePosition !== 'inside')
 
 const hasMarks = computed(() => props.rows.some(r => r.mark))
+const autoLabel = computed(() => props.labelWidth === 'auto')
+const inlineCols = computed(() => {
+  const label = autoLabel.value ? 'fit-content(45%)' : `${props.labelWidth}px`
+  const bar = autoLabel.value ? 'minmax(0, 1fr)' : '1fr'
+  return hasMarks.value ? `${label} 8px ${bar}` : `${label} ${bar}`
+})
 const rowTitle = r => r.title ?? `${r.label}: ${r.pct}% of the whole`
 
 const cssLength = w => typeof w === 'number' ? `${w}px` : w

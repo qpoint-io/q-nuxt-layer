@@ -267,6 +267,10 @@ consumer repo.
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
 
+### Migration notes — v0.9.31 (DataRankedBars auto label column, 2026-10-02)
+
+- **`DataRankedBars` `labelWidth` accepts `'auto'`** (inline layout; numbers unchanged, default still 84). Every row shares one grid (each row a subgrid): the label column is as wide as the longest label, capped at 45 % of the device (then truncating), and the bars take the rest. No consumer change required; qdash's bands and tiles all switched to `'auto'` (Mark: "bars flex grow, the rest shrinks to fit content").
+
 ### Migration notes — v0.9.29 (design c109 micro cards, 2026-10-02)
 
 - **`DataIndexSection`'s micros are cards** (Mark's pick, preset B of the c109 micro-cards thread at design `/pages/phase3/index-micro-variations`). New `cards` prop, **default on**: every `DataMachineMicro` inside renders as a card by injection — white (`bg-surface`), 12 px corners, 14 px padding, a soft two-layer shadow (a hairline border in dark mode). The grid's gaps follow: 16 / 16 px with cards, 48 / 48 flat; `minColumn` default 180 → 190. The title is 28 px (was 24). `:cards="false"` gives the flat section back.
