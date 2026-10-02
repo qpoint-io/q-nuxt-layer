@@ -5,8 +5,8 @@
   <div class="gap-4" :class="legendBelow ? ['flex w-full flex-col', alignLeft ? 'items-start' : 'items-center'] : 'inline-flex items-start'">
 
     <!-- Donut -->
-    <div class="relative shrink-0" :style="{ width: `${size}px`, height: `${size}px` }">
-      <svg :viewBox="`0 0 ${size} ${size}`" class="block w-full h-full">
+    <div class="relative shrink-0" :style="{ width: `${size}px`, height: `${size}px` }" :title="hideLegend ? ringLabel : undefined">
+      <svg :viewBox="`0 0 ${size} ${size}`" class="block w-full h-full" :role="hideLegend ? 'img' : undefined" :aria-label="hideLegend ? ringLabel : undefined">
         <!-- track -->
         <circle
           :cx="middle" :cy="middle" :r="radius"
@@ -49,9 +49,10 @@
       </div>
     </div>
 
-    <!-- Legend -->
+    <!-- Legend — `hideLegend` drops it for a ring alone (the DataMachineMicro
+         glyph, design c109: segment titles move to the ring's tooltip) -->
     <div
-      v-if="items.length"
+      v-if="items.length && !hideLegend"
       :class="legendBelow ? ['flex flex-row flex-wrap gap-x-6 gap-y-2', alignLeft ? 'justify-start' : 'justify-center'] : 'flex flex-col gap-2'"
     >
       <!-- legendBelow: each item on one line (swatch · title · value) and never
@@ -90,7 +91,11 @@ const props = defineProps({
   centerUnit  : { type: String },                   // → DataMetricValue unit ('bytes', 'duration', or custom)
   centerLabel : { type: String },                   // small label below the value (e.g. "Tokens")
   centerSize  : { type: Number, default: 23 },      // value font size in px
+  hideLegend  : { type: Boolean, default: false },  // ring alone — titles move to its tooltip (a micro glyph)
 })
+
+// hideLegend: the legend's words, as the ring's tooltip / accessible name
+const ringLabel = computed(() => props.items.map((it) => `${it.title}: ${it.percent}%`).join(' · '))
 
 const alignLeft     = computed(() => props.align === 'left')
 const middle        = computed(() => props.size / 2)

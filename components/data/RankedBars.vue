@@ -6,9 +6,34 @@
     class="flex flex-col"
     :class="layout === 'stacked' ? 'gap-2' : 'gap-1'"
     :style="{ width: fill ? '100%' : cssLength(width) }"
-    data-ranked-bars :data-layout="layout"
+    data-ranked-bars :data-layout="micro ? 'micro' : layout"
   >
-    <template v-if="layout === 'stacked'">
+    <template v-if="micro">
+      <!-- Micro (design c109): the at-a-glance form for a DataMachineMicro
+           #right, where the problem is selection, not labelling (c100's
+           lever-strip ruling) — pass the top row only and it reads as one
+           line, label · share, over a 3 px meter (the share of the whole on a
+           hairline track), about as tall as the micro's 20 px numerals.
+           `bare` drops the text line: hairline bars only (pass the top 3 for
+           the shape of the concentration), each row's label and share kept
+           in its tooltip. Inline style for the 3 px: an arbitrary-value class
+           wouldn't reach the consumer's Tailwind scan. -->
+      <div
+        v-for="(r, i) in rows" :key="`${i}-${r.label}`"
+        class="flex min-w-0 flex-col"
+        :title="rowTitle(r)"
+      >
+        <div v-if="!bare" class="flex min-w-0 items-baseline gap-1.5 text-11 leading-4">
+          <span v-if="r.mark" class="h-1.5 w-1.5 shrink-0 self-center rounded-full" :style="{ background: resolveColor(r.mark) }" :data-mark="r.mark" />
+          <span class="min-w-0 flex-1 truncate text-content" :class="mono ? 'font-mono' : ''" data-ranked-label>{{ r.label }}</span>
+          <span class="shrink-0 tabular-nums font-semi text-content-muted" data-ranked-pct>{{ r.pct }} %</span>
+        </div>
+        <div class="relative w-full overflow-hidden rounded-full bg-stroke" :class="bare ? '' : 'mt-px'" :style="{ height: '3px' }">
+          <div class="absolute inset-y-0 left-0 bg-content" :style="{ width: `${barPct(r)}%` }" />
+        </div>
+      </div>
+    </template>
+    <template v-else-if="layout === 'stacked'">
       <!-- Stacked: the label owns a full line (nothing truncates — id-shaped
            labels read whole), the bar takes the full width beneath it with
            the share at its right end in text tokens. -->
@@ -51,6 +76,9 @@
       </span>
     </div>
   </div>
+  <!-- micro, empty: the empty track DataSegmentBar draws, not a second em-dash
+       beside the micro's own "—" (a loading micro would read "— —") -->
+  <div v-else-if="micro" class="h-px w-full bg-stroke" title="nothing to rank" data-ranked-bars data-empty />
   <span v-else class="text-13 text-content-subtle" title="nothing to rank" data-ranked-bars data-empty>—</span>
 </template>
 
@@ -84,6 +112,12 @@ import { resolveColor } from './palette'
 // `title` (per row) replaces the default "label: N% of the whole" tooltip —
 // for rows whose pct isn't a share (a count scaled to the max).
 //
+// `micro` (design c109): the DataMachineMicro rendering — one line per row,
+// label · share, over a 3 px meter; `bare` keeps only the meters. The
+// micro the index uses is `bare`, the top 3 (Mark, design c109 2026-10-02);
+// the top row alone (selection, not labelling) is the alternative; `bare`
+// with the top 3 is the label-free alternative. Unset, nothing changes.
+//
 // `width`: any CSS length ('100%' default — fill whatever it's placed in),
 // or a number for px. `fill` is the older spelling of width '100%'.
 const props = defineProps({
@@ -97,6 +131,8 @@ const props = defineProps({
   legend     : { type: Array, default: () => [] },  // [{ title, color }] — keys the row marks
   valuePosition : { type: String, default: 'inside' }, // 'inside' (value over the bar) | 'left' | 'right' (own column before / after the bar)
   thin       : { type: Boolean, default: false },   // half-height bars + compact rows; needs valuePosition left/right (ignored inside)
+  micro      : { type: Boolean, default: false },   // DataMachineMicro form: label · share on one line over a 3 px meter (pass the top row); overrides layout
+  bare       : { type: Boolean, default: false },   // micro only: no text line — hairline bars, label + share in the tooltip
 })
 
 // thin = half-height bars AND compact rows (tight label leading, no 16 px bar
