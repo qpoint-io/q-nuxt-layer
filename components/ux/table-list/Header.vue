@@ -12,6 +12,11 @@
 <style scoped>
 ._pin{
   top: var(--q-sticky-top, 0px);
+  /* eases with the band when its height changes (design c106); instant without one */
+  transition: top var(--q-band-dur, 0ms) var(--q-band-ease, ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  ._pin{ transition: none; }
 }
 ._table-head.td, ._table-head.th{
   padding: 0;

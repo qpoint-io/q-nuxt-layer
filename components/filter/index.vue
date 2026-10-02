@@ -35,7 +35,7 @@
       v-show="!disabled"
       ref="barRef"
       class="inline-block sticky z-40 h-0 rounded-8 px-3 py-3 transition-colors"
-      :class="filterStuck ? '_stuck bg-surface-sunken' : ''"
+      :class="[filterStuck ? '_stuck bg-surface-sunken' : '', bandCompactNow ? '_compact' : '']"
       :style="{ top: `${stickyTop}px` }"
     >
       <!-- Disabled: intentionally empty -->
@@ -173,6 +173,9 @@ const props = defineProps({
   // height counts toward `--q-sticky-top`, so table headers pin below it and
   // UxStickyBand backs it. Off by default — a layout opts in once.
   band          : { type: Boolean, default: false },
+  // In a band with a title (design c106), drop the label rows (and ADD) while
+  // the band is compact — values only, so the band stays short.
+  bandCompact   : { type: Boolean, default: true },
 })
 
 const emit = defineEmits([
@@ -207,12 +210,36 @@ onMounted(armStuckObserver)
 watch(() => props.stickyTop, armStuckObserver)
 watch(filterStuck, (v) => emit('stuck', v))
 onBeforeUnmount(() => stuckObserver?.disconnect())
-useStickyBandMember({
-  el: barRef,
-  top: () => props.stickyTop,
-  stuck: filterStuck,
-  enabled: () => props.band && !props.disabled && !props.embed,
-})
+// ── Sticky band membership (useStickyBand) ──────────────────────────────────
+// Reports pinned-or-not, the pinned bar's height (full and compact — the box
+// is h-0, so its height is what it holds) and the bar's width (the pinned page
+// title stops short of it).
+const stickyBand = useStickyBand()
+const bandMember = ref(null)
+const inBand = computed(() => props.band && !props.disabled && !props.embed && stickyBand.state.attached)
+const bandCompactNow = computed(() => inBand.value && props.bandCompact && stickyBand.titleBand.value && stickyBand.look.value === 'down')
+const measureForBand = () => {
+  const box = barRef.value
+  if (!bandMember.value || !box) return
+  bandMember.value.setHeights(bandCompactNow.value ? { compact: box.scrollHeight } : { full: box.scrollHeight })
+  const bar = box.firstElementChild
+  if (bar) bandMember.value.setWidth(Math.ceil(bar.getBoundingClientRect().width))
+}
+let bandRO = null
+watch(inBand, (on) => {
+  if (on && !bandMember.value) {
+    bandMember.value = stickyBand.registerFilter()
+    bandMember.value.setPinned(filterStuck.value)
+    bandRO = new ResizeObserver(measureForBand)
+    if (barRef.value) { bandRO.observe(barRef.value); if (barRef.value.firstElementChild) bandRO.observe(barRef.value.firstElementChild) }
+    measureForBand()
+  } else if (!on && bandMember.value) {
+    bandRO?.disconnect(); bandMember.value.release(); bandMember.value = null
+  }
+}, { flush: 'post', immediate: true })
+watch(filterStuck, (v) => bandMember.value?.setPinned(v))
+watch(bandCompactNow, () => nextTick(measureForBand))
+onBeforeUnmount(() => { bandRO?.disconnect(); bandMember.value?.release(); bandMember.value = null })
 
 // The permanent timeframe column: on when the consumer wants it and gave
 // options. Its value falls back to the first option so the pill never reads
@@ -334,6 +361,12 @@ defineExpose({ createFilter })
 </script>
 
 <style scoped>
+/* Compact in a titled sticky band (design c106): the label rows and the ADD
+   column step aside, leaving the value row; the box's padding tightens. */
+._compact { padding-top: 4px; padding-bottom: 4px; }
+._compact :deep(.h-6),
+._compact .text-11 { display: none; }
+
 /* Filter bar palette (design c92, 2026-09-24) — the three non-token hues from the
    reference, set here as vars so FilterItem (a child) reads them too. Plain CSS, not
    arbitrary Tailwind values: a consumer's scan doesn't reliably cover layer files. */
