@@ -203,6 +203,19 @@ const reportTitle = (pinned: boolean) => {
   }
 }
 
+/**
+ * Whether the backing shows. In a titled band (c106) it waits for the title to
+ * pin, so it appears once, at the compact height — before that the pinned
+ * filter carries its own fill (Mark, 2026-10-02: the backing slid down from
+ * the full filter's height; it should just fade in). In a c104 band any pinned
+ * member shows it.
+ */
+const showBacking = computed(() => {
+  if (!state.scrolled) return false
+  if (state.titleBand && state.hasTitle) return state.titlePinned || state.navPinned
+  return state.titlePinned || state.filterPinned || state.navPinned
+})
+
 // ── Public API ───────────────────────────────────────────────────────────────
 
 export function useStickyBand() {
@@ -218,9 +231,9 @@ export function useStickyBand() {
     /** The c106 layout is on and a title is in it. */
     titleBand: computed(() => state.titleBand && state.hasTitle),
     /** The backing shows: something is pinned and the page has moved. */
-    showBacking: computed(() => state.scrolled && (state.titlePinned || state.filterPinned || state.navPinned)),
+    showBacking,
     /** c104 name for showBacking. */
-    stuck: computed(() => state.scrolled && (state.titlePinned || state.filterPinned || state.navPinned)),
+    stuck: showBacking,
 
     /** UxStickyBand: publish until the returned teardown runs. */
     attach: (opts: { title: boolean }) => {
