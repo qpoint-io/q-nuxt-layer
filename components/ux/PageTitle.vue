@@ -197,10 +197,12 @@ useStickyBandScroll(box, (el) => {
 /* The title eases with the band's motion while pinned and while settling; the
    row's height eases with it (the hairline glides to rest); padding is quick. */
 ._moving ._title { transition: font-size var(--q-band-dur, 1000ms) var(--q-band-ease, ease); }
+/* shrinking as it pins runs on its own clock (STICKY_BAND.motion.title) */
+._pinned ._title { transition: font-size var(--q-band-title, 500ms) var(--q-band-ease, ease); }
 ._moving ._row { transition: height var(--q-band-dur, 1000ms) var(--q-band-ease, ease); }
 ._moving ._rule { transition: padding-bottom 200ms var(--q-band-ease, ease); }
 
 @media (prefers-reduced-motion: reduce) {
-  ._moving ._title, ._moving ._row, ._moving ._rule { transition: none; }
+  ._moving ._title, ._pinned ._title, ._moving ._row, ._moving ._rule { transition: none; }
 }
 </style>

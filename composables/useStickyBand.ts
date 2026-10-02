@@ -45,6 +45,7 @@
  *   --q-sticky-row1       where the sub nav pins (c106 only; c104 pins at stickyTop)
  *   --q-sticky-filter-w   the filter bar's width — the pinned title stops short of it
  *   --q-band-dur / --q-band-ease / --q-band-fade   the motion of the current change
+ *   --q-band-title        the title's shrink as it pins (its own clock)
  *
  * Module-level state: one band per page. Members register on mount only, so
  * server renders never touch it.
@@ -67,8 +68,8 @@ export const STICKY_BAND = {
   titleRow: 32,
   /** The sub nav's row per look; its sticky box always keeps the rest height. */
   navRow: { rest: 42, down: 30, up: 30 },
-  /** Space between the docked sub nav and the band's bottom edge. */
-  navBottomPad: 12,
+  /** Space between the docked sub nav and the band's bottom edge (12, then 16: Mark, "a touch more bottom padding"). */
+  navBottomPad: 16,
   /** The filter's label row, which the compact look hides (estimate until measured). */
   filterLabelRow: 24,
   /** Travel in one direction (px) before the mode flips — a jittery wheel can't flicker it. */
@@ -84,6 +85,7 @@ export const STICKY_BAND = {
     dock: 200,
     dockEase: 'cubic-bezier(0.22, 1, 0.36, 1)', // easeOutQuint: the band catches the pills at once
     quick: 200, // pills' selection ring, paddings
+    title: 500, // the title shrinking as it pins — its own lever (Mark tried slower, then faster)
   },
 } as const
 
@@ -149,7 +151,7 @@ const topDown = computed(() => bandHeight(state.titleBand && state.hasTitle ? 'd
 
 // ── Publishing ───────────────────────────────────────────────────────────────
 
-const VARS = ['--q-sticky-top', '--q-sticky-top-down', '--q-sticky-row1', '--q-band-dur', '--q-band-ease', '--q-band-fade'] as const
+const VARS = ['--q-sticky-top', '--q-sticky-top-down', '--q-sticky-row1', '--q-band-dur', '--q-band-ease', '--q-band-fade', '--q-band-title'] as const
 let lastNavPinned = false
 
 const publish = () => {
@@ -166,6 +168,7 @@ const publish = () => {
   s.setProperty('--q-band-dur', `${dur}ms`)
   s.setProperty('--q-band-ease', docking ? B.motion.dockEase : B.motion.ease)
   s.setProperty('--q-band-fade', `${B.motion.fade}ms`)
+  s.setProperty('--q-band-title', `${B.motion.title}ms`)
 }
 
 // ── Mode ─────────────────────────────────────────────────────────────────────

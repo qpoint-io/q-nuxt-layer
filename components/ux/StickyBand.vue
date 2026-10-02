@@ -6,9 +6,10 @@
          is pinned, with a two-layer shadow hung off its bottom edge. It fades in
          at its height; only once it is fully in does its height animate (the
          sub nav docking, the band compacting). The members (title, sub nav,
-         filter) pin themselves on top of it. -->
+         filter) pin themselves on top of it. Its fill is a tick lighter than
+         the page (surface-sunken-subtle; design c106). -->
     <div
-      class="_strip absolute inset-x-0 top-0 border-b border-stroke bg-surface-sunken"
+      class="_strip absolute inset-x-0 top-0 border-b border-stroke bg-surface-sunken-subtle"
       :class="[showBacking ? 'opacity-100' : 'pointer-events-none opacity-0', steady ? '_steady' : '']"
     />
   </div>
@@ -56,13 +57,13 @@ onBeforeUnmount(() => detach?.())
   /* the fade (which carries the shadow) is quicker than the band's motion */
   transition: opacity var(--q-band-fade, 150ms) var(--q-band-ease, ease);
   /* shadow strength per layer (design c106) */
-  --q-band-shadow-near: 0.18;
+  --q-band-shadow-near: 0.11;
   --q-band-shadow-far: 0.08;
 }
 
 /* The shadow: two absolute layers starting at the strip's bottom edge, each a
-   black 100% → 0% alpha gradient scaled by its opacity — a 5px contact shadow
-   and a 20px falloff. They live inside the strip, so they fade with it. */
+   black 100% → 0% alpha gradient scaled by its opacity — a 7px contact shadow
+   and a 28px falloff. They live inside the strip, so they fade with it. */
 ._strip::before,
 ._strip::after {
   content: '';
@@ -77,8 +78,8 @@ onBeforeUnmount(() => detach?.())
   transition: height var(--q-band-dur, 0ms) var(--q-band-ease, ease), opacity var(--q-band-fade, 150ms) var(--q-band-ease, ease);
 }
 
-._strip::before { height: 5px; opacity: var(--q-band-shadow-near); }
-._strip::after { height: 20px; opacity: var(--q-band-shadow-far); }
+._strip::before { height: 7px; opacity: var(--q-band-shadow-near); }
+._strip::after { height: 28px; opacity: var(--q-band-shadow-far); }
 
 @media (prefers-reduced-motion: reduce) {
   ._strip { transition: none; }
