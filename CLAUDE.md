@@ -171,8 +171,8 @@ Auto-imported with the `Data` prefix. The chart family below shares one color fi
 |-----------|-------------|
 | `DataMachine` | Composition harness for a stat card: title · hairline · description · value/unit/delta · `#title` `#title-right` `#left` `#right` `#below` · italic provenance footer · `:spark`; omit `val` for a device-only card |
 | `DataMachineGroup` | Grid for a band of DataMachines — children become 4-row subgrids so value rows align across missing/wrapped descriptions; `grid-cols-*`/`gap-x-*` classes as usual, `rowGap` prop (not `gap-y-*`) between wrapped rows |
-| `DataMachineMicro` | A DataMachine shrunk to a summary cell (~200 × 52): 12 px title · hairline · 20 px value/unit/delta · `#right` device (fills the row) · `#mark` glyph after the title; protocol a strict subset of DataMachine's (`title` `val` `unit` `delta` `deltaUnit` `healthMode` `to`); `null` → "—"; the whole card is a NuxtLink with `to`; same 4-row subgrid in a `DataMachineGroup` |
-| `DataIndexSection` | One nav section on an index page: 24 px title (a heading, not a link) · lede · dot-separated `links` row (`{ to, label }[]`, or `#links`) · hairline · summary; owns an auto-fill `DataMachineGroup` grid (`minColumn`, default 180) for bare micros, `:grid="false"` hands the slot over; `#title-right`, `#lede`; anchor `id` from the title |
+| `DataMachineMicro` | A DataMachine shrunk to a summary cell: 14 px bold title · hairline · 20 px value/unit/delta · `#right` device (fills the row) · `#mark` glyph after the title; protocol a strict subset of DataMachine's (`title` `val` `unit` `delta` `deltaUnit` `healthMode` `to`) plus `card` (white, rounded 12, soft shadow; inherited from a `DataIndexSection`); `null` → "—"; the whole card is a NuxtLink with `to`; same 4-row subgrid in a `DataMachineGroup` |
+| `DataIndexSection` | One nav section on an index page: 28 px title (a heading, not a link) · lede · dot-separated `links` row (`{ to, label }[]`, or `#links`) · hairline · summary; owns an auto-fill `DataMachineGroup` grid (`minColumn`, default 190) for bare micros, `:grid="false"` hands the slot over; `cards` (default on) makes the micros inside cards and sets 16 px gaps (48 flat); `#title-right`, `#lede`; anchor `id` from the title |
 | `DataDonutChart` | Part-to-whole ring with a center slot and swatch legend, `[{ title, percent, html?, color? }]` |
 | `DataHistoryGraph` | Per-day unit-block lanes (or bars past ~40 columns), 1–3 series, `{ series, points }` |
 | `DataRankedBars` | Ranked-share rows — `[{ label, value, pct, display?, mark?, title? }]` in, one compact `UxPercentBar` per row, each bar the share of the whole (`scale="max"`: top row full); `layout` inline (label column beside) or stacked (label on its own line, full-width bar, share at the right — nothing truncates); row `mark` = status dot, `legend` keys it; fills its container; empty → em-dash |
@@ -266,6 +266,12 @@ consumer repo.
 
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
+
+### Migration notes — v0.9.29 (design c109 micro cards, 2026-10-02)
+
+- **`DataIndexSection`'s micros are cards** (Mark's pick, preset B of the c109 micro-cards thread at design `/pages/phase3/index-micro-variations`). New `cards` prop, **default on**: every `DataMachineMicro` inside renders as a card by injection — white (`bg-surface`), 12 px corners, 14 px padding, a soft two-layer shadow (a hairline border in dark mode). The grid's gaps follow: 16 / 16 px with cards, 48 / 48 flat; `minColumn` default 180 → 190. The title is 28 px (was 24). `:cards="false"` gives the flat section back.
+- **`DataMachineMicro` gains `card`** (Boolean; unset inherits from a surrounding `DataIndexSection`, else flat). In a group the padding insets the subgrid, so value rows still align and a row of cards shares one height. The title is now **14 px bold ink** (was 12 px medium muted).
+- **`DataRankedBars` gains `microLabels`** (`'over'` default, unchanged | `'beside'`): with `micro` and not `bare`, `'beside'` draws the top 3 hairline meters each with a 10 px Inter bold name to its left (the label column as wide as the longest label, up to 45 %; `mono` doesn't apply; full label and share in the tooltip). qdash's index roll downs use it.
 
 ### Migration notes — v0.9.28 (design c109 index, 2026-10-02)
 

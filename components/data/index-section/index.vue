@@ -9,7 +9,7 @@
          #title-right takes a count or a caption on the title's baseline; when
          a long title wraps it, ml-auto keeps it at the right edge. -->
     <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-      <h2 class="text-24 font-bold text-content">{{ title }}</h2>
+      <h2 class="text-28 font-bold text-content">{{ title }}</h2>
       <div v-if="slots['title-right']" class="ml-auto text-13 text-content-subtle">
         <slot name="title-right" />
       </div>
@@ -69,14 +69,24 @@ const props = defineProps({
   lede      : { type: String },                          // one line under the title — or use #lede
   links     : { type: Array, default: () => [] },        // [{ to, label }] — the listing doors, nav order
   grid      : { type: Boolean, default: true },          // the built-in micro grid; false = the slot renders as-is
-  minColumn : { type: Number, default: 180 },            // px — the narrowest a grid column (one micro) may be
+  minColumn : { type: Number, default: 190 },            // px — the narrowest a grid column (one micro) may be
+  cards     : { type: Boolean, default: true },          // the micros inside render as cards (white, rounded, soft shadow) unless one sets its own `card`
 })
+
+// Cards (Mark, 2026-10-02 — preset B of the c109 micro-cards thread, picked
+// over flat micros, micro cards with smaller data and a white section card):
+// every DataMachineMicro inside takes the card look by injection, so a page
+// composes plain micros and the section decides their chrome.
+provide('dataIndexSection', computed(() => ({ cards: props.cards })))
 const slots = useSlots()
 
-// gaps are the section's rhythm, not props: 20 px between wrapped rows of
-// micros (each micro's top margin, see DataMachineGroup), 32 px between columns
-const ROW_GAP = 20
-const COL_GAP = 32
+// gaps are the section's rhythm, not props: between wrapped rows (each
+// micro's top margin, see DataMachineGroup) and between columns. Cards sit
+// 16 px apart — their own white edge does the separating; flat micros need
+// air instead, 48 px (both from Mark's c109 follow-ups: flat 20 / 32 → 48 / 48,
+// then the cards at 16 / 16)
+const ROW_GAP = computed(() => (props.cards ? 16 : 48))
+const COL_GAP = computed(() => (props.cards ? 16 : 48))
 
 const scrollMarginTop = `calc(var(--q-sticky-top-down, var(--q-sticky-top, 0px)) + ${STICKY_BAND.jumpGap}px)`
 
@@ -86,6 +96,6 @@ const sectionId = computed(() => props.id || props.title.toLowerCase().trim().re
 // arbitrary-value class wouldn't reach the consumer's Tailwind scan
 const gridStyle = computed(() => ({
   gridTemplateColumns: `repeat(auto-fill, minmax(${props.minColumn}px, 1fr))`,
-  columnGap: `${COL_GAP}px`,
+  columnGap: `${COL_GAP.value}px`,
 }))
 </script>

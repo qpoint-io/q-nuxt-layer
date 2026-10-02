@@ -8,7 +8,29 @@
     :style="{ width: fill ? '100%' : cssLength(width) }"
     data-ranked-bars :data-layout="micro ? 'micro' : layout"
   >
-    <template v-if="micro">
+    <template v-if="micro && microLabels === 'beside' && !bare">
+      <!-- Micro, labels beside (design c109, "small labels on the roll
+           downs"): the top 3 as hairline meters, each with its name in a
+           column to its left — 10 px Inter bold (Mark: a tick under the
+           scale's 11 px floor, and the sans fits more of an id than mono, so
+           `mono` doesn't apply here), one 11 px line per row with 2 px
+           between, so the three rows sit inside a micro's value height plus a
+           line. The label column is as wide as the longest label, capped at
+           45 % of the device (the full label and share are in the row's
+           tooltip). Inline font-size: the layer scale has no 10. -->
+      <div class="grid items-center gap-x-1.5 gap-y-0.5" :style="{ gridTemplateColumns: 'fit-content(45%) minmax(0, 1fr)' }">
+        <template v-for="(r, i) in rows" :key="`${i}-${r.label}`">
+          <span class="flex min-w-0 items-center gap-1 font-bold text-content-muted" :style="{ fontSize: '10px', lineHeight: '11px' }" :title="rowTitle(r)">
+            <span v-if="r.mark" class="h-1.5 w-1.5 shrink-0 rounded-full" :style="{ background: resolveColor(r.mark) }" :data-mark="r.mark" />
+            <span class="truncate" data-ranked-label>{{ r.label }}</span>
+          </span>
+          <div class="relative w-full overflow-hidden rounded-full bg-stroke" :style="{ height: '3px' }" :title="rowTitle(r)">
+            <div class="absolute inset-y-0 left-0 bg-content" :style="{ width: `${barPct(r)}%` }" />
+          </div>
+        </template>
+      </div>
+    </template>
+    <template v-else-if="micro">
       <!-- Micro (design c109): the at-a-glance form for a DataMachineMicro
            #right, where the problem is selection, not labelling (c100's
            lever-strip ruling) — pass the top row only and it reads as one
@@ -116,7 +138,9 @@ import { resolveColor } from './palette'
 // label · share, over a 3 px meter; `bare` keeps only the meters. The
 // micro the index uses is `bare`, the top 3 (Mark, design c109 2026-10-02);
 // the top row alone (selection, not labelling) is the alternative; `bare`
-// with the top 3 is the label-free alternative. Unset, nothing changes.
+// with the top 3 is the label-free alternative. `microLabels: 'beside'` (c109,
+// trying small labels on the index's roll downs) puts a 10 px bold name left of
+// each meter instead of on a line above it. Unset, nothing changes.
 //
 // `width`: any CSS length ('100%' default — fill whatever it's placed in),
 // or a number for px. `fill` is the older spelling of width '100%'.
@@ -133,6 +157,7 @@ const props = defineProps({
   thin       : { type: Boolean, default: false },   // half-height bars + compact rows; needs valuePosition left/right (ignored inside)
   micro      : { type: Boolean, default: false },   // DataMachineMicro form: label · share on one line over a 3 px meter (pass the top row); overrides layout
   bare       : { type: Boolean, default: false },   // micro only: no text line — hairline bars, label + share in the tooltip
+  microLabels: { type: String, default: 'over' },   // micro only: 'over' (label · share on a line above each meter) | 'beside' (a 10 px bold sans label left of each meter, the top 3 in ~37 px)
 })
 
 // thin = half-height bars AND compact rows (tight label leading, no 16 px bar

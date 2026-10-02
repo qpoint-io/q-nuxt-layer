@@ -20,16 +20,23 @@
        Standalone it always fills its container (block, w-full): a micro is a
        grid cell, and its device takes whatever the value leaves (the c100
        ruling, Mark 2026-09-30: the value takes min space, the drawing
-       expands), so right edges line up down a column. -->
+       expands), so right edges line up down a column.
+
+       As a card (`card`, or inherited from a DataIndexSection — Mark,
+       2026-10-02, preset B of the c109 micro-cards thread) it sits on white
+       with 12 px corners, 14 px padding and a soft two-layer shadow; a hairline
+       border stands in for the shadow in dark mode, where shadows don't
+       separate surfaces. In a group the padding insets the subgrid, so value
+       rows still align and the cards in a row share one height. -->
   <component
     :is="linked ? NuxtLink : 'div'"
     :to="linked ? to : undefined"
     class="min-w-0 text-content"
-    :class="[group ? (alignFooters ? 'grid row-span-5 grid-rows-subgrid' : 'grid row-span-4 grid-rows-subgrid') : 'block w-full', linked ? 'cursor-pointer hover:text-primary' : '']"
-    :style="group ? { marginTop: `${group.rowGap}px` } : undefined"
-    data-machine-micro :data-val="val"
+    :class="[group ? (alignFooters ? 'grid row-span-5 grid-rows-subgrid' : 'grid row-span-4 grid-rows-subgrid') : 'block w-full', linked ? 'cursor-pointer hover:text-primary' : '', isCard ? 'rounded-12 bg-surface dark:border dark:border-stroke' : '']"
+    :style="[group ? { marginTop: `${group.rowGap}px` } : {}, isCard ? CARD_STYLE : {}]"
+    data-machine-micro :data-val="val" :data-card="isCard || undefined"
   >
-    <!-- Title — one line, 12 px medium muted; a long title truncates (the full
+    <!-- Title — one line, 14 px bold ink (12 px medium muted at first; 16 px flat, then 14 px on the card — Mark, c109 follow-ups); a long title truncates (the full
          text in its tooltip) rather than wrap, so a section's micros keep one
          height. #mark sits after the text and never truncates: a tiny glyph
          that qualifies the whole micro — headline and device both — such as
@@ -37,7 +44,7 @@
          slot on the title, not on #right, because the qualifier belongs to the
          name, and #right is usually taken by the device (Activity · Providers
          carries a spark AND the mark). -->
-    <div class="flex min-w-0 items-center gap-1 text-12 leading-4 font-med text-content-muted">
+    <div class="flex min-w-0 items-center gap-1 text-14 leading-5 font-bold text-content">
       <span class="truncate" :title="title">{{ title }}</span>
       <span v-if="$slots.mark" class="flex shrink-0 items-center"><slot name="mark" /></span>
     </div>
@@ -99,10 +106,18 @@ const props = defineProps({
   deltaUnit  : { type: String },                        // passed to DataMetricTrend as `unit`
   healthMode : { type: Function, default: healthModes.NEVER_HOT }, // shared across value + delta
   to         : { type: String, default: '_none_' },     // the whole card links (the micro's listing); '_none_' = static, as DataMachine
+  card       : { type: Boolean, default: undefined },  // white card, rounded 12, soft shadow; unset = inherit from a DataIndexSection (cards on by default there), else flat
 })
 
+// The card (c109 preset B): 14 px padding and a quiet two-layer shadow — a
+// 1 px contact edge and a wide low blur, lighter than _shadow-box's shadow-lg.
+// Inline: arbitrary-value classes wouldn't reach the consumer's Tailwind scan.
+const CARD_STYLE = { padding: '14px', boxShadow: '0 1px 2px rgb(0 0 0 / 0.04), 0 4px 14px rgb(0 0 0 / 0.06)' }
+const sectionRef = inject('dataIndexSection', null)
+const isCard = computed(() => props.card ?? !!sectionRef?.value?.cards)
+
 // One headline size: a micro has no valueSize — the scale is the component.
-// 20 px bold numerals over a 12 px title (design c109 Phase 2).
+// 20 px bold numerals under a 14 px bold title (design c109; the title was 12 px medium until the follow-ups).
 const VALUE_SIZE = 20
 
 // Unlike DataMachine (a div + router.push, because its title slots host
