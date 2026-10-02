@@ -265,6 +265,16 @@ consumer repo.
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
 
+### Migration notes — v0.9.26 (design c106 sticky title, 2026-10-02)
+
+- **The sticky band grows a title.** `<UxStickyBand title>` runs the two-column band: `UxPageTitle` pins on row 1 beside the filter (15px, hairline kept, back link / `#right` / `#far-right` / `#chin` hidden while pinned) and `NavJumpPills` docks under it as a compact outlined bar; the band compacts once the title pins and nothing in it changes the page's flow. Without `title` the band is c104's (filter and pills side by side) — **existing layouts are unchanged**, apart from a two-layer shadow under the backing and a 400ms fade.
+- **To adopt it:** add `title` to the layout's `<UxStickyBand>`, and make `UxPageTitle` a **direct child of the page** — a sticky box can't leave its parent, so a wrapper that sets the title row's height (qdash `PageHeader`'s `min-h-[44px]` box) must go; use the new `rowMinHeight` prop instead. Only the first joined title on a page drives the band.
+- **`NavJumpPills` `sticky` now defaults to auto**: it joins whenever a `UxStickyBand` is mounted. Pages that pass `sticky` keep working; `:sticky="false"` opts out.
+- **`UxPageTitle`**: new `sticky` (default true — joins a titled band; `false` opts out) and `rowMinHeight`. Outside a band it renders as before.
+- **`Filter`**: new `bandCompact` (default true) — drops the label rows and ADD while a titled band is compact.
+- **`useStickyBand` API changed**: `useStickyBandMember({ el, top, stuck, enabled })` is gone; members use roles (`claimTitle()`, `registerFilter()`, `registerNav({ top })`) and `useStickyBandScroll(el, onFrame)`. `useStickyBand()` returns `mode`, `look`, `top`, `topDown`, `titleBand`, `showBacking` (and `stuck`, the c104 name), `attach({ title })`, `onFlip(fn)`. Geometry and motion live in the auto-imported `STICKY_BAND` (incl. `upRestyles: false` — scrolling up draws as scrolling down). Consumers that only mounted `UxStickyBand` / `Filter band` / `NavJumpPills sticky` need no change. **After updating, restart dev servers** — Nuxt's auto-import list must drop the removed export.
+- **New variables on `<html>`**: `--q-sticky-top-down` (where jumps land), `--q-sticky-row1` (titled band only), `--q-sticky-filter-w`, `--q-band-dur` / `--q-band-ease` / `--q-band-fade`. `UxTableListHeader` eases its pin with the band.
+
 ### Migration notes — v0.9.25 (design c103 gap-aware, 2026-10-01)
 
 - **A day not collected draws as a gap, not a zero.** `DataMetricSpark`: a point `{ count: null }` (or a bare `null` entry) keeps its x slot and breaks the line; a filled area closes each unbroken run to the baseline, the stroke runs along the top edge only, and a lone known day between gaps is a dot. Before, `{ count: null }` plotted as 0 and a bare `null` threw. Data without nulls renders byte-identical (`svgMachine.sparkChart` output unchanged; with gaps it also returns `lines`, `segments`, `dots`).
