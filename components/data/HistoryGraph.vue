@@ -25,6 +25,7 @@
         :block-size="blockSize"
         :block-gap="blockGap"
         :label-size="labelSize"
+        :stacked="stacked"
       />
     </div>
     <DataHistoryGraphLegend
@@ -76,6 +77,8 @@ const props = defineProps({
   blockGap           : { type: Number, default: 2 },       // vertical gap between stacked blocks in px
   dayGap             : { type: Number, default: 8 },       // horizontal gap between day columns in px
   labelSize          : { type: Number, default: 11 },      // x-axis label font size in px
+  maxHeight          : { type: Number, default: null },    // px cap on the chart area (opt-in): the unit scale steps up so the tallest column fits (design c110)
+  stacked            : { type: Boolean, default: false },  // one column per day, the series stacked bottom-up in series order; the scale follows the day's total (design c110)
 })
 
 // SSR always renders light; gating on `mounted` (not colorScheme directly)
@@ -131,7 +134,8 @@ const effectiveMode = computed(() => {
 // The label term scales with labelSize so a bigger label doesn't truncate.
 const columnWidth = computed(() => {
   const labelWidth = LABEL_COLUMN_WIDTH[effectiveLabelFormat.value] * (Number(props.labelSize) / LABEL_COLUMN_WIDTH_BASE_SIZE)
-  const n = resolvedSeries.value.length || 1
+  // stacked: one lane per day, whatever the series count
+  const n = props.stacked ? 1 : (resolvedSeries.value.length || 1)
   const lanesWidth = n * props.blockSize + Math.max(0, n - 1) * props.blockGap
   return Math.max(labelWidth, lanesWidth)
 })
@@ -162,10 +166,32 @@ function niceUnitValue(maxValue, maxBlocks) {
   return Math.ceil(maxValue / maxBlocks)
 }
 
+// stacked: a column is the day's total, so the total drives the scale
+const dayTotal = (p) => resolvedSeries.value.reduce((n, s) => n + (p.values[s.key] || 0), 0)
 const tallestValue = computed(() => Math.max(0, ...points.value.flatMap((p) =>
-  resolvedSeries.value.map((s) => p.values[s.key] || 0)
+  props.stacked ? [dayTotal(p)] : resolvedSeries.value.map((s) => p.values[s.key] || 0)
 )))
-const unitValue = computed(() => niceUnitValue(tallestValue.value, props.maxBlocksPerColumn))
+
+// maxHeight (opt-in, design c110): the area never grows past it — the block
+// cap becomes what fits (maxHeight / pitch, under maxBlocksPerColumn) and the
+// unit steps up through the nice steps until the tallest column, as drawn
+// (rounded parts, stacked totals, a bar's unrounded height), fits that cap
+const pitch = computed(() => Number(props.blockSize) + Number(props.blockGap))
+const blockCap = computed(() => (props.maxHeight
+  ? Math.max(1, Math.min(props.maxBlocksPerColumn, Math.floor(Number(props.maxHeight) / pitch.value)))
+  : props.maxBlocksPerColumn))
+function fittingUnitValue(cap) {
+  for (let mag = 0; mag < 15; mag++) {
+    for (const step of NICE_STEPS) {
+      const candidate = step * 10 ** mag
+      if (unitsAt(candidate, true) <= cap) return candidate
+    }
+  }
+  return Math.ceil(tallestValue.value / cap) || 1
+}
+const unitValue = computed(() => (props.maxHeight
+  ? fittingUnitValue(blockCap.value)
+  : niceUnitValue(tallestValue.value, props.maxBlocksPerColumn)))
 
 // Any real value renders at least one unit (a session should never disappear
 // to rounding) — mirrored in DataHistoryGraphColumn's own segment math, so
@@ -174,9 +200,21 @@ function unitsFor(value, unit) {
   return value > 0 ? Math.max(1, Math.round(value / unit)) : 0
 }
 
-const maxUnits = computed(() => Math.max(1, ...points.value.flatMap((p) =>
-  resolvedSeries.value.map((s) => unitsFor(p.values[s.key] || 0, unitValue.value))
-)))
+// The tallest column in units at `unit`. Stacked: the parts' units add up (each
+// part keeps its one-unit minimum), and never less than the total's own units,
+// so a stacked bar stays inside the area. `strict` (maxHeight) also counts a
+// lane's unrounded bar height, so a bar never rises past the area.
+function unitsAt(unit, strict) {
+  return Math.max(1, ...points.value.flatMap((p) =>
+    props.stacked
+      ? [Math.max(resolvedSeries.value.reduce((n, s) => n + unitsFor(p.values[s.key] || 0, unit), 0), Math.ceil(dayTotal(p) / unit))]
+      : resolvedSeries.value.map((s) => {
+          const v = p.values[s.key] || 0
+          return strict ? Math.max(unitsFor(v, unit), Math.ceil(v / unit)) : unitsFor(v, unit)
+        })
+  ))
+}
+const maxUnits = computed(() => unitsAt(unitValue.value, !!props.maxHeight))
 
 const tickEvery = computed(() => Math.max(1, Math.ceil(points.value.length / MAX_VISIBLE_TICKS)))
 function isTickVisible(i) { return i % tickEvery.value === 0 }

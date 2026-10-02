@@ -6,32 +6,37 @@
          card, under the column -->
     <div v-if="active" class="absolute -inset-x-1 -top-2.5 -bottom-1.5 -z-10 rounded-4 border border-stroke-strong bg-surface-sunken-subtle" />
     <!-- one lane per series, side by side — each independently stacked from a
-         shared baseline, not summed into a single column -->
+         shared baseline, not summed into a single column. With `stacked` (opt-in,
+         design c110) the day is one lane instead: the series stack bottom-up in
+         series order, each part its own color, so a small share stays visible
+         on top of a big one -->
     <!-- a not-collected day (missing): no lanes, a faint hatch over the area instead — an
          absence of data, distinct from a day of zeros -->
     <div class="flex w-full items-end justify-center" :style="{ height: `${areaHeight}px`, gap: `${blockGap}px`, ...(missing ? hatch : {}) }">
       <div
-        v-for="seg in segments"
-        :key="seg.key"
+        v-for="lane in lanes"
+        :key="lane.key"
         class="flex flex-col-reverse items-center"
-        :style="{ width: `${blockSize}px`, height: `${areaHeight}px`, gap: `${blockGap}px` }"
+        :style="{ width: `${blockSize}px`, height: `${areaHeight}px`, gap: `${stacked && mode !== 'blocks' ? 0 : blockGap}px` }"
       >
-        <template v-if="mode === 'blocks'">
-          <DataHistoryGraphBlock
-            v-for="i in seg.units"
-            :key="i"
-            :color="seg.color"
-            :size="blockSize"
-            :title="nativeTitles ? `${seg.label}: ${seg.value}` : undefined"
-          />
-        </template>
-        <template v-else>
-          <div
-            v-show="seg.barPx > 0"
-            class="w-full"
-            :style="{ height: `${seg.barPx}px`, background: seg.color }"
-            :title="nativeTitles ? `${seg.label}: ${seg.value}` : undefined"
-          />
+        <template v-for="seg in lane.parts" :key="seg.key">
+          <template v-if="mode === 'blocks'">
+            <DataHistoryGraphBlock
+              v-for="i in seg.units"
+              :key="i"
+              :color="seg.color"
+              :size="blockSize"
+              :title="nativeTitles ? `${seg.label}: ${seg.value}` : undefined"
+            />
+          </template>
+          <template v-else>
+            <div
+              v-show="seg.barPx > 0"
+              class="w-full"
+              :style="{ height: `${seg.barPx}px`, background: seg.color }"
+              :title="nativeTitles ? `${seg.label}: ${seg.value}` : undefined"
+            />
+          </template>
         </template>
       </div>
     </div>
@@ -64,6 +69,7 @@ const props = defineProps({
   nativeTitles: { type: Boolean, default: true },     // per-block title tooltips — off when the graph reports hover
   active      : { type: Boolean, default: false },    // the hovered column — outlined
   missing     : { type: Boolean, default: false },    // the day wasn't collected — hatched, dashed baseline, no lanes
+  stacked     : { type: Boolean, default: false },    // one lane, the series stacked bottom-up in series order (design c110)
 })
 
 // 45° hairlines in the stroke token, 5 px apart — inline because the layer takes no arbitrary Tailwind values
@@ -87,4 +93,9 @@ const segments = computed(() => props.series.map((s) => {
   const barPx = value > 0 ? Math.max(1, value * pxPerValue.value) : 0
   return { key: s.key, label: s.label, color: s.color, value, units, barPx }
 }))
+
+// side by side: one lane per series; stacked: one lane holding every series, bottom-up
+const lanes = computed(() => props.stacked
+  ? [{ key: '_stack', parts: segments.value }]
+  : segments.value.map((seg) => ({ key: seg.key, parts: [seg] })))
 </script>
