@@ -265,6 +265,11 @@ consumer repo.
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
 
+### Migration notes — v0.9.27 (design c106 sticky band polish, 2026-10-02)
+
+- **No API change.** The band's backing fades in at its current height (it no longer slides from the top), and in a titled band waits for the title to pin; its height only animates once fully in. The pinned title shrinks on its own clock (`STICKY_BAND.motion.title`, 500ms, published as `--q-band-title`); settling back to rest stays on the band's 1s.
+- **Look:** the backing is `surface-sunken-subtle` (a tick off the page: lighter in light mode, darker in dark); the two-layer shadow is 7px at 0.11 + 28px at 0.08; docked pills get 16px below them (`navBottomPad`, was 12).
+
 ### Migration notes — v0.9.26 (design c106 sticky title, 2026-10-02)
 
 - **The sticky band grows a title.** `<UxStickyBand title>` runs the two-column band: `UxPageTitle` pins on row 1 beside the filter (15px, hairline kept, back link / `#right` / `#far-right` / `#chin` hidden while pinned) and `NavJumpPills` docks under it as a compact outlined bar; the band compacts once the title pins and nothing in it changes the page's flow. Without `title` the band is c104's (filter and pills side by side) — **existing layouts are unchanged**, apart from a two-layer shadow under the backing and a 400ms fade.
