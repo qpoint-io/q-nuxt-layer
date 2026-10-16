@@ -44,7 +44,7 @@ Auto-imported with the `Ux` prefix:
 | `UxPageTitle` | Page header: optional breadcrumb trail + large title, hairline underline; `right`/`far-right`/`chin`/`chin-right` slots, `backText` + `@back`. Nuxt-only (`<NuxtLink>`) |
 | `UxStickyBand` | Backing strip behind the page's pinned controls (c104): mount once at the top of the layout's content column; shows (page tone + hairline, `--q-sticky-top` tall) while a band member is pinned, transparent at rest. See `useStickyBand` |
 | `UxOverflowX` | Horizontal scroll only when needed (c104): wrap a table instead of a hand-rolled `overflow-x-auto` div. Fits → no overflow, so sticky table headers pin to the page; overflows → scrolls sideways and resets `--q-sticky-top` inside |
-| `UxSvgPlate` | White backing plate for art drawn only for light backgrounds (blog diagrams, third-party logos, archive exports): transparent in light, white under `.dark` or a `provideThemeMode('dark')` context. Fills its container width (cap with `max-w-*`), art scales to fit; `src` renders an `<img>` (use it for Illustrator exports — their `.cls-N` styles leak when inlined), else the default slot; `pad` none/sm/md/lg |
+| `UxSvgPlate` | White backing plate for art drawn only for light backgrounds (blog diagrams, third-party logos, archive exports): transparent in light, white under `.dark` or a `provideThemeMode('dark')` context. Fills its container width, art scales to fit; width cap, inset and corners are the consumer's Tailwind classes (`max-w-3xl p-2 rounded-6`); `src` renders an `<img>` (use it for Illustrator exports — their `.cls-N` styles leak when inlined), else the default slot |
 
 ### Icons (`components/icon/`)
 
@@ -267,6 +267,10 @@ consumer repo.
 
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
+
+### Migration notes — v0.9.33 (UxSvgPlate drops pad, 2026-10-16)
+
+- **`UxSvgPlate` `pad` removed** — no default padding or radius; set them with Tailwind classes on the component (`p-2 rounded-6`). Shipped the same day as 0.9.32, so only the design site's demo used it.
 
 ### Migration notes — v0.9.32 (UxSvgPlate, 2026-10-16)
 
