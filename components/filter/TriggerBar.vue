@@ -43,9 +43,11 @@
           <option v-for="def in filterKeyDefs" :key="def.key" :value="def.key">{{ def.label ?? def.key }}</option>
         </select>
 
-        <span class="text-14 font-bold text-content-muted whitespace-nowrap">{{ currentKeyLabel }}</span>
+        <!-- pointer-events-none on the label and caret: the caret's inline SVG otherwise sits over the invisible
+             select and swallows the click, so clicking the arrow did nothing (design c121, 2026-10-23) -->
+        <span class="pointer-events-none text-14 font-bold text-content-muted whitespace-nowrap">{{ currentKeyLabel }}</span>
         <!-- The caret only appears when there's a choice to make; a single fixed key is a plain label. -->
-        <UxIcon v-if="multiKey" id="triangle" class="w-3 rotate-180" :class="TONE.accent" />
+        <UxIcon v-if="multiKey" id="triangle" class="pointer-events-none w-3 rotate-180" :class="TONE.accent" />
 
         <!-- The chevron: a 12px-wide (w-3) SVG hung off the segment's right edge, over
              the first value segment. Filled with the surface (so it masks that
