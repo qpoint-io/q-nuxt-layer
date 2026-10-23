@@ -1,6 +1,6 @@
 {
   "name": "@qpoint-io/q-nuxt-layer",
-  "version": "0.9.33",
+  "version": "0.9.34",
   "type": "module",
   "description": "Qpoint design system — shared components, tokens, and CSS via Nuxt Layer",
   "repository": {
