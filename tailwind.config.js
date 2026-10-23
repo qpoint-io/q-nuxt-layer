@@ -141,6 +141,10 @@ export default {
         'signal-error':    'rgb(var(--qp-error) / <alpha-value>)',
         'signal-warning':  'rgb(var(--qp-warning) / <alpha-value>)',
         'signal-info':     'rgb(var(--qp-info) / <alpha-value>)',
+        'severity-high':        'rgb(var(--qp-severity-high) / <alpha-value>)',
+        'severity-high-fill':   'rgb(var(--qp-severity-high-fill) / <alpha-value>)',
+        'severity-medium':      'rgb(var(--qp-severity-medium) / <alpha-value>)',
+        'severity-medium-fill': 'rgb(var(--qp-severity-medium-fill) / <alpha-value>)',
 
         // Semantic
         error:   '#EF4444',

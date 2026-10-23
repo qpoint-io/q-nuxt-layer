@@ -30,6 +30,13 @@ export const semantic = {
   error:            { light: '#EF4444', dark: '#F87F7D' }, // error / warn
   warning:          { light: '#F59E0B', dark: '#F59E0B' },
   info:             { light: '#7742E2', dark: '#BBA5FF' }, // grape-600 / grape-300
+  // Severity tags (SecuritySeverityTag, Mark 2026-10-23): a full-strength stroke on a pale fill, ink label —
+  // the error/warning tints were too faint against the page. Off-palette hexes from Mark's swatch; dark
+  // fills are the stroke at 15% over surface
+  'severity-high':        { light: '#E15769', dark: '#E15769' },
+  'severity-high-fill':   { light: '#FCEEF1', dark: '#301C1E' },
+  'severity-medium':      { light: '#D2792D', dark: '#D2792D' },
+  'severity-medium-fill': { light: '#FDF4E9', dark: '#2E2115' },
 }
 
 // Pixel-art roles (c59) — emitted as `--px-<key>` in HEX form (not RGB

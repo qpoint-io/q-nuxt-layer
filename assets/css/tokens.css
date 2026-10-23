@@ -21,6 +21,10 @@
   --qp-error: 239 68 68;
   --qp-warning: 245 158 11;
   --qp-info: 119 66 226;
+  --qp-severity-high: 225 87 105;
+  --qp-severity-high-fill: 252 238 241;
+  --qp-severity-medium: 210 121 45;
+  --qp-severity-medium-fill: 253 244 233;
   --px-body: #A6ADAD;
   --px-shade: #4D5C5A;
   --px-eye: #FFFFFF;
@@ -51,6 +55,10 @@
   --qp-error: 248 127 125;
   --qp-warning: 245 158 11;
   --qp-info: 187 165 255;
+  --qp-severity-high: 225 87 105;
+  --qp-severity-high-fill: 48 28 30;
+  --qp-severity-medium: 210 121 45;
+  --qp-severity-medium-fill: 46 33 21;
   --px-body: #A6ADAD;
   --px-shade: #5C6967;
   --px-eye: #FFFFFF;

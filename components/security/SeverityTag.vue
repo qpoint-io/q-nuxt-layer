@@ -17,8 +17,8 @@
 // `high` on warning while the qdash findings page put it on error):
 //   critical — solid error fill: the only filled step, rank encoded by
 //              intensity, not a fifth hue
-//   high     — error outline
-//   medium   — warning outline
+//   high     — severity-high outline on its pale fill, ink label
+//   medium   — severity-medium outline on its pale fill, ink label
 //   low      — muted grey (matches ComplianceTag's `gap` register)
 // Label defaults to the severity word; override via the default slot
 // (e.g. <SecuritySeverityTag severity="critical">crit!</SecuritySeverityTag>).
@@ -40,8 +40,8 @@ const props = defineProps({
 // literal class strings only — the layer's Tailwind scan must see them
 const PALETTES = {
   critical: { pill: 'border-error bg-error', label: 'text-white' },
-  high: { pill: 'border-error/60 bg-error/5', label: 'text-error' },
-  medium: { pill: 'border-signal-warning/60 bg-signal-warning/10', label: 'text-signal-warning' },
+  high: { pill: 'border-severity-high bg-severity-high-fill', label: 'text-content' },
+  medium: { pill: 'border-severity-medium bg-severity-medium-fill', label: 'text-content' },
   low: { pill: 'border-stroke-strong bg-surface-sunken', label: 'text-content-subtle' },
 }
 
