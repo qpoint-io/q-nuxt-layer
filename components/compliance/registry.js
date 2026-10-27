@@ -14,6 +14,9 @@ import Scale from './icon/Scale.vue'
 import Warn from './icon/Warn.vue'
 
 export const FRAMEWORK_KINDS = [
+  // a risk-management framework (NIST AI RMF) is governance process, not a risk
+  // list — it takes the governance ribbon, and sits first so `risk` can't claim it
+  { slug: 'risk-management', icon: Ribbon, aliases: ['riskmanagement'] },
   { slug: 'risk-taxonomy', icon: Warn, aliases: ['risk', 'taxonomy', 'threat'] },
   { slug: 'regulation', icon: Scale, aliases: ['regulation', 'standard', 'law', 'act'] },
   { slug: 'attestation', icon: Ribbon, aliases: ['attestation', 'certification', 'audit'] },
