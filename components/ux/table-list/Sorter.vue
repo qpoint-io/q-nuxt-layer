@@ -7,10 +7,11 @@
   >
     <div>
       <div class="flex justify-between  gap-1" :class="(isSorting)?'text-primary':''">
-        {{ sortMetric }}
+        <!-- a span, not bare text, so a fixed-layout table can end the label in an ellipsis; auto layout is unchanged -->
+        <span class="min-w-0 truncate">{{ sortMetric }}</span>
         <IconArrowUp
           v-if="!disabled"
-          class="w-3 duration-300"
+          class="w-3 shrink-0 duration-300"
           :class="[
             (isSorting)?  '': 'opacity-10',
             (sortLowToHigh)?  'rotate-0 duration-600' : 'rotate-180',

@@ -6,7 +6,8 @@
       <PolicyRibbonMark faded class="relative z-0 w-auto shrink-0" :style="ribbon" />
       <span class="truncate font-semi text-content" :class="s.name" :title="title"><slot /></span>
     </span>
-    <span v-if="scope" class="flex shrink-0 items-center rounded-r-full border-l border-primary/30 bg-grape-100 font-bold text-primary" :class="s.scope">{{ scope }}</span>
+    <span v-if="scope" class="flex shrink-0 items-center border-l border-primary/30 bg-grape-100 font-bold text-primary" :class="[s.scope, st ? '' : 'rounded-r-full']">{{ scope }}</span>
+    <span v-if="st" class="flex shrink-0 items-center rounded-r-full border-l border-primary/30 font-bold" :class="[s.scope, st.cls]">{{ st.label }}</span>
   </span>
 </template>
 
@@ -14,8 +15,11 @@
 // A policy as a pill: the faded policy ribbon, the policy's name, and an
 // optional scope segment ("Org Wide", "Team : Engineering") on a darker grape.
 // Built for design's c121 change-impact card (Mark, 2026-10-23); the policy
-// counterpart of ComplianceTag. `size` follows the UxToggle convention.
+// counterpart of ComplianceTag. `size` follows the UxToggle convention. An
+// optional status segment closes the pill, the policy-mode register in grape
+// (off quiet, observe tinted, enforce ink): design c123's framework detail.
 //   <PolicyTag scope="Team : Engineering">Tools must be on the allow list</PolicyTag>
+//   <PolicyTag status="enforced">Secrets never reach a model</PolicyTag>
 //   <PolicyTag size="small">Agents run in a sandbox</PolicyTag>
 //   <PolicyTag size="small" :icon-scale="0.6">…</PolicyTag>   (a smaller ribbon in dense lists)
 const props = defineProps({
@@ -27,7 +31,17 @@ const props = defineProps({
   iconScale: { type: Number, default: 1 },
   /** no padding before the ribbon: it sits on the pill's left edge (dense tables) */
   flush: { type: Boolean, default: false },
+  /** '' | 'inactive' | 'observed' | 'enforced': a closing segment saying how the policy runs */
+  status: { type: String, default: '' },
 })
+
+const STATUS = {
+  // fixed grapes, not theme tokens: the pill itself is a fixed light grape in both themes
+  inactive: { label: 'Inactive', cls: 'bg-grape-50 text-grape-400' },
+  observed: { label: 'Observed', cls: 'bg-grape-150 text-grape-900' },
+  enforced: { label: 'Enforced', cls: 'bg-grape-900 text-white' },
+}
+const st = computed(() => STATUS[props.status] || null)
 
 const SIZES = {
   medium: { pill: 'h-7', left: 'pl-1 pr-3', leftFlush: 'pl-0 pr-3', gap: 'gap-2', ribbon: { h: 40, below: 16, above: 4 }, name: 'text-13', scope: 'px-3 text-12' },
