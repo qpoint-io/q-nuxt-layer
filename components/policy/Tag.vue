@@ -37,7 +37,7 @@ const props = defineProps({
 
 const STATUS = {
   // fixed grapes, not theme tokens: the pill itself is a fixed light grape in both themes
-  inactive: { label: 'Inactive', cls: 'bg-grape-50 text-grape-400' },
+  inactive: { label: 'Off', cls: 'bg-grape-50 text-grape-400' },
   observed: { label: 'Observed', cls: 'bg-grape-150 text-grape-900' },
   enforced: { label: 'Enforced', cls: 'bg-grape-900 text-white' },
 }
