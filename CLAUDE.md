@@ -269,9 +269,10 @@ consumer repo.
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
 
-### Migration notes — v0.9.39 (DataDotStrip, 2026-11-13)
+### Migration notes — v0.9.39 (DataDotStrip; NavJumpPills fits its container, 2026-11-13)
 
 - **New `DataDotStrip`** (`data/DotStrip.vue`) — moved from design's c138 footprint page (`FootprintDotStrip`), where it draws every strobe reading of the native app. See the catalog row. Additive; no consumer change required. The design page's domain words became shapes: a point's `shape` is `dot` (default) · `ring` · `diamond` · `square`, the consumer says what each means in `legend` and in each point's `tip`, and hollow shapes draw first. The row grid is a few lines of scoped CSS (its columns are props), not arbitrary-value classes.
+- **`NavJumpPills` is never wider than its container.** On a phone a page's pill bar was wider than the screen and the whole page scrolled sideways (design measured it on every cycle report with pills). The bar now has `max-w-full` and scrolls sideways inside its own rounded box when the pills don't fit, with no scrollbar; pill labels never wrap; as the spy moves, the active pill scrolls into view. When the pills fit, nothing changes (design checked its pill pages pixel-identical at 1440, at rest and pinned). Consumers that wrapped the component in their own `overflow-x-auto` row can drop the wrapper.
 
 ### Migration notes — v0.9.33 (UxSvgPlate drops pad, 2026-10-16)
 

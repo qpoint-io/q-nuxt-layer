@@ -1,21 +1,25 @@
 <template>
   <div
     ref="root"
-    :class="joined ? ['_row2 sticky z-30 pointer-events-none', compact ? '_compact' : ''] : 'inline-flex'"
+    :class="joined ? ['_row2 sticky z-30 pointer-events-none', compact ? '_compact' : ''] : 'inline-flex max-w-full'"
     :style="joined ? { top: pinLine, height: `${B.navRow.rest}px` } : undefined"
   >
     <!-- In a band: a full-row sticky box (z-30) that keeps its rest height in
          every look, so compacting never moves the page; pointer events pass
          through everywhere but the pill bar. Plain: the bar alone, positioned
          by the consumer. -->
+    <!-- Never wider than its container: when the pills don't fit (a phone), the
+         bar scrolls sideways inside its own rounded box, with no scrollbar, and
+         keeps the active pill in view. When they fit, nothing changes. -->
     <div
-      class="_bar pointer-events-auto inline-flex items-center gap-1 rounded-full border bg-surface px-1.5 py-1 shadow-md"
+      ref="bar"
+      class="_bar _scroll pointer-events-auto inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-full border bg-surface px-1.5 py-1 shadow-md"
       :class="active ? 'border-grape-300' : 'border-stroke'"
     >
       <button
         v-for="s in sections"
         :key="s.id"
-        class="_pill rounded-full px-3.5 py-1 text-13 font-med"
+        class="_pill shrink-0 whitespace-nowrap rounded-full px-3.5 py-1 text-13 font-med"
         :class="active === s.id
           ? '_on bg-primary/10 text-primary'
           : 'text-content-subtle hover:bg-surface-sunken hover:text-content'"
@@ -69,6 +73,19 @@ const band = useStickyBand()
 
 const active = ref('')
 watch(active, (id) => emit('change', id))
+
+// When the bar scrolls (pills wider than the container), keep the active pill in view.
+const bar = ref(null)
+watch(active, async () => {
+  await nextTick()
+  const b = bar.value
+  if (!b || b.scrollWidth <= b.clientWidth) return
+  const pill = b.querySelector('._on')
+  if (!pill) return
+  const left = pill.getBoundingClientRect().left - b.getBoundingClientRect().left + b.scrollLeft
+  const right = left + pill.offsetWidth
+  if (left < b.scrollLeft || right > b.scrollLeft + b.clientWidth) b.scrollTo({ left: Math.max(0, left - 12), behavior: 'smooth' })
+})
 
 // ── Band membership ─────────────────────────────────────────────────────────
 const joined = computed(() => props.sticky === true || (props.sticky !== false && band.state.attached))
@@ -136,6 +153,10 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
 </script>
 
 <style scoped>
+/* A bar wider than its container scrolls without showing a scrollbar. */
+._scroll { scrollbar-width: none; }
+._scroll::-webkit-scrollbar { display: none; }
+
 /* The pin line eases with the band (row 1 compacting or growing). */
 ._row2 { transition: top var(--q-band-dur, 0ms) var(--q-band-ease, ease); }
 
