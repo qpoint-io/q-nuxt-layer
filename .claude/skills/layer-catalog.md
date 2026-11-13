@@ -340,6 +340,17 @@ Data visualization primitives for stats, charts, sparklines, trends, and percent
 
 ---
 
+### DataDotStrip
+**Source:** `components/data/DotStrip.vue`
+**Description:** Rows of readings as marks on one shared numeric axis (design c138, the native app's footprint page). Two or more readings per row stay visible, so nothing is averaged away. A row is `{ label, sub?, strong?, values?, points }`, each point `{ v, text, shape?, note?, tip? }` (`text` the value as recorded, `values` the row's own line for the values column); `{ header, when?, note? }` rows group the rest. Shapes dot (filled) · ring · diamond · square carry identity, keyed by `legend`; hollow shapes draw first. Optional reference `band`, an outlined `track` (the domain as a whole, e.g. one CPU core) and a dashed `target`. Hairline gridlines at `ticks`, a 2 px surface ring per mark, a 24 px hit area, a tooltip on hover and focus. Label · plot · values columns (`labelCol`, `valueCol`); under 640 px the label and values share a line above a full-width plot. No data rows → an em-dash.
+**Use when:** Several readings of one thing must stay separate on one scale — repeated measurements per state, per build, per session — or a value must be read against a whole (the track) or a threshold (the target). Not for a share of a whole (use `DataSegmentBar`) and not for ranked magnitude (use `DataRankedBars`).
+**Props:** `rows (Array, required)`, `domain (Array, required)`, `ticks (Array, [])`, `unit (String, '')`, `axisLabel (String, '')`, `band (Object, null)`, `track (Boolean, false)`, `target (Object, null)`, `legend (Array, [])`, `labelCol (String, '11rem')`, `valueCol (String, '9rem')`, `tickFormat (Function, null)`
+**Emits:** (none)
+**Slots:** (none)
+**Related:** `DataRankedBars`, `DataSegmentBar`, `UxPercentBar`, `DataMachine`
+
+---
+
 ### DataSegmentBar
 **Source:** `components/data/SegmentBar.vue`
 **Description:** Horizontal 100 % bar of named segments (a whole with 3–6 parts). Values in, not percents — the component normalizes, so the consumer passes the same numbers the card shows. 2 px surface gap between fills, per-segment hover title, legend (title + value in text tokens) below or beside. No colors → the three validated categorical slots, a 4th+ identity segment folds into "Other"; `ordinal` → one grape hue stepped light → dark; `color: 'outline'` → bordered empty segment. Empty items → a hairline track.

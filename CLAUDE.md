@@ -178,6 +178,7 @@ Auto-imported with the `Data` prefix. The chart family below shares one color fi
 | `DataHistoryGraph` | Per-day unit-block lanes (or bars past ~40 columns), 1–3 series, `{ series, points }` |
 | `DataRankedBars` | Ranked-share rows — `[{ label, value, pct, display?, mark?, title? }]` in, one compact `UxPercentBar` per row, each bar the share of the whole (`scale="max"`: top row full); `layout` inline (label column beside) or stacked (label on its own line, full-width bar, share at the right — nothing truncates); row `mark` = status dot, `legend` keys it; fills its container; empty → em-dash |
 | `DataSegmentBar` | Horizontal 100 % bar of named segments — values in, normalized; 2 px surface gap; `legend` below/beside/none; `ordinal` one-hue ramp; identity series fold past three into "Other"; empty → hairline track |
+| `DataDotStrip` | Readings as marks on one shared numeric axis, a row per configuration, so two or more readings per row stay visible (no averages): `rows [{ label, sub?, values?, points: [{ v, text, shape?, note?, tip? }] }]` or `{ header, when?, note? }` group rows; `domain`, `ticks`; `shape` dot · ring · diamond · square, keyed by `legend`; optional `band { lo, hi }`, `track` (the domain as an outlined whole), `target { v }` (dashed); hover/focus tooltip per mark; label · plot · values columns, stacked under 640 px; empty → em-dash |
 | `DataHoverBreakdown` | Pointer-following card breaking a row's number into its items: 28 px one-line title, `metric { label, value }` big in the upper right, tight `lines`, `#summary="{ width }"` (a full-width drawing), then `items` via `#row="{ item, index }"` flowing into columns (`rowsPerCol` ~12, `colWidth`, `colGap` 28) that widen to the window; above the pointer (measured height), else below; no items → a plain tooltip. Sizes to its content (at least the columns), up to `maxWidth` (default: the window), where the title truncates. Render with `v-if` while hovering, pass pointer `x` / `y` |
 | `DataSurfacePanel` | Ranked rows + `DataPercentBar` column |
 | `DataSurfaceSection` | Chrome around a set of `DataSurfacePanel`s |
@@ -267,6 +268,10 @@ consumer repo.
 
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
+
+### Migration notes — v0.9.39 (DataDotStrip, 2026-11-13)
+
+- **New `DataDotStrip`** (`data/DotStrip.vue`) — moved from design's c138 footprint page (`FootprintDotStrip`), where it draws every strobe reading of the native app. See the catalog row. Additive; no consumer change required. The design page's domain words became shapes: a point's `shape` is `dot` (default) · `ring` · `diamond` · `square`, the consumer says what each means in `legend` and in each point's `tip`, and hollow shapes draw first. The row grid is a few lines of scoped CSS (its columns are props), not arbitrary-value classes.
 
 ### Migration notes — v0.9.33 (UxSvgPlate drops pad, 2026-10-16)
 
