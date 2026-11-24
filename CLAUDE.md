@@ -269,7 +269,9 @@ consumer repo.
 - The registry install is **not used for local dev** when `NUXT_LOCAL_LAYER=1` is set — layer changes are live via HMR; the published version matters for CI/production builds and TypeScript resolution
 - A stale `components/.nuxt/` or `components/node_modules/` dir will get packed into the publish (the `files` whitelist ships `components/` wholesale) — delete them if they appear
 
-### Migration notes — v0.9.40 (NavJumpPills fits its container, 2026-11-13)
+### Migration notes — v0.9.40 (NavJumpPills fits its container, 2026-11-13; UxModal above sticky bands, 2026-11-24)
+
+- **Fix: `UxModal` sits above sticky bands.** Its dialog was `z-[20]` (an arbitrary value), under the pinned page title (`z-30`) and the filter bar's sticky `z-40`, so both painted over any modal opened beside them (the Filter's own manage modal on every qdash page). It is now `z-50`, the same level as qdash's own modals. No consumer change required. Found by design c165 Phase 2 and seen by Mark on a published qdash build (2026-11-24). Published together with the NavJumpPills change below: that commit (b592199) was pushed on 2026-11-13 without its tag, so 0.9.40 first reached the registry with this fix.
 
 - **`NavJumpPills` is never wider than its container.** On a phone a page's pill bar was wider than the screen and the whole page scrolled sideways (design measured it on every cycle report with pills). The bar now has `max-w-full` and scrolls sideways inside its own rounded box when the pills don't fit, with no scrollbar; pill labels never wrap; as the spy moves, the active pill scrolls into view. When the pills fit, nothing changes (design checked its pill pages pixel-identical at 1440, at rest and pinned). Consumers that wrapped the component in their own `overflow-x-auto` row can drop the wrapper.
 
